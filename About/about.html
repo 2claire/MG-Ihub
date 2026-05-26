@@ -1,0 +1,1054 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>About — MG Innovation Hub</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --mg-ink:      #0A0A0F;
+      --mg-electric: #0099B0;
+      --mg-neon:     #B6FF4E;
+      --mg-orange:   #FF6B2B;
+      --mg-mid:      #1A1A2E;
+      --mg-surface:  #111128;
+      --mg-glass:    rgba(255,255,255,0.04);
+      --mg-border:   rgba(255,255,255,0.08);
+      --mg-text:     #ffffff;
+      --mg-text-muted: rgba(255,255,255,0.55);
+      --mg-text-faint: rgba(255,255,255,0.25);
+      --mg-footer-bg: #07070D;
+      --mg-nav-scrolled: rgba(10,10,15,0.88);
+      --mg-mobile-menu-bg: rgba(10,10,15,0.97);
+    }
+
+    /* ── LIGHT MODE ─────────────────────── */
+    html.light {
+      --mg-ink:        #F0F4F8;
+      --mg-electric:   #30aadf;
+      --mg-neon:       #3d8c00;
+      --mg-orange:     #D9541A;
+      --mg-surface:    #FFFFFF;
+      --mg-glass:      rgba(0,0,0,0.03);
+      --mg-border:     rgba(0,0,0,0.10);
+      --mg-text:       #000000;
+      --mg-text-muted: rgba(0,0,0,0.55);
+      --mg-text-faint: rgba(0,0,0,0.30);
+      --mg-footer-bg:  #1A1A2E;
+      --mg-nav-scrolled:   rgba(240,244,248,0.94);
+      --mg-mobile-menu-bg: rgba(240,244,248,0.98);
+    }
+
+    /* Light mode — force black on all headings and body text */
+    html.light body,
+    html.light h1, html.light h2, html.light h3, html.light h4,
+    html.light p, html.light li,
+    html.light .section-title, html.light .tl-title { color: #000000; }
+    html.light p { color: rgba(0,0,0,0.65); }
+    html.light .tl-body { color: rgba(0,0,0,0.50); }
+    html.light .nav-link { color: rgba(0,0,0,0.65); }
+    html.light .nav-link:hover { color: #000; }
+    /* Footer stays dark */
+    html.light footer,
+    html.light footer p, html.light footer li,
+    html.light footer span, html.light footer h4 { color: rgba(255,255,255,0.7); }
+    html.light .footer-link { color: rgba(255,255,255,0.5); }
+    html.light .footer-link:hover { color: #30aadf; }
+    html.light .social-btn { color: rgba(255,255,255,0.45); border-color: rgba(255,255,255,0.12); }
+    html.light .social-btn:hover { color: #30aadf; border-color: #30aadf; }
+    /* Ticker */
+    html.light .ticker-wrap { background: #e2e8f0; }
+    html.light .ticker-inner span { color: rgba(0,0,0,0.4); }
+    /* Stat card */
+    html.light .stat-card { background: #fff; }
+    html.light .stat-card div:last-child { color: rgba(0,0,0,0.5); }
+    /* Hero image overlay — text stays white */
+    html.light .page-hero h1,
+    html.light .page-hero p,
+    html.light .page-hero .section-label { color: #fff; }
+    html.light .page-hero .breadcrumb { color: rgba(255,255,255,0.45); }
+    html.light .page-hero .breadcrumb span { color: #30aadf; }
+
+    /* Smooth theme transition */
+    *, *::before, *::after {
+      transition-property: background-color, border-color, color, box-shadow;
+      transition-duration: .3s;
+      transition-timing-function: ease;
+    }
+    .reveal, .btn-primary, .btn-outline,
+    .stat-card, .value-card, .team-card, .nav-link,
+    .footer-link, .social-btn { transition-property: background-color, border-color,
+      color, box-shadow, opacity, transform; }
+    *{ box-sizing:border-box; margin:0; padding:0; }
+    html{ scroll-behavior:smooth; }
+    body{
+      background:var(--mg-ink);
+      color:var(--mg-text);
+      font-family:'DM Sans',sans-serif;
+      overflow-x:hidden;
+    }
+    h1,h2,h3,h4,nav a,.syne{ font-family:'Syne',sans-serif; }
+
+    /* noise */
+    body::before{
+      content:''; position:fixed; inset:0; z-index:0; pointer-events:none;
+      background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      opacity:.4;
+    }
+
+    /* ── NAV ── */
+    #navbar{
+      position:fixed; top:0; left:0; right:0; z-index:100;
+      transition:background .4s,backdrop-filter .4s,box-shadow .4s;
+    }
+    #navbar.scrolled{
+      background:var(--mg-nav-scrolled);
+      backdrop-filter:blur(20px);
+      box-shadow:0 1px 0 var(--mg-border);
+    }
+    .nav-link{
+      position:relative; font-weight:500; font-size:.9rem;
+      color:var(--mg-text-muted); transition:color .25s; padding-bottom:2px;
+    }
+    .nav-link::after{
+      content:''; position:absolute; bottom:-4px; left:0;
+      width:0; height:2px; background:var(--mg-electric); transition:width .3s;
+    }
+    .nav-link:hover{ color:var(--mg-text); }
+    .nav-link:hover::after{ width:100%; }
+    .nav-link.active{ color:#fff; }
+    .nav-link.active::after{ width:100%; }
+    .btn-primary{
+      background:var(--mg-electric); color:var(--mg-ink);
+      font-family:'Syne',sans-serif; font-weight:700;
+      padding:.55rem 1.4rem; border-radius:2px;
+      transition:transform .2s,box-shadow .2s;
+      letter-spacing:.03em; font-size:.85rem;
+    }
+    .btn-primary:hover{
+      transform:translateY(-2px);
+      box-shadow:0 8px 28px rgba(0,229,255,.35);
+    }
+    .btn-outline{
+      border:1.5px solid var(--mg-electric); color:var(--mg-electric);
+      font-family:'Syne',sans-serif; font-weight:700;
+      padding:.55rem 1.4rem; border-radius:2px;
+      transition:background .2s,color .2s; font-size:.85rem;
+    }
+    .btn-outline:hover{ background:var(--mg-electric); color:var(--mg-ink); }
+
+    /* mobile menu */
+    #mobile-menu{
+      display:none; flex-direction:column; gap:1rem;
+      padding:1.5rem 1.5rem 2rem;
+      background:var(--mg-mobile-menu-bg);
+      backdrop-filter:blur(20px);
+      border-top:1px solid var(--mg-border);
+    }
+    #mobile-menu.open{ display:flex; }
+
+    /* ── SECTION UTILS ── */
+    .section-label{
+      font-family:'Syne',sans-serif;
+      font-size:.7rem; letter-spacing:.2em; text-transform:uppercase;
+      color:var(--mg-electric);
+      display:flex; align-items:center; gap:.6rem;
+    }
+    .section-label::before{
+      content:''; display:block; width:2rem; height:1.5px;
+      background:var(--mg-electric);
+    }
+    .section-title{
+      font-size:clamp(2rem,4vw,3.2rem);
+      font-weight:800; line-height:1.1; letter-spacing:-.02em;
+    }
+    .section-title .hl{ color:var(--mg-electric); }
+    .section-title .hl-neon{ color:var(--mg-neon); }
+    .section-title .hl-orange{ color:var(--mg-orange); }
+
+    /* ── HERO ── */
+    .page-hero{
+      position:relative; min-height:520px; overflow:hidden;
+      display:flex; align-items:flex-end; padding-bottom:5rem;
+    }
+    .hero-bg{
+      position:absolute; inset:0;
+      background-image:url('https://images.unsplash.com/photo-1521737604893-d14cc237f11d?w=1600&q=80');
+      background-size:cover; background-position:center;
+      filter:brightness(.2);
+    }
+    .hero-overlay{
+      position:absolute; inset:0;
+      background:linear-gradient(135deg,rgba(0,10,20,.7) 0%,rgba(0,229,255,.04) 100%);
+    }
+    .hero-grid-lines{
+      position:absolute; inset:0; pointer-events:none; opacity:.05;
+      background-image:
+        linear-gradient(rgba(0,229,255,.5) 1px,transparent 1px),
+        linear-gradient(90deg,rgba(0,229,255,.5) 1px,transparent 1px);
+      background-size:60px 60px;
+    }
+    .breadcrumb{ font-size:.75rem; color:rgba(255,255,255,.35); letter-spacing:.08em; }
+    .breadcrumb span{ color:var(--mg-electric); }
+
+    /* ── STAT CARD ── */
+    .stat-card{
+      border:1px solid var(--mg-border);
+      background:var(--mg-glass); backdrop-filter:blur(12px);
+      padding:1.5rem; border-radius:4px;
+      transition:border-color .3s,transform .3s;
+    }
+    .stat-card:hover{ border-color:var(--mg-electric); transform:translateY(-4px); }
+    .stat-value{
+      font-family:'Syne',sans-serif; font-size:2.8rem;
+      font-weight:800; color:var(--mg-electric); line-height:1;
+    }
+
+    /* ── TIMELINE ── */
+    .timeline{ position:relative; }
+    .timeline::before{
+      content:''; position:absolute; left:1.25rem; top:0; bottom:0;
+      width:1px; background:var(--mg-border);
+    }
+    @media(min-width:768px){
+      .timeline::before{ left:50%; transform:translateX(-50%); }
+    }
+    .tl-item{
+      position:relative; margin-bottom:3rem;
+      padding-left:3.5rem;
+    }
+    @media(min-width:768px){
+      .tl-item{
+        width:46%; padding-left:0; margin-bottom:3.5rem;
+      }
+      .tl-item:nth-child(odd){ margin-left:4%; padding-right:2rem; text-align:right; }
+      .tl-item:nth-child(even){ margin-left:50%; padding-left:2rem; text-align:left; }
+    }
+    .tl-dot{
+      position:absolute; left:1.25rem; top:.25rem;
+      width:10px; height:10px; border-radius:50%;
+      background:var(--mg-electric);
+      box-shadow:0 0 0 3px var(--mg-ink),0 0 0 5px rgba(0,229,255,.3);
+      transform:translateX(-50%);
+    }
+    @media(min-width:768px){
+      .tl-item:nth-child(odd) .tl-dot{ left:auto; right:-5px; transform:none; }
+      .tl-item:nth-child(even) .tl-dot{ left:-5px; transform:none; }
+    }
+    .tl-year{
+      font-family:'Syne',sans-serif; font-size:.7rem; font-weight:700;
+      letter-spacing:.15em; text-transform:uppercase; color:var(--mg-electric);
+      margin-bottom:.4rem;
+    }
+    .tl-title{
+      font-family:'Syne',sans-serif; font-weight:700; font-size:1.05rem;
+      margin-bottom:.4rem;
+    }
+    .tl-body{ font-size:.875rem; color:rgba(255,255,255,.5); line-height:1.65; }
+
+    /* ── VALUES ── */
+    .value-card{
+      border:1px solid var(--mg-border);
+      background:var(--mg-surface);
+      border-radius:4px; padding:1.75rem;
+      transition:border-color .3s,transform .3s;
+      position:relative; overflow:hidden;
+    }
+    .value-card::before{
+      content:''; position:absolute; inset:0;
+      background:linear-gradient(135deg,rgba(0,229,255,.06) 0%,transparent 60%);
+      opacity:0; transition:opacity .3s;
+    }
+    .value-card:hover{ border-color:var(--mg-electric); transform:translateY(-5px); }
+    .value-card:hover::before{ opacity:1; }
+    .value-icon{
+      font-size:2rem; margin-bottom:1rem;
+      width:52px; height:52px; border-radius:4px;
+      display:flex; align-items:center; justify-content:center;
+    }
+
+    /* ── TEAM ── */
+    .team-card{
+      border:1px solid var(--mg-border);
+      background:var(--mg-surface);
+      border-radius:4px; overflow:hidden;
+      transition:border-color .3s,transform .3s;
+    }
+    .team-card:hover{ border-color:var(--mg-electric); transform:translateY(-6px); }
+    .team-avatar{
+      width:100%; aspect-ratio:1/1; object-fit:cover;
+      filter:grayscale(30%);
+      transition:filter .3s;
+    }
+    .team-card:hover .team-avatar{ filter:grayscale(0%); }
+    .team-avatar-placeholder{
+      width:100%; aspect-ratio:1/1;
+      display:flex; align-items:center; justify-content:center;
+      font-family:'Syne',sans-serif; font-weight:800; font-size:3rem;
+      transition:filter .3s;
+    }
+
+    /* ── PARTNERS ── */
+    .partner-logo{
+      border:1px solid var(--mg-border);
+      background:var(--mg-glass);
+      border-radius:4px;
+      padding:1.2rem 2rem;
+      display:flex; align-items:center; justify-content:center;
+      transition:border-color .3s;
+      font-family:'Syne',sans-serif; font-weight:700;
+      font-size:.8rem; letter-spacing:.08em;
+      color:rgba(255,255,255,.3);
+    }
+    .partner-logo:hover{ border-color:rgba(0,229,255,.4); color:rgba(255,255,255,.7); }
+
+    /* ── SCROLL REVEAL ── */
+    .reveal{
+      opacity:0; transform:translateY(28px);
+      transition:opacity .7s ease,transform .7s ease;
+    }
+    .reveal.visible{ opacity:1; transform:none; }
+    .reveal-delay-1{ transition-delay:.1s; }
+    .reveal-delay-2{ transition-delay:.2s; }
+    .reveal-delay-3{ transition-delay:.3s; }
+    .reveal-delay-4{ transition-delay:.4s; }
+
+    /* ── TICKER ── */
+    .ticker-wrap{
+      overflow:hidden; white-space:nowrap;
+      border-top:1px solid var(--mg-border);
+      border-bottom:1px solid var(--mg-border);
+      background:var(--mg-surface); padding:.7rem 0;
+    }
+    .ticker-inner{ display:inline-block; animation:ticker 28s linear infinite; }
+    .ticker-inner span{
+      padding:0 2.5rem;
+      font-family:'Syne',sans-serif; font-size:.75rem;
+      letter-spacing:.12em; text-transform:uppercase; color:rgba(255,255,255,.4);
+    }
+    .ticker-inner span b{ color:var(--mg-electric); }
+    @keyframes ticker{ from{transform:translateX(0)} to{transform:translateX(-50%)} }
+
+    /* ── FOOTER ── */
+    footer{ background:var(--mg-footer-bg); border-top:1px solid var(--mg-border); }
+    .footer-link{
+      color:var(--mg-text-muted); font-size:.875rem; transition:color .25s;
+    }
+    .footer-link:hover{ color:var(--mg-electric); }
+    .social-btn{
+      width:38px; height:38px; border-radius:4px;
+      border:1px solid var(--mg-border);
+      display:flex; align-items:center; justify-content:center;
+      color:rgba(255,255,255,.45); transition:border-color .25s,color .25s;
+    }
+    .social-btn:hover{ border-color:var(--mg-electric); color:var(--mg-electric); }
+
+    /* ── THEME TOGGLE ───────────────────── */
+    .theme-toggle {
+      width: 44px; height: 24px; border-radius: 12px;
+      background: var(--mg-border);
+      border: 1px solid var(--mg-border);
+      position: relative; cursor: pointer;
+      flex-shrink: 0;
+    }
+    .theme-toggle::before {
+      content: '';
+      position: absolute; top: 2px; left: 2px;
+      width: 18px; height: 18px; border-radius: 50%;
+      background: var(--mg-electric);
+      transition: transform .3s;
+    }
+    html.light .theme-toggle::before { transform: translateX(20px); }
+    .theme-toggle-wrap { display:flex; align-items:center; gap:.5rem; }
+    .theme-icon { font-size:.85rem; line-height:1; user-select:none; transition:opacity .3s; }
+    /* Light mode hero / stat overrides handled in light mode block above */
+
+    /* scrollbar */
+    ::-webkit-scrollbar{ width:5px; }
+    ::-webkit-scrollbar-track{ background:var(--mg-ink); }
+    ::-webkit-scrollbar-thumb{ background:var(--mg-electric); border-radius:10px; }
+
+    /* glow blob */
+    .glow-blob{
+      position:absolute; border-radius:50%; pointer-events:none;
+      filter:blur(80px); opacity:.07;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════
+     NAV
+════════════════════════════════════════ -->
+<nav id="navbar" class="py-4">
+  <div class="max-w-7xl mx-auto px-6 flex items-center justify-between">
+    <a href="/Home/home.html" class="flex items-center gap-2">
+      <!-- <div class="w-8 h-8 bg-[var(--mg-electric)] flex items-center justify-center"
+           style="clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%)">
+        <span class="text-[var(--mg-ink)] font-black text-sm syne">M</span>
+      </div>
+      <span class="syne font-bold text-xl tracking-tight">MG <span style="color:var(--mg-electric)">HUB</span></span> -->
+      <div class="w-28 h-12 rounded-lg flex items-center justify-center amber-glow">
+        <img src="/images/MG_LOGO_2-removebg-preview.png" alt="Logo">
+      </div>
+    </a>
+
+    <div class="hidden md:flex items-center gap-8">
+      <a href="/Home/home.html" class="nav-link font-bold text-white">Home</a>
+      <a href="/About/about.html" class="nav-link active font-bold text-white">About</a>
+      <a href="/services.html" class="nav-link font-bold text-white">Services</a>
+      <a href="/suppliers.html" class="nav-link font-bold text-white">Suppliers</a>
+      <a href="/Events.html" class="nav-link font-bold text-white">Events</a>
+      <a href="/gallery.html" class="nav-link font-bold text-white">Gallery</a>
+      <a href="/contact.html" class="nav-link font-bold text-white">Contact</a>
+    </div>
+
+    <div class="flex items-center gap-3">
+      <div class="theme-toggle-wrap">
+        <span class="theme-icon" id="icon-moon">🌙</span>
+        <button class="theme-toggle" id="theme-toggle" aria-label="Toggle light/dark mode"></button>
+        <span class="theme-icon" id="icon-sun">☀️</span>
+      </div>
+      <a href="/Explore.html" class="btn-primary hidden md:inline-block">Explore Hub</a>
+      <button id="hamburger" class="md:hidden flex flex-col gap-1.5 p-1" aria-label="Menu">
+        <span class="w-6 h-0.5 bg-white transition-all"></span>
+        <span class="w-6 h-0.5 bg-white transition-all"></span>
+        <span class="w-4 h-0.5 bg-white transition-all"></span>
+      </button>
+    </div>
+  </div>
+  <div id="mobile-menu">
+    <a href="/Home/home.html" class="nav-link text-lg font-bold text-white">Home</a>
+    <a href="/About/about.html" class="nav-link text-lg font-bold active text-white">About</a>
+    <a href="/services.html" class="nav-link text-lg font-bold text-white">Services</a>
+    <a href="/suppliers.html" class="nav-link text-lg font-bold text-white">Suppliers</a>
+    <a href="/Events.html" class="nav-link text-lg font-bold text-white">Events</a>
+    <a href="/gallery.html" class="nav-link text-lg font-bold text-white">Gallery</a>
+    <a href="/contact.html" class="nav-link text-lg font-bold text-white">Contact</a>
+    <a href="/Explore.html" class="btn-primary text-center mt-2 rounded-lg font-bold">Explore Hub</a>
+  </div>
+</nav>
+
+<!-- ══════════════════════════════════════
+     PAGE HERO
+════════════════════════════════════════ -->
+<section class="page-hero pt-24">
+  <div class="hero-bg"></div>
+  <div class="hero-overlay"></div>
+  <div class="hero-grid-lines"></div>
+
+  <!-- Glow -->
+  <div class="glow-blob w-[600px] h-[400px] top-0 right-0"
+       style="background:var(--mg-electric)"></div>
+
+  <div class="relative z-10 max-w-7xl mx-auto px-6 w-full">
+    <p class="breadcrumb mb-4">
+      <a href="/Home/home.html" class="hover:text-white transition-colors">Home</a>
+      &nbsp;/&nbsp;<span>About</span>
+    </p>
+    <p class="section-label reveal">Our Story</p>
+    <h1 class="reveal reveal-delay-1 mt-4"
+        style="font-size:clamp(3rem,7vw,6rem);font-weight:800;line-height:1;letter-spacing:-.03em">
+      We Are MG<br>
+      <span style="color:var(--mg-electric)">Innovation</span> Hub.
+    </h1>
+    <p class="reveal reveal-delay-2 mt-6 max-w-xl text-white/55 text-lg leading-relaxed">
+      Born in Nakuru. Built for Africa. Driven by a relentless belief that the continent's greatest innovations are still ahead.
+    </p>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     TICKER
+════════════════════════════════════════ -->
+<div class="ticker-wrap relative z-10">
+  <div class="ticker-inner">
+    <span>Founded 2022 &nbsp;<b>✦</b></span>
+    <span>Nakuru, Kenya &nbsp;<b>✦</b></span>
+    <span>18+ Startups &nbsp;<b>✦</b></span>
+    <span>120+ SMEs Supported &nbsp;<b>✦</b></span>
+    <span>$0.5M+ Raised &nbsp;<b>✦</b></span>
+    <span>48 Mentors &nbsp;<b>✦</b></span>
+    <span>1,200+ Community Members &nbsp;<b>✦</b></span>
+    <span>East Africa's Premier Hub &nbsp;<b>✦</b></span>
+    <span>Founded 2022 &nbsp;<b>✦</b></span>
+    <span>Nakuru, Kenya &nbsp;<b>✦</b></span>
+    <span>18+ Startups &nbsp;<b>✦</b></span>
+    <span>7 Countries &nbsp;<b>✦</b></span>
+    <span>$0.5M+ Raised &nbsp;<b>✦</b></span>
+    <span>48 Mentors &nbsp;<b>✦</b></span>
+    <span>1,200+ Community Members &nbsp;<b>✦</b></span>
+    <span>East Africa's Premier Hub &nbsp;<b>✦</b></span>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     MISSION & VISION
+════════════════════════════════════════ -->
+<section class="relative py-28 z-10">
+  <div class="glow-blob w-[500px] h-[500px] -left-60 top-1/2 -translate-y-1/2"
+       style="background:var(--mg-electric)"></div>
+
+  <div class="max-w-7xl mx-auto px-6">
+    <div class="grid lg:grid-cols-2 gap-16 items-center">
+
+      <!-- Left: image collage -->
+      <div class="relative h-[480px] reveal">
+        <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=700&q=80"
+             alt="Team collaborating"
+             class="absolute top-0 left-0 w-3/4 h-64 object-cover rounded-sm border border-white/10"/>
+        <img src="https://images.unsplash.com/photo-1542744173-8e7e53415bb0?w=700&q=80"
+             alt="Innovation meeting"
+             class="absolute bottom-0 right-0 w-2/3 h-64 object-cover rounded-sm border border-white/10"/>
+        <!-- Overlay badge -->
+        <div class="absolute bottom-20 left-4 z-10 border border-[var(--mg-electric)] bg-[var(--mg-ink)] px-4 py-3">
+          <p class="syne font-bold text-xs tracking-widest text-[var(--mg-electric)] uppercase">Est.</p>
+          <p class="syne font-black text-3xl">2022</p>
+        </div>
+        <!-- Deco dot grid -->
+        <div class="absolute -bottom-6 -left-6 w-24 h-24 pointer-events-none opacity-20"
+             style="background-image:radial-gradient(var(--mg-electric) 1px,transparent 1px);background-size:8px 8px"></div>
+      </div>
+
+      <!-- Right: text -->
+      <div>
+        <p class="section-label reveal">Who We Are</p>
+        <h2 class="section-title mt-4 reveal reveal-delay-1">
+          Building Africa's<br><span class="hl">Innovation</span> Backbone.
+        </h2>
+        <p class="mt-6 text-white/55 leading-relaxed reveal reveal-delay-2">
+          MG Innovation Hub was founded in 2022 by a group of engineers, entrepreneurs, and investors who saw a gap: East Africa had world-class talent but lacked a home for it. So they built one.
+        </p>
+        <p class="mt-4 text-white/55 leading-relaxed reveal reveal-delay-3">
+          Today we operate from Nakuru, Kenya, running incubation programs, workshops, co-working spaces, and investment networks that have collectively helped 18+ startups reach product-market fit, raise capital, and scale across the continent.
+        </p>
+
+        <div class="mt-8 grid grid-cols-2 gap-4 reveal reveal-delay-4">
+          <div class="border-l-2 border-[var(--mg-electric)] pl-4">
+            <div class="syne font-bold text-2xl">Mission</div>
+            <p class="text-white/45 text-sm mt-1 leading-relaxed">Accelerate Africa's most impactful innovators from idea to scale.</p>
+          </div>
+          <div class="border-l-2 border-[var(--mg-neon)] pl-4">
+            <div class="syne font-bold text-2xl">Vision</div>
+            <p class="text-white/45 text-sm mt-1 leading-relaxed">A continent where every bold idea has a launchpad.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     STATS STRIP
+════════════════════════════════════════ -->
+<section class="relative z-10 py-16" style="background:var(--mg-surface)">
+  <div class="max-w-7xl mx-auto px-6">
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div class="stat-card reveal text-center">
+        <div class="stat-value counter mx-auto" data-target="18" style="font-size:3rem">0</div>
+        <div class="text-white/40 text-sm mt-2">Startups Incubated</div>
+      </div>
+      <div class="stat-card reveal reveal-delay-1 text-center">
+        <div class="stat-value counter mx-auto" data-target="48" style="font-size:3rem">0</div>
+        <div class="text-white/40 text-sm mt-2">Expert Mentors</div>
+      </div>
+      <div class="stat-card reveal reveal-delay-2 text-center">
+        <div class="stat-value mx-auto" style="font-size:3rem">$0.5M<sup style="font-size:1.2rem">+</sup></div>
+        <div class="text-white/40 text-sm mt-2">Funding Facilitated</div>
+      </div>
+      <div class="stat-card reveal reveal-delay-3 text-center">
+        <div class="stat-value counter mx-auto" data-target="120" style="font-size:3rem">0</div>
+        <div class="text-white/40 text-sm mt-2">SMEs Supported</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     VALUES
+════════════════════════════════════════ -->
+<section class="relative py-28 z-10">
+  <div class="glow-blob w-[400px] h-[400px] right-0 top-1/4"
+       style="background:var(--mg-neon)"></div>
+
+  <div class="max-w-7xl mx-auto px-6">
+    <div class="text-center mb-16">
+      <p class="section-label justify-center reveal">What Drives Us</p>
+      <h2 class="section-title mt-4 reveal reveal-delay-1">
+        Our Core <span class="hl">Values.</span>
+      </h2>
+      <p class="mt-4 text-white/45 max-w-xl mx-auto reveal reveal-delay-2">
+        These aren't framed posters on a wall. They're the operating principles that shape every program, every partnership, and every conversation.
+      </p>
+    </div>
+
+    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+
+      <div class="value-card reveal">
+        <div class="value-icon" style="background:rgba(0,229,255,.1)">⚡</div>
+        <h3 class="syne font-bold text-lg mb-2">Audacious Ambition</h3>
+        <p class="text-white/50 text-sm leading-relaxed">We don't celebrate incremental. We back founders who want to redefine industries, not just optimise them. Big swings are the norm here.</p>
+      </div>
+
+      <div class="value-card reveal reveal-delay-1">
+        <div class="value-icon" style="background:rgba(182,255,78,.1)">🤝</div>
+        <h3 class="syne font-bold text-lg mb-2">Community First</h3>
+        <p class="text-white/50 text-sm leading-relaxed">The hub is built on reciprocity. Every member contributes knowledge, connections, and energy — and receives the same in return. Isolation ends at our doors.</p>
+      </div>
+
+      <div class="value-card reveal reveal-delay-2">
+        <div class="value-icon" style="background:rgba(255,107,43,.1)">🌍</div>
+        <h3 class="syne font-bold text-lg mb-2">Africa-First Lens</h3>
+        <p class="text-white/50 text-sm leading-relaxed">Every solution we build must make sense in context. We design for African infrastructure, African users, and African opportunity — not imported frameworks.</p>
+      </div>
+
+      <div class="value-card reveal reveal-delay-1">
+        <div class="value-icon" style="background:rgba(0,229,255,.1)">🔬</div>
+        <h3 class="syne font-bold text-lg mb-2">Evidence Over Hype</h3>
+        <p class="text-white/50 text-sm leading-relaxed">We ask hard questions. We demand data. Enthusiasm is welcome but it doesn't replace rigorous testing, user research, and honest validation.</p>
+      </div>
+
+      <div class="value-card reveal reveal-delay-2">
+        <div class="value-icon" style="background:rgba(182,255,78,.1)">🔓</div>
+        <h3 class="syne font-bold text-lg mb-2">Radical Transparency</h3>
+        <p class="text-white/50 text-sm leading-relaxed">With our founders, our partners, and our community — we say what we mean. Clear feedback, honest guidance, and no hidden agendas.</p>
+      </div>
+
+      <div class="value-card reveal reveal-delay-3">
+        <div class="value-icon" style="background:rgba(255,107,43,.1)">🚀</div>
+        <h3 class="syne font-bold text-lg mb-2">Execution Wins</h3>
+        <p class="text-white/50 text-sm leading-relaxed">Ideas are cheap. Velocity is rare. We celebrate founders who ship fast, learn fast, and iterate relentlessly — momentum over perfection, always.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     TIMELINE
+════════════════════════════════════════ -->
+<section class="relative py-28 z-10" style="background:var(--mg-surface)">
+  <div class="max-w-7xl mx-auto px-6">
+    <div class="text-center mb-16">
+      <p class="section-label justify-center reveal">How We Got Here</p>
+      <h2 class="section-title mt-4 reveal reveal-delay-1">
+        Our <span class="hl">Journey.</span>
+      </h2>
+    </div>
+
+    <div class="timeline max-w-5xl mx-auto">
+
+      <!-- <div class="tl-item reveal">
+        <div class="tl-dot"></div>
+        <div class="tl-year">2018</div>
+        <div class="tl-title">The Founding</div>
+        <p class="tl-body">Three co-founders rent a single floor in Nairobi's Upperhill with 12 desks and a whiteboard. The first cohort of 8 startups begins a 3-month sprint that produces two product launches.</p>
+      </div> -->
+
+      <!-- <div class="tl-item reveal reveal-delay-1">
+        <div class="tl-dot"></div>
+        <div class="tl-year">2019</div>
+        <div class="tl-title">First Major Funding Round</div>
+        <p class="tl-body">MG Hub startups collectively raise $1.2M in angel and pre-seed capital. The hub expands to a full floor, adding a prototyping lab and event space that hosts its first Pitch Night.</p>
+      </div> -->
+
+      <!-- <div class="tl-item reveal reveal-delay-2">
+        <div class="tl-dot"></div>
+        <div class="tl-year">2020</div>
+        <div class="tl-title">Pivoting Through the Pandemic</div>
+        <p class="tl-body">COVID-19 forces a pivot to hybrid operations. MG launches its first fully online bootcamp, reaching 300+ participants across East Africa — proving the model can transcend geography.</p>
+      </div> -->
+
+      <div class="tl-item reveal">
+        <div class="tl-dot"></div>
+        <div class="tl-year">2022</div>
+        <div class="tl-title">Regional Expansion</div>
+        <p class="tl-body">Partnership agreements signed with hubs in Kampala, Dar es Salaam, and Kigali. MG becomes the anchor node in a cross-border innovation network spanning East Africa.</p>
+      </div>
+
+      <div class="tl-item reveal reveal-delay-1">
+        <div class="tl-dot"></div>
+        <div class="tl-year">2023</div>
+        <div class="tl-title">Corporate Innovation Division</div>
+        <p class="tl-body">Launch of the Corporate Innovation service line. Within 12 months, partnerships are signed with 6 enterprise clients including a top-5 Kenyan bank and two telcos.</p>
+      </div>
+
+      <div class="tl-item reveal reveal-delay-2">
+        <div class="tl-dot"></div>
+        <div class="tl-year">2024</div>
+        <div class="tl-title">The $0.5M Milestone</div>
+        <p class="tl-body">Cumulative funding facilitated for Hub alumni surpasses $0.5M. The 18th startup crosses the incubation finish line. A new 3-floor HQ is inaugurated in Upperhill.</p>
+      </div>
+
+      <div class="tl-item reveal">
+        <div class="tl-dot" style="background:var(--mg-neon);box-shadow:0 0 0 3px var(--mg-ink),0 0 0 5px rgba(182,255,78,.4)"></div>
+        <div class="tl-year" style="color:var(--mg-neon)">2025 →</div>
+        <div class="tl-title">The Next Chapter</div>
+        <p class="tl-body">Launching MG Labs, a deep-tech R&D arm, and MG Fund — a $5M seed vehicle exclusively for Hub alumni. Pan-African ambitions, continental footprint.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     TEAM
+════════════════════════════════════════ -->
+<section class="relative py-28 z-10">
+  <div class="glow-blob w-[500px] h-[500px] -left-40 top-1/2 -translate-y-1/2"
+       style="background:var(--mg-orange)"></div>
+
+  <div class="max-w-7xl mx-auto px-6">
+    <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-14">
+      <div>
+        <p class="section-label reveal">The People Behind It</p>
+        <h2 class="section-title mt-4 reveal reveal-delay-1">
+          Meet the <span class="hl">Team.</span>
+        </h2>
+      </div>
+      <p class="text-white/40 text-sm max-w-xs reveal reveal-delay-2">
+        A diverse crew of builders, operators, and dreamers united by one agenda: making African innovation unstoppable.
+      </p>
+    </div>
+
+    <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+
+      <!-- Team Member 1 -->
+      <div class="team-card reveal">
+        <div class="team-avatar-placeholder"
+             style="background:linear-gradient(135deg,#041A2E,#0A2040)">
+          <span style="color:var(--mg-electric)">MG</span>
+        </div>
+        <div class="p-4">
+          <h4 class="syne font-bold">Michael Gitau</h4>
+          <p class="text-[var(--mg-electric)] text-xs mt-0.5">Co-founder & CEO</p>
+          <p class="text-white/40 text-xs mt-2 leading-relaxed">Serial entrepreneur. Ex-Safaricom. 15 years building and scaling tech ventures across East Africa.</p>
+          <div class="flex gap-2 mt-3">
+            <a href="#" class="social-btn text-xs" style="width:28px;height:28px">in</a>
+            <a href="#" class="social-btn text-xs" style="width:28px;height:28px">𝕏</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Team Member 2 -->
+      <div class="team-card reveal reveal-delay-1">
+        <div class="team-avatar-placeholder"
+             style="background:linear-gradient(135deg,#0A1A10,#1A3020)">
+          <span style="color:var(--mg-neon)">AN</span>
+        </div>
+        <div class="p-4">
+          <h4 class="syne font-bold">Aisha Njoroge</h4>
+          <p class="text-[var(--mg-neon)] text-xs mt-0.5">Co-founder & COO</p>
+          <p class="text-white/40 text-xs mt-2 leading-relaxed">Operations architect. Previously scaled a FinTech to 500K users. Passionate about systems that serve people.</p>
+          <div class="flex gap-2 mt-3">
+            <a href="#" class="social-btn text-xs" style="width:28px;height:28px">in</a>
+            <a href="#" class="social-btn text-xs" style="width:28px;height:28px">𝕏</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Team Member 3 -->
+      <div class="team-card reveal reveal-delay-2">
+        <div class="team-avatar-placeholder"
+             style="background:linear-gradient(135deg,#1A0A05,#2A1008)">
+          <span style="color:var(--mg-orange)">KO</span>
+        </div>
+        <div class="p-4">
+          <h4 class="syne font-bold">Kofi Owusu</h4>
+          <p class="text-[var(--mg-orange)] text-xs mt-0.5">CTO & Head of Labs</p>
+          <p class="text-white/40 text-xs mt-2 leading-relaxed">Full-stack engineer and AI researcher. Built ML systems at scale. Obsessed with practical applications of emerging tech.</p>
+          <div class="flex gap-2 mt-3">
+            <a href="#" class="social-btn text-xs" style="width:28px;height:28px">in</a>
+            <a href="#" class="social-btn text-xs" style="width:28px;height:28px">𝕏</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Team Member 4 -->
+      <div class="team-card reveal reveal-delay-3">
+        <div class="team-avatar-placeholder"
+             style="background:linear-gradient(135deg,#100A1A,#200A2A)">
+          <span style="color:#C084FC">NW</span>
+        </div>
+        <div class="p-4">
+          <h4 class="syne font-bold">Nyambura Waweru</h4>
+          <p style="color:#C084FC" class="text-xs mt-0.5">Head of Programs</p>
+          <p class="text-white/40 text-xs mt-2 leading-relaxed">Curriculum designer and ecosystem connector. Ran accelerator programs in 4 countries before joining MG's founding team.</p>
+          <div class="flex gap-2 mt-3">
+            <a href="#" class="social-btn text-xs" style="width:28px;height:28px">in</a>
+            <a href="#" class="social-btn text-xs" style="width:28px;height:28px">𝕏</a>
+          </div>
+        </div>
+      </div>
+      <!-- Team Member 5 -->
+      <div class="team-card reveal reveal-delay-3">
+        <div class="team-avatar-placeholder"
+             style="background:linear-gradient(135deg,#100A1A,#200A2A)">
+          <span style="color:#C084FC">NW</span>
+        </div>
+        <div class="p-4">
+          <h4 class="syne font-bold">Nyambura Waweru</h4>
+          <p style="color:#C084FC" class="text-xs mt-0.5">Head of Programs</p>
+          <p class="text-white/40 text-xs mt-2 leading-relaxed">Curriculum designer and ecosystem connector. Ran accelerator programs in 4 countries before joining MG's founding team.</p>
+          <div class="flex gap-2 mt-3">
+            <a href="#" class="social-btn text-xs" style="width:28px;height:28px">in</a>
+            <a href="#" class="social-btn text-xs" style="width:28px;height:28px">𝕏</a>
+          </div>
+        </div>
+      </div>
+      <!-- Team Member 6 -->
+      <div class="team-card reveal reveal-delay-3">
+        <div class="team-avatar-placeholder"
+             style="background:linear-gradient(135deg,#100A1A,#200A2A)">
+          <span style="color:#C084FC">NW</span>
+        </div>
+        <div class="p-4">
+          <h4 class="syne font-bold">Nyambura Waweru</h4>
+          <p style="color:#C084FC" class="text-xs mt-0.5">Head of Programs</p>
+          <p class="text-white/40 text-xs mt-2 leading-relaxed">Curriculum designer and ecosystem connector. Ran accelerator programs in 4 countries before joining MG's founding team.</p>
+          <div class="flex gap-2 mt-3">
+            <a href="#" class="social-btn text-xs" style="width:28px;height:28px">in</a>
+            <a href="#" class="social-btn text-xs" style="width:28px;height:28px">𝕏</a>
+          </div>
+        </div>
+      </div>
+      <!-- Team Member 7 -->
+      <div class="team-card reveal reveal-delay-3">
+        <div class="team-avatar-placeholder"
+             style="background:linear-gradient(135deg,#100A1A,#200A2A)">
+          <span style="color:#C084FC">NW</span>
+        </div>
+        <div class="p-4">
+          <h4 class="syne font-bold">Nyambura Waweru</h4>
+          <p style="color:#C084FC" class="text-xs mt-0.5">Head of Programs</p>
+          <p class="text-white/40 text-xs mt-2 leading-relaxed">Curriculum designer and ecosystem connector. Ran accelerator programs in 4 countries before joining MG's founding team.</p>
+          <div class="flex gap-2 mt-3">
+            <a href="#" class="social-btn text-xs" style="width:28px;height:28px">in</a>
+            <a href="#" class="social-btn text-xs" style="width:28px;height:28px">𝕏</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     PARTNERS
+════════════════════════════════════════ -->
+<section class="relative py-20 z-10" style="background:var(--mg-surface)">
+  <div class="max-w-7xl mx-auto px-6">
+    <div class="text-center mb-12">
+      <p class="section-label justify-center reveal">Trusted By</p>
+      <h2 class="section-title mt-4 reveal reveal-delay-1">
+        Our <span class="hl">Partners</span> & Supporters.
+      </h2>
+    </div>
+    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 reveal font-bold">
+      <div class="partner-logo">AfricaVC</div>
+      <div class="partner-logo">TechSafari</div>
+      <div class="partner-logo">NairobiX</div>
+      <div class="partner-logo">EastAfrikaFund</div>
+      <div class="partner-logo">ImpactBridge</div>
+      <div class="partner-logo">SiliconSavanna</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     CTA BANNER
+════════════════════════════════════════ -->
+<section class="relative py-28 z-10 overflow-hidden"
+         style="background:linear-gradient(135deg,#041A2E 0%,#0A1628 50%,#041A20 100%)">
+  <!-- Grid lines -->
+  <div class="absolute inset-0 pointer-events-none opacity-[0.05]"
+       style="background-image:linear-gradient(rgba(0,229,255,.5) 1px,transparent 1px),linear-gradient(90deg,rgba(0,229,255,.5) 1px,transparent 1px);background-size:60px 60px"></div>
+  <div class="absolute inset-0 pointer-events-none"
+       style="background:radial-gradient(ellipse 70% 60% at 50% 50%,rgba(0,229,255,.1) 0%,transparent 70%)"></div>
+
+  <div class="relative z-10 max-w-3xl mx-auto px-6 text-center">
+    <p class="section-label justify-center reveal">Join the Movement</p>
+    <h2 class="section-title mt-4 reveal reveal-delay-1">
+      Ready to Be Part of<br><span class="hl">Something Bigger?</span>
+    </h2>
+    <p class="mt-5 text-white/50 text-lg max-w-xl mx-auto reveal reveal-delay-2">
+      Whether you're a founder, a corporate innovator, or a mentor looking to give back — there's a seat at the table for you.
+    </p>
+    <div class="mt-10 flex gap-4 justify-center flex-wrap reveal reveal-delay-3">
+      <a href="/contact.html" class="btn-primary text-base px-8 py-3">Apply to Join</a>
+      <a href="/services.html" class="btn-outline text-base px-8 py-3">Explore Programs</a>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     FOOTER
+════════════════════════════════════════ -->
+<footer class="relative z-10">
+  <div class="max-w-7xl mx-auto px-6 py-16">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
+
+      <div class="lg:col-span-1">
+        <a href="/Home/home.html" class="flex items-center gap-2 mb-4">
+          <!-- <div class="w-8 h-8 bg-[var(--mg-electric)] flex items-center justify-center"
+               style="clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%)">
+            <span class="text-[var(--mg-ink)] font-black text-sm syne">M</span>
+          </div>
+          <span class="syne font-bold text-xl">MG <span style="color:var(--mg-electric)">HUB</span></span> -->
+          <div class="w-28 h-12 rounded-lg flex items-center justify-center amber-glow">
+        <img src="/images/MG_LOGO_2-removebg-preview.png" alt="Logo">
+      </div>
+        </a>
+        <p class="text-white/40 text-sm leading-relaxed">Africa's premier innovation ecosystem. Building the future, one breakthrough at a time.</p>
+        <div class="flex gap-2 mt-5">
+          <a href="#" class="social-btn">𝕏</a>
+          <a href="#" class="social-btn">in</a>
+          <a href="#" class="social-btn">◎</a>
+          <a href="#" class="social-btn">▶</a>
+        </div>
+      </div>
+
+      <div>
+        <h4 class="syne font-bold text-sm mb-4 tracking-wide">Company</h4>
+        <ul class="space-y-2.5">
+          <li><a href="/About/about.html" class="footer-link" style="color:var(--mg-electric)">About Us</a></li>
+          <li><a href="/services.html" class="footer-link">Services</a></li>
+          <li><a href="/events.html" class="footer-link">Events</a></li>
+          <li><a href="/gallery.html" class="footer-link">Gallery</a></li>
+          <li><a href="/Explore.html" class="footer-link">Explore</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="syne font-bold text-sm mb-4 tracking-wide">Services</h4>
+        <ul class="space-y-2.5">
+          <li><a href="/services.html" class="footer-link">Incubation</a></li>
+          <li><a href="/services.html" class="footer-link">Workshops</a></li>
+          <li><a href="/services.html" class="footer-link">Co-working</a></li>
+          <li><a href="/services.html" class="footer-link">Corporate Programs</a></li>
+          <li><a href="/services.html" class="footer-link">Investor Matchmaking</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="syne font-bold text-sm mb-4 tracking-wide">Contact</h4>
+        <ul class="space-y-3">
+          <li class="text-white/40 text-sm flex gap-2 items-start">
+            <span style="color:var(--mg-electric)" class="mt-0.5">📍</span>Riva Plaza, Nakuru, Kenya
+          </li>
+          <li><a href="mailto:hello@mginnovationhub.co" class="footer-link text-sm">hello@mginnovationhub.co</a></li>
+          <li><a href="tel:+254700000000" class="footer-link text-sm">+254 700 000 000</a></li>
+        </ul>
+        <div class="mt-5">
+          <p class="text-white/25 text-xs mb-2">Newsletter</p>
+          <div class="flex gap-2">
+            <input type="email" placeholder="your@email.com" id="footer-email"
+              class="flex-1 bg-white/5 border border-white/10 px-3 py-2 text-xs text-white placeholder-white/20 focus:outline-none focus:border-[var(--mg-electric)] transition-colors rounded-sm min-w-0"/>
+            <button onclick="handleFooterSub()" class="px-3 py-2 text-xs font-bold syne rounded-sm hover:opacity-90 transition-opacity"
+                    style="background:var(--mg-electric);color:var(--mg-ink)">→</button>
+          </div>
+          <p id="footer-msg" class="text-xs mt-1 hidden" style="color:var(--mg-neon)">✓ Subscribed!</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="border-t" style="border-color:rgba(255,255,255,.05)">
+    <div class="max-w-7xl mx-auto px-6 py-5 flex flex-col sm:flex-row justify-between items-center gap-3">
+      <p class="text-white/25 text-xs">© 2025 MG Innovation Hub Ltd. All rights reserved.</p>
+      <div class="flex gap-5">
+        <a href="#" class="footer-link text-xs">Privacy Policy</a>
+        <a href="#" class="footer-link text-xs">Terms of Use</a>
+        <a href="#" class="footer-link text-xs">Cookie Settings</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- ══════════════════════════════════════
+     JS
+════════════════════════════════════════ -->
+<script>
+// ── THEME TOGGLE ──────────────────────────
+(function() {
+  const saved = localStorage.getItem('mg-theme');
+  if (saved === 'light') document.documentElement.classList.add('light');
+})();
+
+function applyTheme(isLight) {
+  document.documentElement.classList.toggle('light', isLight);
+  localStorage.setItem('mg-theme', isLight ? 'light' : 'dark');
+  document.getElementById('icon-moon').style.opacity = isLight ? '.35' : '1';
+  document.getElementById('icon-sun').style.opacity  = isLight ? '1'   : '.35';
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  const isLight = document.documentElement.classList.contains('light');
+  document.getElementById('icon-moon').style.opacity = isLight ? '.35' : '1';
+  document.getElementById('icon-sun').style.opacity  = isLight ? '1'   : '.35';
+  document.getElementById('theme-toggle').addEventListener('click', () => {
+    applyTheme(!document.documentElement.classList.contains('light'));
+  });
+});
+
+// NAV scroll
+window.addEventListener('scroll', () => {
+  document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 60);
+});
+
+// Hamburger
+document.getElementById('hamburger').addEventListener('click', () => {
+  document.getElementById('mobile-menu').classList.toggle('open');
+});
+document.querySelectorAll('#mobile-menu a').forEach(a =>
+  a.addEventListener('click', () => document.getElementById('mobile-menu').classList.remove('open'))
+);
+
+// Scroll reveal
+function triggerReveal() {
+  document.querySelectorAll('.reveal:not(.visible)').forEach(el => {
+    if (el.getBoundingClientRect().top < window.innerHeight - 60)
+      el.classList.add('visible');
+  });
+}
+window.addEventListener('scroll', triggerReveal, { passive: true });
+window.addEventListener('load', triggerReveal);
+setTimeout(triggerReveal, 200);
+
+// Counter animation
+function animateCounters() {
+  document.querySelectorAll('.counter').forEach(el => {
+    if (el.dataset.animated) return;
+    if (el.getBoundingClientRect().top < window.innerHeight - 40) {
+      el.dataset.animated = '1';
+      const target = +el.dataset.target;
+      let count = 0;
+      const step = Math.ceil(target / 40);
+      const iv = setInterval(() => {
+        count = Math.min(count + step, target);
+        el.textContent = count + '+';
+        if (count >= target) clearInterval(iv);
+      }, 40);
+    }
+  });
+}
+window.addEventListener('scroll', animateCounters, { passive: true });
+window.addEventListener('load', animateCounters);
+
+// Footer subscribe
+function handleFooterSub() {
+  const el = document.getElementById('footer-email');
+  const msg = document.getElementById('footer-msg');
+  if (!el.value || !el.value.includes('@')) return;
+  el.value = '';
+  msg.classList.remove('hidden');
+  setTimeout(() => msg.classList.add('hidden'), 4000);
+}
+document.getElementById('footer-email').addEventListener('keydown', e => {
+  if (e.key === 'Enter') handleFooterSub();
+});
+</script>
+</body>
+</html>

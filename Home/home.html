@@ -1,0 +1,1152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>MG Innovation Hub</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --mg-ink:      #0A0A0F;
+      --mg-electric: #00B8CC;
+      --mg-neon:     #B6FF4E;
+      --mg-orange:   #FF6B2B;
+      --mg-mid:      #1A1A2E;
+      --mg-surface:  #111128;
+      --mg-glass:    rgba(255,255,255,0.04);
+      --mg-border:   rgba(255,255,255,0.08);
+      --mg-text:     #ffffff;
+      --mg-text-muted: rgba(255,255,255,0.55);
+      --mg-text-faint: rgba(255,255,255,0.25);
+      --mg-footer-bg: #07070D;
+      --mg-nav-scrolled: rgba(10,10,15,0.88);
+      --mg-mobile-menu-bg: rgba(10,10,15,0.97);
+    }
+
+    /* ── LIGHT MODE ─────────────────────── */
+    html.light {
+      --mg-ink:        #F0F4F8;
+      --mg-electric:   #30aadf;
+      --mg-neon:       #3d8c00;
+      --mg-orange:     #D9541A;
+      --mg-surface:    #FFFFFF;
+      --mg-glass:      rgba(0,0,0,0.03);
+      --mg-border:     rgba(0,0,0,0.10);
+      --mg-text:       #000000;
+      --mg-text-muted: rgba(0,0,0,0.55);
+      --mg-text-faint: rgba(0,0,0,0.30);
+      --mg-footer-bg:  #1A1A2E;
+      --mg-nav-scrolled:    rgba(240,244,248,0.94);
+      --mg-mobile-menu-bg:  rgba(240,244,248,0.98);
+    }
+
+    /* Light mode — force black on all headings and body text */
+    html.light body,
+    html.light h1, html.light h2, html.light h3, html.light h4,
+    html.light p, html.light li, html.light span:not(.theme-icon),
+    html.light .section-title, html.light .syne:not(.btn-primary) {
+      color: #000000;
+    }
+    /* Accent / electric colour elements keep their colour */
+    html.light .section-label,
+    html.light .section-title .hl,
+    html.light .section-title .hl-neon,
+    html.light .stat-value,
+    html.light .hero-title .accent,
+    html.light .hero-title .accent-neon,
+    html.light .hero-title .accent-orange { color: inherit; }
+    /* Nav links black in light mode */
+    html.light .nav-link { color: rgba(0,0,0,0.65); }
+    html.light .nav-link:hover { color: #000; }
+    /* Muted paragraph text */
+    html.light p { color: rgba(0,0,0,0.65); }
+    /* Service number watermark */
+    html.light .service-num { color: rgba(0,0,0,0.10); }
+    /* Footer stays dark — keep white text there */
+    html.light footer,
+    html.light footer p,
+    html.light footer li,
+    html.light footer span,
+    html.light footer h4 { color: rgba(255,255,255,0.7); }
+    html.light .footer-link { color: rgba(255,255,255,0.5); }
+    html.light .footer-link:hover { color: #30aadf; }
+    html.light .social-btn { color: rgba(255,255,255,0.45); border-color: rgba(255,255,255,0.12); }
+    html.light .social-btn:hover { color: #30aadf; border-color: #30aadf; }
+    /* Ticker stays surface-dark */
+    html.light .ticker-wrap { background: #e2e8f0; }
+    html.light .ticker-inner span { color: rgba(0,0,0,0.4); }
+    /* Testimonial card text */
+    html.light .testimonial-card p { color: rgba(0,0,0,0.6); }
+    /* Stat card */
+    html.light .stat-card { background: #fff; }
+    html.light .stat-card div:last-child { color: rgba(0,0,0,0.5); }
+    /* Hero text always white over dark image */
+    html.light .hero-title,
+    html.light .hero-tag { color: #fff; }
+    html.light .hero-tag { border-color: rgba(255,255,255,.5); color: rgba(255,255,255,.9); }
+    html.light .hero-slide p { color: rgba(255,255,255,.65); }
+    html.light .carousel-dot { background: rgba(255,255,255,.35); }
+
+    /* Smooth theme transition */
+    *, *::before, *::after {
+      transition-property: background-color, border-color, color, box-shadow;
+      transition-duration: .3s;
+      transition-timing-function: ease;
+    }
+    /* Don't override existing transitions on animated elements */
+    .hero-slide, .slide-bg, .reveal, .btn-primary, .btn-outline,
+    .stat-card, .service-card, .testimonial-card, .nav-link,
+    .footer-link, .social-btn, .carousel-dot, .t-track {
+      transition-property: background-color, border-color, color, box-shadow,
+                           opacity, transform, width, backdrop-filter;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--mg-ink);
+      color: var(--mg-text);
+      font-family: 'DM Sans', sans-serif;
+      overflow-x: hidden;
+    }
+
+    h1, h2, h3, h4, nav a, .syne { font-family: 'Syne', sans-serif; }
+
+    /* ── Noise overlay ─────────────────── */
+    body::before {
+      content: '';
+      position: fixed; inset: 0; z-index: 0; pointer-events: none;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      opacity: .4;
+    }
+
+    /* ── NAV ────────────────────────────── */
+    #navbar {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      transition: background .4s, backdrop-filter .4s, box-shadow .4s;
+    }
+    #navbar.scrolled {
+      background: var(--mg-nav-scrolled);
+      backdrop-filter: blur(20px);
+      box-shadow: 0 1px 0 var(--mg-border);
+    }
+    .nav-logo span { color: var(--mg-electric); }
+    .nav-link {
+      position: relative; font-weight: 500; font-size: .9rem;
+      color: var(--mg-text-muted); transition: color .25s;
+      padding-bottom: 2px;
+    }
+    .nav-link::after {
+      content: ''; position: absolute; bottom: -4px; left: 0;
+      width: 0; height: 2px; background: var(--mg-electric);
+      transition: width .3s;
+    }
+    .nav-link:hover { color: var(--mg-text); }
+    .nav-link:hover::after { width: 100%; }
+    .btn-primary {
+      background: var(--mg-electric); color: var(--mg-ink);
+      font-family: 'Syne', sans-serif; font-weight: 700;
+      padding: .55rem 1.4rem; border-radius: 2px;
+      transition: transform .2s, box-shadow .2s;
+      letter-spacing: .03em; font-size: .85rem;
+    }
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 28px rgba(0,229,255,.35);
+    }
+    .btn-outline {
+      border: 1.5px solid var(--mg-electric); color: var(--mg-electric);
+      font-family: 'Syne', sans-serif; font-weight: 700;
+      padding: .55rem 1.4rem; border-radius: 2px;
+      transition: background .2s, color .2s; font-size: .85rem;
+    }
+    .btn-outline:hover { background: var(--mg-electric); color: var(--mg-ink); }
+
+    /* ── HERO CAROUSEL ──────────────────── */
+    .hero-slide {
+      position: absolute; inset: 0;
+      opacity: 0; transition: opacity 1s ease;
+      display: flex; align-items: center;
+    }
+    .hero-slide.active { opacity: 1; }
+
+    .slide-bg {
+      position: absolute; inset: 0; background-size: cover;
+      background-position: center; filter: brightness(.3);
+      transform: scale(1.05);
+      transition: transform 8s ease;
+    }
+    .hero-slide.active .slide-bg { transform: scale(1); }
+
+    .hero-tag {
+      display: inline-block;
+      border: 1px solid var(--mg-electric);
+      color: var(--mg-electric);
+      font-family: 'Syne', sans-serif; font-size: .7rem;
+      letter-spacing: .15em; text-transform: uppercase;
+      padding: .3rem .8rem; margin-bottom: 1.2rem;
+    }
+    .hero-title {
+      font-size: clamp(2.8rem, 6vw, 5.5rem);
+      font-weight: 800; line-height: 1.05; letter-spacing: -.02em;
+    }
+    .hero-title .accent { color: var(--mg-electric); }
+    .hero-title .accent-neon { color: var(--mg-neon); }
+    .hero-title .accent-orange { color: var(--mg-orange); }
+
+    .carousel-dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: rgba(255,255,255,.25);
+      transition: background .3s, transform .3s; cursor: pointer;
+    }
+    .carousel-dot.active { background: var(--mg-electric); transform: scale(1.4); }
+
+    .carousel-progress {
+      position: absolute; bottom: 0; left: 0; height: 2px;
+      background: var(--mg-electric);
+      animation: progressBar 6s linear infinite;
+    }
+    @keyframes progressBar { from { width: 0 } to { width: 100% } }
+
+    /* ── SECTION UTILS ──────────────────── */
+    .section-label {
+      font-family: 'Syne', sans-serif;
+      font-size: .7rem; letter-spacing: .2em;
+      text-transform: uppercase; color: var(--mg-electric);
+      display: flex; align-items: center; gap: .6rem;
+    }
+    .section-label::before {
+      content: ''; display: block; width: 2rem; height: 1.5px;
+      background: var(--mg-electric);
+    }
+    .section-title {
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      font-weight: 800; line-height: 1.1; letter-spacing: -.02em;
+    }
+    .section-title .hl { color: var(--mg-electric); }
+
+    /* ── ABOUT ──────────────────────────── */
+    .stat-card {
+      border: 1px solid var(--mg-border);
+      background: var(--mg-glass);
+      backdrop-filter: blur(12px);
+      padding: 1.5rem; border-radius: 4px;
+      transition: border-color .3s, transform .3s;
+    }
+    .stat-card:hover { border-color: var(--mg-electric); transform: translateY(-4px); }
+    .stat-value {
+      font-family: 'Syne', sans-serif; font-size: 2.8rem;
+      font-weight: 800; color: var(--mg-electric);
+    }
+
+    /* ── SERVICES ──────────────────────── */
+    .service-card {
+      position: relative; overflow: hidden;
+      border: 1px solid var(--mg-border);
+      background: var(--mg-surface);
+      border-radius: 4px; padding: 2rem;
+      transition: border-color .3s, transform .3s;
+      cursor: pointer;
+    }
+    .service-card::before {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(135deg, rgba(0,229,255,.06) 0%, transparent 60%);
+      opacity: 0; transition: opacity .3s;
+    }
+    .service-card:hover { border-color: var(--mg-electric); transform: translateY(-6px); }
+    .service-card:hover::before { opacity: 1; }
+    .service-icon {
+      width: 52px; height: 52px; border-radius: 4px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.6rem; margin-bottom: 1.2rem;
+    }
+    .service-num {
+      position: absolute; top: 1.5rem; right: 1.5rem;
+      font-family: 'Syne', sans-serif; font-size: .7rem;
+      font-weight: 700; color: rgba(255,255,255,.12);
+      letter-spacing: .1em;
+    }
+
+    /* ── CTA ─────────────────────────────── */
+    .cta-section {
+      position: relative; overflow: hidden;
+      background: linear-gradient(135deg, #041A2E 0%, #0A1628 50%, #041A20 100%);
+    }
+    .cta-section::before {
+      content: ''; position: absolute; inset: 0; pointer-events: none;
+      background: radial-gradient(ellipse 80% 60% at 50% 50%,
+        rgba(0,229,255,.12) 0%, transparent 70%);
+    }
+    .cta-grid-lines {
+      position: absolute; inset: 0; pointer-events: none; opacity: .06;
+      background-image:
+        linear-gradient(rgba(0,229,255,.5) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,229,255,.5) 1px, transparent 1px);
+      background-size: 60px 60px;
+    }
+
+    /* ── TESTIMONIALS ───────────────────── */
+    .testimonial-card {
+      border: 1px solid var(--mg-border);
+      background: var(--mg-surface);
+      border-radius: 4px; padding: 2rem;
+      transition: border-color .3s, transform .3s;
+    }
+    .testimonial-card:hover { border-color: var(--mg-neon); transform: translateY(-4px); }
+    .stars { color: var(--mg-neon); letter-spacing: .1em; }
+    .quote-mark {
+      font-family: 'Syne', sans-serif; font-size: 5rem;
+      line-height: .8; color: var(--mg-electric); opacity: .15;
+      margin-bottom: -.8rem;
+    }
+    .avatar {
+      width: 44px; height: 44px; border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid var(--mg-border);
+    }
+
+    /* ── TESTIMONIAL CAROUSEL ──────────── */
+    .t-track {
+      display: flex; gap: 1.5rem;
+      transition: transform .5s cubic-bezier(.4,0,.2,1);
+    }
+    .t-card-wrap { min-width: calc(33.33% - 1rem); }
+    @media(max-width:1024px){ .t-card-wrap { min-width: calc(50% - .75rem); } }
+    @media(max-width:640px){ .t-card-wrap { min-width: 100%; } }
+
+    /* ── FOOTER ──────────────────────────── */
+    footer {
+      background: var(--mg-footer-bg);
+      border-top: 1px solid var(--mg-border);
+    }
+    .footer-link {
+      color: var(--mg-text-muted); font-size: .875rem;
+      transition: color .25s;
+    }
+    .footer-link:hover { color: var(--mg-electric); }
+    .social-btn {
+      width: 38px; height: 38px; border-radius: 4px;
+      border: 1px solid var(--mg-border);
+      display: flex; align-items: center; justify-content: center;
+      color: rgba(255,255,255,.45); transition: border-color .25s, color .25s;
+      font-size: .85rem;
+    }
+    .social-btn:hover { border-color: var(--mg-electric); color: var(--mg-electric); }
+
+    /* ── MOBILE MENU ─────────────────────── */
+    #mobile-menu {
+      display: none; flex-direction: column; gap: 1rem;
+      padding: 1.5rem 1.5rem 2rem;
+      background: var(--mg-mobile-menu-bg);
+      backdrop-filter: blur(20px);
+      border-top: 1px solid var(--mg-border);
+    }
+    #mobile-menu.open { display: flex; }
+
+    /* ── SCROLL REVEAL ──────────────────── */
+    .reveal {
+      opacity: 0; transform: translateY(28px);
+      transition: opacity .7s ease, transform .7s ease;
+    }
+    .reveal.visible { opacity: 1; transform: none; }
+    .reveal-delay-1 { transition-delay: .1s; }
+    .reveal-delay-2 { transition-delay: .2s; }
+    .reveal-delay-3 { transition-delay: .3s; }
+    .reveal-delay-4 { transition-delay: .4s; }
+
+    /* ── TICKER ─────────────────────────── */
+    .ticker-wrap {
+      overflow: hidden; white-space: nowrap;
+      border-top: 1px solid var(--mg-border);
+      border-bottom: 1px solid var(--mg-border);
+      background: var(--mg-surface);
+      padding: .7rem 0;
+    }
+    .ticker-inner {
+      display: inline-block;
+      animation: ticker 28s linear infinite;
+    }
+    .ticker-inner span {
+      padding: 0 2.5rem;
+      font-family: 'Syne', sans-serif; font-size: .75rem;
+      letter-spacing: .12em; text-transform: uppercase;
+      color: rgba(255,255,255,.4);
+    }
+    .ticker-inner span b { color: var(--mg-electric); }
+    @keyframes ticker { from { transform: translateX(0) } to { transform: translateX(-50%) } }
+
+    /* ── THEME TOGGLE ───────────────────── */
+    .theme-toggle {
+      width: 44px; height: 24px; border-radius: 12px;
+      background: var(--mg-border);
+      border: 1px solid var(--mg-border);
+      position: relative; cursor: pointer;
+      transition: background .3s;
+      flex-shrink: 0;
+    }
+    .theme-toggle::before {
+      content: '';
+      position: absolute; top: 2px; left: 2px;
+      width: 18px; height: 18px; border-radius: 50%;
+      background: var(--mg-electric);
+      transition: transform .3s, background .3s;
+      display: flex; align-items: center; justify-content: center;
+    }
+    html.light .theme-toggle::before { transform: translateX(20px); }
+    .theme-toggle-wrap {
+      display: flex; align-items: center; gap: .5rem;
+    }
+    .theme-icon {
+      font-size: .85rem; line-height: 1;
+      transition: opacity .3s;
+      user-select: none;
+    }
+    /* Light mode adjustments for service number — handled above */
+    /* Light mode hero text fix — handled above */
+
+    /* Custom scrollbar */
+    ::-webkit-scrollbar { width: 5px; }
+    ::-webkit-scrollbar-track { background: var(--mg-ink); }
+    ::-webkit-scrollbar-thumb { background: var(--mg-electric); border-radius: 10px; }
+  </style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════
+     NAVIGATION
+════════════════════════════════════════ -->
+<nav id="navbar" class="py-4">
+  <div class="max-w-7xl mx-auto px-4 flex items-center justify-between">
+    <!-- Logo -->
+    <a href="/Home/home.html" class="nav-logo flex items-center gap-2">
+      <!-- <div class="w-8 h-8 bg-[var(--mg-electric)] flex items-center justify-center" style="clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%)">
+        <span class="text-[var(--mg-ink)] font-black text-sm syne">M</span>
+      </div>
+      <span class="syne font-bold text-xl tracking-tight">MG <span>HUB</span></span> -->
+       <div class="w-28 h-12 rounded-lg flex items-center justify-center amber-glow">
+        <img src="/images/MG_LOGO_2-removebg-preview.png" alt="Logo">
+      </div>
+    </a>
+
+    <!-- Desktop Links -->
+    <div class="hidden md:flex items-center gap-8">
+      <a href="/About/about.html" class="nav-link font-bold">About</a>
+      <a href="/services.html" class="nav-link font-bold">Services</a>
+      <a href="/suppliers.html" class="nav-link font-bold">Suppliers</a>
+      <a href="/Events.html" class="nav-link font-bold">Events</a>
+      <a href="/gallery.html" class="nav-link font-bold">Gallery</a>
+      <a href="/contact.html" class="nav-link font-bold">Contact</a>
+    </div>
+
+    <!-- CTA + Toggle + Hamburger -->
+    <div class="flex items-center gap-3">
+      <!-- Theme Toggle -->
+      <div class="theme-toggle-wrap">
+        <span class="theme-icon" id="icon-moon">🌙</span>
+        <button class="theme-toggle" id="theme-toggle" aria-label="Toggle light/dark mode"></button>
+        <span class="theme-icon" id="icon-sun">☀️</span>
+      </div>
+      <a href="/Explore.html" class="btn-primary hidden md:inline-block rounded-lg">Explore Hub</a>
+      <button id="hamburger" class="md:hidden flex flex-col gap-1.5 p-1" aria-label="Menu">
+        <span class="w-6 h-0.5 bg-white transition-all" id="h1"></span>
+        <span class="w-6 h-0.5 bg-white transition-all" id="h2"></span>
+        <span class="w-4 h-0.5 bg-white transition-all" id="h3"></span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Mobile Menu -->
+  <div id="mobile-menu">
+    <a href="/About/about.html" class="nav-link text-lg font-bold">About</a>
+    <a href="/services.html" class="nav-link text-lg font-bold">Services</a>
+    <a href="/suppliers.html" class="nav-link text-lg font-bold">Suppliers</a>
+    <a href="/Events.html" class="nav-link text-lg font-bold">Events</a>
+    <a href="/gallery.html" class="nav-link text-lg font-bold">Gallery</a>
+    <a href="/contact.html" class="nav-link text-lg font-bold">Contact</a>
+    <a href="/Explore.html" class="btn-primary text-center mt-2 rounded-lg font-bold">Explore Hub</a>
+  </div>
+</nav>
+
+<!-- ══════════════════════════════════════
+     HERO CAROUSEL
+════════════════════════════════════════ -->
+<section id="hero" class="relative h-screen min-h-[600px] overflow-hidden">
+
+  <!-- Slide 1 -->
+  <div class="hero-slide active" id="slide-0">
+    <div class="slide-bg" style="background-image:url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1600&q=80')"></div>
+    <div class="relative z-10 max-w-6xl mx-auto px-6 w-full pt-22">
+      <div class="hero-tag reveal visible">Where Ideas Take Shape</div>
+      <h1 class="hero-title max-w-3xl reveal visible" style="transition-delay:.1s">
+        Building Tomorrow's Solutions.<span class="accent">Today.</span>
+      </h1>
+      <p class="mt-4 max-w-xl text-white/60 text-lg leading-relaxed reveal visible" style="transition-delay:.2s">
+        MG Innovation Hub is Africa's premier tech launchpad — where bold thinkers, disruptive startups, and enterprise teams collide to create what's next.
+      </p>
+      <div class="mt-2 flex gap-4 flex-wrap reveal visible" style="transition-delay:.3s">
+        <a href="/services.html" class="btn-primary text-base px-4 py-3 rounded-lg">Explore Services</a>
+        <a href="/About/about.html" class="btn-outline text-base px-4 py-3 rounded-lg">Our Story</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Slide 2 -->
+  <div class="hero-slide" id="slide-1">
+    <div class="slide-bg" style="background-image:url('https://images.unsplash.com/photo-1556761175-4b46a572b786?w=1600&q=80')"></div>
+    <div class="relative z-10 max-w-6xl mx-auto px-6 w-full pt-22">
+      <div class="hero-tag">Accelerate Your Vision</div>
+      <h1 class="hero-title max-w-3xl">
+        <span class="accent">Co-create.</span><br>
+        Collaborate. <span class="accent">Conquer.</span>
+      </h1>
+      <p class="mt-4 max-w-xl text-white/60 text-lg leading-relaxed">
+        From ideation workshops to go-to-market strategy, our ecosystem gives you every edge you need to scale.
+      </p>
+      <div class="mt-10 flex gap-4 flex-wrap">
+        <a href="/services.html" class="btn-primary text-base px-6 py-3 rounded-lg">Our Programs</a>
+        <a href="#testimonials" class="btn-outline text-base px-6 py-3 rounded-lg">Success Stories</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Slide 3 -->
+  <div class="hero-slide" id="slide-2">
+    <div class="slide-bg" style="background-image:url('https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=1600&q=80')"></div>
+    <div class="relative z-10 max-w-6xl mx-auto px-6 w-full pt-22">
+      <!-- <div class="hero-tag">Community & Growth</div> -->
+      <h1 class="hero-title max-w-2xl"> Your Network is Your <span class="accent">Net Worth.</span>
+      </h1>
+      <p class="mt-4 max-w-xl text-white/60 text-lg leading-relaxed">
+        Join 1,200+ innovators, engineers, and entrepreneurs pushing the frontier of what's possible across East Africa and beyond.
+      </p>
+      <div class="mt-2 flex gap-4 flex-wrap">
+        <a href="/contact.html" class="btn-primary text-base px-6 py-3 rounded-lg">Join the Hub</a>
+        <a href="/About/about.html" class="btn-outline text-base px-6 py-3 rounded-lg">Learn More</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Gradient bottom fade -->
+  <div class="absolute bottom-0 left-0 right-0 h-40 pointer-events-none"
+       style="background:linear-gradient(to bottom, transparent, var(--mg-ink))"></div>
+
+  <!-- Controls -->
+  <div class="absolute bottom-10 left-1/2 -translate-x-1/2 flex items-center gap-3 z-20">
+    <button class="carousel-dot active" data-slide="0"></button>
+    <button class="carousel-dot" data-slide="1"></button>
+    <button class="carousel-dot" data-slide="2"></button>
+  </div>
+
+  <!-- Arrow Buttons -->
+  <button id="hero-prev"
+    class="absolute left-5 top-1/2 -translate-y-1/2 z-20 w-11 h-11 border border-white/20 flex items-center justify-center hover:border-[var(--mg-electric)] hover:text-[var(--mg-electric)] transition-colors">
+    ←
+  </button>
+  <button id="hero-next"
+    class="absolute right-5 top-1/2 -translate-y-1/2 z-20 w-11 h-11 border border-white/20 flex items-center justify-center hover:border-[var(--mg-electric)] hover:text-[var(--mg-electric)] transition-colors">
+    →
+  </button>
+
+  <!-- Progress bar -->
+  <div class="absolute bottom-0 left-0 right-0 h-0.5 bg-white/10 overflow-hidden z-20">
+    <div class="carousel-progress" id="carousel-progress"></div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     TICKER
+════════════════════════════════════════ -->
+<div class="ticker-wrap relative z-10">
+  <div class="ticker-inner" id="ticker">
+    <span>Deep Tech &nbsp;<b>✦</b></span>
+    <span>AI &amp; Machine Learning &nbsp;<b>✦</b></span>
+    <span>FinTech Innovation &nbsp;<b>✦</b></span>
+    <span>CleanTech &nbsp;<b>✦</b></span>
+    <span>AgriTech &nbsp;<b>✦</b></span>
+    <span>HealthTech &nbsp;<b>✦</b></span>
+    <span>EdTech &nbsp;<b>✦</b></span>
+    <span>Blockchain &nbsp;<b>✦</b></span>
+    <span>Smart Cities &nbsp;<b>✦</b></span>
+    <span>Robotics &nbsp;<b>✦</b></span>
+    <span>Deep Tech &nbsp;<b>✦</b></span>
+    <span>AI &amp; Machine Learning &nbsp;<b>✦</b></span>
+    <span>FinTech Innovation &nbsp;<b>✦</b></span>
+    <span>CleanTech &nbsp;<b>✦</b></span>
+    <span>AgriTech &nbsp;<b>✦</b></span>
+    <span>HealthTech &nbsp;<b>✦</b></span>
+    <span>EdTech &nbsp;<b>✦</b></span>
+    <span>Blockchain &nbsp;<b>✦</b></span>
+    <span>Smart Cities &nbsp;<b>✦</b></span>
+    <span>Robotics &nbsp;<b>✦</b></span>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     ABOUT
+════════════════════════════════════════ -->
+<section id="about" class="relative py-28 z-10">
+  <div class="max-w-7xl mx-auto px-6">
+    <div class="grid lg:grid-cols-2 gap-16 items-center">
+
+      <!-- Text -->
+      <div>
+        <p class="section-label reveal">About MG</p>
+        <h2 class="section-title mt-4 reveal reveal-delay-1">
+          We Build the <span class="hl">Infrastructure</span><br>for Bold Ideas.
+        </h2>
+        <p class="mt-6 text-white/55 leading-relaxed text-lg reveal reveal-delay-2">
+          MG Innovation Hub was founded on a single conviction: that Africa's most transformative breakthroughs are still ahead. We provide the tools, mentorship, workspace, and capital connections to turn that potential into reality.
+        </p>
+        <p class="mt-4 text-white/55 leading-relaxed reveal reveal-delay-3">
+          Based in Nakuru and expanding across East Africa, we sit at the intersection of technology, entrepreneurship, and community — creating an environment where creativity is never constrained.
+        </p>
+        <div class="mt-8 flex flex-wrap gap-4 reveal reveal-delay-4">
+          <a href="/services.html" class="btn-primary px-6 py-3 rounded-lg">What We Offer</a>
+          <a href="/contact.html" class="btn-outline px-6 py-3 rounded-lg">Partner With Us</a>
+        </div>
+      </div>
+
+      <!-- Stats Grid -->
+      <div class="grid grid-cols-2 gap-4">
+        <div class="stat-card reveal reveal-delay-1">
+          <div class="stat-value counter" data-target="18">0</div>
+          <div class="text-white/50 text-sm mt-1">Startups Incubated</div>
+        </div>
+        <div class="stat-card reveal reveal-delay-2">
+          <div class="stat-value counter" data-target="48">0</div>
+          <div class="text-white/50 text-sm mt-1">Mentors &amp; Experts</div>
+        </div>
+        <div class="stat-card reveal reveal-delay-3">
+          <div class="stat-value" style="font-size:2.4rem">$0.5M<span style="font-size:1.4rem">+</span></div>
+          <div class="text-white/50 text-sm mt-1">Funding Raised</div>
+        </div>
+        <div class="stat-card reveal reveal-delay-4">
+          <div class="stat-value counter" data-target="120">0</div>
+          <div class="text-white/50 text-sm mt-1">SMEs Supported</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Decorative circle -->
+  <div class="pointer-events-none absolute -right-40 top-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full opacity-5"
+       style="background:radial-gradient(circle,var(--mg-electric),transparent 70%)"></div>
+</section>
+
+<!-- ══════════════════════════════════════
+     SERVICES
+════════════════════════════════════════ -->
+<section id="services" class="relative py-28 z-10" style="background:var(--mg-surface)">
+  <div class="max-w-7xl mx-auto px-6">
+
+    <!-- Header -->
+    <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16">
+      <div>
+        <p class="section-label reveal">What We Do</p>
+        <h2 class="section-title mt-4 reveal reveal-delay-1">
+          Services Designed<br>to <span class="hl">Accelerate</span> You.
+        </h2>
+      </div>
+      <div class="reveal reveal-delay-2">
+        <a href="#" id="view-all-btn" class="btn-outline px-6 py-3 flex items-center gap-2 rounded-lg">
+          View All Services
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M1 7h12M7 1l6 6-6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+
+    <!-- Cards Grid -->
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-5" id="services-grid">
+
+      <div class="service-card reveal">
+        <span class="service-num">01</span>
+        <div class="service-icon" style="background:rgba(0,229,255,.1)">🚀</div>
+        <h3 class="syne font-bold text-lg mb-2">Entrepreneurship & Business Support</h3>
+        <p class="text-white/50 text-sm leading-relaxed">Structured 6-month programs with hands-on mentorship, legal support, go-to-market coaching, and access to our curated investor network.</p>
+        <div class="mt-4 text-[var(--mg-electric)] text-sm font-semibold flex items-center gap-1">Learn more →</div>
+      </div>
+
+      <div class="service-card reveal reveal-delay-1">
+        <span class="service-num">02</span>
+        <div class="service-icon" style="background:rgba(182,255,78,.1)">🧠</div>
+        <h3 class="syne font-bold text-lg mb-2">Innovation Labs</h3>
+        <p class="text-white/50 text-sm leading-relaxed">Practical bootcamps covering machine learning, full-stack development, data engineering, and emerging technologies led by industry practitioners.</p>
+        <div class="mt-4 text-[var(--mg-neon)] text-sm font-semibold flex items-center gap-1">Learn more →</div>
+      </div>
+
+      <div class="service-card reveal reveal-delay-2">
+        <span class="service-num">03</span>
+        <div class="service-icon" style="background:rgba(255,107,43,.1)">💼</div>
+        <h3 class="syne font-bold text-lg mb-2">Digital Skills & Future Tech</h3>
+        <p class="text-white/50 text-sm leading-relaxed">Premium hot desks, private offices, and event venues wired for high-speed connectivity, 24/7 access, and creative energy.</p>
+        <div class="mt-4 text-[var(--mg-orange)] text-sm font-semibold flex items-center gap-1">Learn more →</div>
+      </div>
+
+      <div class="service-card reveal reveal-delay-1">
+        <span class="service-num">04</span>
+        <div class="service-icon" style="background:rgba(0,229,255,.1)">🌐</div>
+        <h3 class="syne font-bold text-lg mb-2">Community & Events</h3>
+        <p class="text-white/50 text-sm leading-relaxed">We partner with enterprises to design innovation labs, run internal hackathons, and identify emerging startups for collaboration or acquisition.</p>
+        <div class="mt-4 text-[var(--mg-electric)] text-sm font-semibold flex items-center gap-1">Learn more →</div>
+      </div>
+
+      <div class="service-card reveal reveal-delay-2">
+        <span class="service-num">05</span>
+        <div class="service-icon" style="background:rgba(182,255,78,.1)">📈</div>
+        <h3 class="syne font-bold text-lg mb-2">Marketing & Market Access</h3>
+        <p class="text-white/50 text-sm leading-relaxed">Curated deal-flow events, pitch nights, and one-on-one introductions connecting founders with angels, VCs, and strategic partners.</p>
+        <div class="mt-4 text-[var(--mg-neon)] text-sm font-semibold flex items-center gap-1">Learn more →</div>
+      </div>
+
+      <div class="service-card reveal reveal-delay-3" id="hidden-service" style="display:none">
+        <span class="service-num">06</span>
+        <div class="service-icon" style="background:rgba(255,107,43,.1)">🌱</div>
+        <h3 class="syne font-bold text-lg mb-2">Growth and Scale</h3>
+        <p class="text-white/50 text-sm leading-relaxed">Monthly summits, weekly demo days, cross-border tours, and a thriving online community of 1,200+ innovators.</p>
+        <div class="mt-4 text-[var(--mg-orange)] text-sm font-semibold flex items-center gap-1">Learn more →</div>
+      </div>
+
+      <!-- Placeholder last card -->
+      <div class="service-card reveal reveal-delay-3 flex items-center justify-center border-dashed"
+           style="border-color:rgba(0,229,255,.25); background:transparent; min-height:240px" id="more-card">
+        <div class="text-center">
+          <div class="text-4xl mb-3 opacity-40">+</div>
+          <p class="syne font-bold text-white/30 text-sm">More Services</p>
+          <p class="text-white/20 text-xs mt-1">Click "View All" to explore</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     CALL TO ACTION
+════════════════════════════════════════ -->
+<section id="contact" class="cta-section relative py-32 z-10">
+  <div class="cta-grid-lines"></div>
+
+  <div class="max-w-4xl mx-auto px-6 text-center relative z-10">
+    <p class="section-label justify-center reveal">Ready to Leap?</p>
+    <h2 class="section-title mt-4 reveal reveal-delay-1">
+      Your Breakthrough<br>Starts <span class="hl">Here.</span>
+    </h2>
+    <p class="mt-6 text-white/55 text-lg max-w-2xl mx-auto reveal reveal-delay-2">
+      Whether you're a first-time founder, a seasoned operator, or an enterprise team hunting the next edge — MG Innovation Hub is your launchpad. Applications are open now.
+    </p>
+
+    <!-- Form -->
+    <div class="mt-12 max-w-xl mx-auto reveal reveal-delay-3">
+      <div class="flex flex-col sm:flex-row gap-3">
+        <input type="email" id="cta-email" placeholder="Enter your email address"
+          class="flex-1 bg-white/5 border border-white/10 rounded-sm px-4 py-3 text-white placeholder-white/30 focus:outline-none focus:border-[var(--mg-electric)] transition-colors text-sm"/>
+        <button onclick="handleCTA()" class="btn-primary px-6 py-3 whitespace-nowrap">
+          Apply Now ↗
+        </button>
+      </div>
+      <p id="cta-msg" class="mt-3 text-sm text-[var(--mg-neon)] hidden">
+        ✓ You're on the list! We'll be in touch soon.
+      </p>
+      <p class="mt-3 text-white/25 text-xs">No spam. Unsubscribe anytime. Trusted by 1,200+ innovators.</p>
+    </div>
+
+    <!-- Feature pills -->
+    <div class="mt-12 flex flex-wrap justify-center gap-3 reveal reveal-delay-4">
+      <span class="px-4 py-2 text-xs font-semibold syne tracking-wide border border-white/10 text-white/50 rounded-full">✓ Free Orientation Week</span>
+      <span class="px-4 py-2 text-xs font-semibold syne tracking-wide border border-white/10 text-white/50 rounded-full">✓ No Equity Required</span>
+      <span class="px-4 py-2 text-xs font-semibold syne tracking-wide border border-white/10 text-white/50 rounded-full">✓ Visa Support</span>
+      <span class="px-4 py-2 text-xs font-semibold syne tracking-wide border border-white/10 text-white/50 rounded-full">✓ 48-hr Admission Decision</span>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     TESTIMONIALS
+════════════════════════════════════════ -->
+<section id="testimonials" class="relative py-28 z-10">
+  <div class="max-w-7xl mx-auto px-6">
+
+    <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-14">
+      <div>
+        <p class="section-label reveal">Voices From the Hub</p>
+        <h2 class="section-title mt-4 reveal reveal-delay-1">
+          Real People,<br><span class="hl">Real Impact.</span>
+        </h2>
+      </div>
+      <div class="flex gap-3 reveal reveal-delay-2">
+        <button id="t-prev" class="w-11 h-11 border border-white/20 flex items-center justify-center hover:border-[var(--mg-electric)] hover:text-[var(--mg-electric)] transition-colors">←</button>
+        <button id="t-next" class="w-11 h-11 border border-white/20 flex items-center justify-center hover:border-[var(--mg-electric)] hover:text-[var(--mg-electric)] transition-colors">→</button>
+      </div>
+    </div>
+
+    <!-- Track -->
+    <div class="overflow-hidden reveal">
+      <div class="t-track" id="t-track">
+
+        <div class="t-card-wrap">
+          <div class="testimonial-card h-full">
+            <div class="stars">★★★★★</div>
+            <div class="quote-mark">"</div>
+            <p class="text-white/70 text-sm leading-relaxed mt-2">
+              MG Innovation Hub didn't just give us a desk — they gave us a community. Within 3 months we had our first B2B pilot signed with a Fortune 500 company. The mentor network is absolutely world-class.
+            </p>
+            <div class="flex items-center gap-3 mt-5 pt-4 border-t border-white/10">
+              <div class="w-10 h-10 rounded-full bg-gradient-to-br from-[var(--mg-electric)] to-blue-800 flex items-center justify-center syne font-bold text-[var(--mg-ink)]">AK</div>
+              <div>
+                <div class="font-semibold text-sm">Amara Kimani</div>
+                <div class="text-white/40 text-xs">CEO, PesaLink Technologies</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="t-card-wrap">
+          <div class="testimonial-card h-full">
+            <div class="stars">★★★★★</div>
+            <div class="quote-mark">"</div>
+            <p class="text-white/70 text-sm leading-relaxed mt-2">
+              The AI Bootcamp changed everything for our team. We implemented ML-driven supply chain forecasting that cut costs by 23%. The instructors are industry veterans who speak real-world, not theory.
+            </p>
+            <div class="flex items-center gap-3 mt-5 pt-4 border-t border-white/10">
+              <div class="w-10 h-10 rounded-full bg-gradient-to-br from-[var(--mg-neon)] to-green-900 flex items-center justify-center syne font-bold text-[var(--mg-ink)]">DO</div>
+              <div>
+                <div class="font-semibold text-sm">David Osei</div>
+                <div class="text-white/40 text-xs">CTO, LogiSmart Africa</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="t-card-wrap">
+          <div class="testimonial-card h-full">
+            <div class="stars">★★★★★</div>
+            <div class="quote-mark">"</div>
+            <p class="text-white/70 text-sm leading-relaxed mt-2">
+              Raised our seed round during MG's Investor Pitch Night. The preparation sessions, the warm intros, and the sheer caliber of people in the room — it's unlike anything else in the ecosystem.
+            </p>
+            <div class="flex items-center gap-3 mt-5 pt-4 border-t border-white/10">
+              <div class="w-10 h-10 rounded-full bg-gradient-to-br from-[var(--mg-orange)] to-red-900 flex items-center justify-center syne font-bold text-white">FM</div>
+              <div>
+                <div class="font-semibold text-sm">Fatuma Mwangi</div>
+                <div class="text-white/40 text-xs">Founder, AgroVault</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="t-card-wrap">
+          <div class="testimonial-card h-full">
+            <div class="stars">★★★★★</div>
+            <div class="quote-mark">"</div>
+            <p class="text-white/70 text-sm leading-relaxed mt-2">
+              We ran our company's internal hackathon at MG Hub and it transformed our culture. The facilitation team is exceptional. We spun out two internal product lines from that single weekend.
+            </p>
+            <div class="flex items-center gap-3 mt-5 pt-4 border-t border-white/10">
+              <div class="w-10 h-10 rounded-full bg-gradient-to-br from-purple-500 to-blue-900 flex items-center justify-center syne font-bold text-white">JN</div>
+              <div>
+                <div class="font-semibold text-sm">James Ndung'u</div>
+                <div class="text-white/40 text-xs">Head of Innovation, Equity Bank</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="t-card-wrap">
+          <div class="testimonial-card h-full">
+            <div class="stars">★★★★★</div>
+            <div class="quote-mark">"</div>
+            <p class="text-white/70 text-sm leading-relaxed mt-2">
+              I joined as a solo developer with just an idea. MG connected me with a co-founder, a designer, and our first paying client — all within 6 weeks. The community here is magic.
+            </p>
+            <div class="flex items-center gap-3 mt-5 pt-4 border-t border-white/10">
+              <div class="w-10 h-10 rounded-full bg-gradient-to-br from-pink-500 to-purple-900 flex items-center justify-center syne font-bold text-white">SW</div>
+              <div>
+                <div class="font-semibold text-sm">Sylvia Wanjiku</div>
+                <div class="text-white/40 text-xs">Co-founder, MediChain</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Decorative -->
+  <div class="pointer-events-none absolute left-0 top-1/2 -translate-y-1/2 w-80 h-80 rounded-full opacity-5"
+       style="background:radial-gradient(circle,var(--mg-neon),transparent 70%)"></div>
+</section>
+
+<!-- ══════════════════════════════════════
+     FOOTER
+════════════════════════════════════════ -->
+<footer class="relative z-10">
+  <div class="max-w-7xl mx-auto px-6 py-16">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
+
+      <!-- Brand -->
+      <div class="lg:col-span-1">
+        <a href="/Home/home.html" class="flex items-center gap-2 mb-4">
+          <!-- <div class="w-8 h-8 bg-[var(--mg-electric)] flex items-center justify-center" style="clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%)">
+            <span class="text-[var(--mg-ink)] font-black text-sm syne">M</span>
+          </div>
+          <span class="syne font-bold text-xl">MG <span style="color:var(--mg-electric)">HUB</span></span> -->
+          <div class="w-28 h-14 rounded-lg flex items-center justify-center amber-glow">
+        <img src="/images/MG_LOGO_2-removebg-preview.png" alt="Logo">
+      </div>
+        </a>
+        <p class="text-white/40 text-sm leading-relaxed">
+          Africa's premier innovation ecosystem. Building the future, one breakthrough at a time.
+        </p>
+        <div class="flex gap-2 mt-5">
+          <a href="#" class="social-btn" aria-label="Twitter">𝕏</a>
+          <a href="#" class="social-btn" aria-label="LinkedIn">in</a>
+          <a href="#" class="social-btn" aria-label="Instagram">◎</a>
+          <a href="#" class="social-btn" aria-label="YouTube">▶</a>
+        </div>
+      </div>
+
+      <!-- Links -->
+      <div>
+        <h4 class="syne font-bold text-sm mb-4 tracking-wide">Company</h4>
+        <ul class="space-y-2.5">
+          <li><a href="/about.html" class="footer-link">About Us</a></li>
+          <li><a href="/suppliers.html" class="footer-link">Suppliers</a></li>
+          <li><a href="/Events.html" class="footer-link">Events</a></li>
+          <li><a href="/gallery.html" class="footer-link">Gallery</a></li>
+          <li><a href="/Explore.html" class="footer-link">Explore Hub</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="syne font-bold text-sm mb-4 tracking-wide">Services</h4>
+        <ul class="space-y-2.5">
+          <li><a href="/services.html#incubation" class="footer-link">Incubation</a></li>
+          <li><a href="/services.html#workshops" class="footer-link">Workshops</a></li>
+          <li><a href="/services.html#co-working" class="footer-link">Co-working</a></li>
+          <li><a href="/services.html#corporate-programs" class="footer-link">Corporate Programs</a></li>
+          <li><a href="/services.html#investor-matchmaking" class="footer-link">Investor Matchmaking</a></li>
+        </ul>
+      </div>
+
+      <!-- Contact -->
+      <div>
+        <h4 class="syne font-bold text-sm mb-4 tracking-wide">Contact</h4>
+        <ul class="space-y-3">
+          <li class="text-white/40 text-sm flex gap-2 items-start">
+            <span class="text-[var(--mg-electric)] mt-0.5">📍</span>
+            Riva Plaza ,Nakuru, Kenya
+          </li>
+          <li><a href="mailto:hello@mginnovationhub.co" class="footer-link text-sm">hello@mginnovationhub.co</a></li>
+          <li><a href="tel:+254700000000" class="footer-link text-sm">+254 700 000 000</a></li>
+        </ul>
+        <div class="mt-5">
+          <p class="text-white/25 text-xs mb-2">Newsletter</p>
+          <div class="flex gap-2">
+            <input type="email" placeholder="your@email.com" id="footer-email"
+              class="flex-1 bg-white/5 border border-white/10 px-3 py-2 text-xs text-white placeholder-white/20 focus:outline-none focus:border-[var(--mg-electric)] transition-colors rounded-sm min-w-0"/>
+            <button onclick="handleFooterSub()" class="bg-[var(--mg-electric)] text-[var(--mg-ink)] px-3 py-2 text-xs font-bold syne rounded-sm hover:opacity-90 transition-opacity">→</button>
+          </div>
+          <p id="footer-msg" class="text-[var(--mg-neon)] text-xs mt-1 hidden">✓ Subscribed!</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom bar -->
+  <div class="border-t border-white/5">
+    <div class="max-w-7xl mx-auto px-6 py-5 flex flex-col sm:flex-row justify-between items-center gap-3">
+      <p class="text-white/25 text-xs">
+        © 2025 MG Innovation Hub Ltd. All rights reserved.
+      </p>
+      <div class="flex gap-5">
+        <a href="#" class="footer-link text-xs">Privacy Policy</a>
+        <a href="#" class="footer-link text-xs">Terms of Use</a>
+        <a href="#" class="footer-link text-xs">Cookie Settings</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- ══════════════════════════════════════
+     JAVASCRIPT
+════════════════════════════════════════ -->
+<script>
+// ── THEME TOGGLE ──────────────────────────
+(function() {
+  const saved = localStorage.getItem('mg-theme');
+  if (saved === 'light') document.documentElement.classList.add('light');
+})();
+
+function applyTheme(isLight) {
+  document.documentElement.classList.toggle('light', isLight);
+  localStorage.setItem('mg-theme', isLight ? 'light' : 'dark');
+  document.getElementById('icon-moon').style.opacity = isLight ? '.35' : '1';
+  document.getElementById('icon-sun').style.opacity  = isLight ? '1'   : '.35';
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  const isLight = document.documentElement.classList.contains('light');
+  document.getElementById('icon-moon').style.opacity = isLight ? '.35' : '1';
+  document.getElementById('icon-sun').style.opacity  = isLight ? '1'   : '.35';
+  document.getElementById('theme-toggle').addEventListener('click', () => {
+    applyTheme(!document.documentElement.classList.contains('light'));
+  });
+});
+
+// ── NAV SCROLL ───────────────────────────
+window.addEventListener('scroll', () => {
+  const nav = document.getElementById('navbar');
+  nav.classList.toggle('scrolled', window.scrollY > 60);
+});
+
+// ── HAMBURGER ────────────────────────────
+document.getElementById('hamburger').addEventListener('click', () => {
+  const menu = document.getElementById('mobile-menu');
+  menu.classList.toggle('open');
+});
+
+// Close menu on link click
+document.querySelectorAll('#mobile-menu a').forEach(a => {
+  a.addEventListener('click', () => {
+    document.getElementById('mobile-menu').classList.remove('open');
+  });
+});
+
+// ── HERO CAROUSEL ────────────────────────
+const slides = document.querySelectorAll('.hero-slide');
+const dots = document.querySelectorAll('.carousel-dot');
+const progressBar = document.getElementById('carousel-progress');
+let current = 0;
+let autoTimer;
+
+function goTo(n) {
+  slides[current].classList.remove('active');
+  dots[current].classList.remove('active');
+  current = (n + slides.length) % slides.length;
+  slides[current].classList.add('active');
+  dots[current].classList.add('active');
+  // Restart progress bar
+  progressBar.style.animation = 'none';
+  void progressBar.offsetWidth;
+  progressBar.style.animation = 'progressBar 6s linear infinite';
+}
+
+function startAuto() {
+  clearInterval(autoTimer);
+  autoTimer = setInterval(() => goTo(current + 1), 6000);
+}
+
+document.getElementById('hero-next').addEventListener('click', () => { goTo(current + 1); startAuto(); });
+document.getElementById('hero-prev').addEventListener('click', () => { goTo(current - 1); startAuto(); });
+dots.forEach(d => d.addEventListener('click', () => { goTo(+d.dataset.slide); startAuto(); }));
+startAuto();
+
+// ── TESTIMONIAL CAROUSEL ─────────────────
+const track = document.getElementById('t-track');
+const cards = document.querySelectorAll('.t-card-wrap');
+let tCurrent = 0;
+let tVisible = getVisible();
+
+function getVisible() {
+  return window.innerWidth >= 1024 ? 3 : window.innerWidth >= 640 ? 2 : 1;
+}
+
+function updateTrack() {
+  tVisible = getVisible();
+  const max = cards.length - tVisible;
+  if (tCurrent > max) tCurrent = max;
+  const cardW = cards[0].offsetWidth;
+  const gap = 24;
+  track.style.transform = `translateX(-${tCurrent * (cardW + gap)}px)`;
+}
+
+document.getElementById('t-next').addEventListener('click', () => {
+  tVisible = getVisible();
+  if (tCurrent < cards.length - tVisible) { tCurrent++; updateTrack(); }
+});
+document.getElementById('t-prev').addEventListener('click', () => {
+  if (tCurrent > 0) { tCurrent--; updateTrack(); }
+});
+window.addEventListener('resize', updateTrack);
+
+// ── VIEW ALL SERVICES ─────────────────────
+let allVisible = false;
+document.getElementById('view-all-btn').addEventListener('click', (e) => {
+  e.preventDefault();
+  allVisible = !allVisible;
+  const hiddenCard = document.getElementById('hidden-service');
+  const moreCard = document.getElementById('more-card');
+  hiddenCard.style.display = allVisible ? 'block' : 'none';
+  moreCard.style.display = allVisible ? 'none' : 'flex';
+  e.currentTarget.textContent = allVisible ? '← Show Less' : 'View All Services →';
+  if (allVisible) triggerReveal();
+});
+
+// ── SCROLL REVEAL ────────────────────────
+function triggerReveal() {
+  document.querySelectorAll('.reveal:not(.visible)').forEach(el => {
+    const rect = el.getBoundingClientRect();
+    if (rect.top < window.innerHeight - 60) el.classList.add('visible');
+  });
+}
+window.addEventListener('scroll', triggerReveal, { passive: true });
+window.addEventListener('load', triggerReveal);
+setTimeout(triggerReveal, 200);
+
+// ── COUNTER ANIMATION ────────────────────
+function animateCounters() {
+  document.querySelectorAll('.counter').forEach(el => {
+    if (el.dataset.animated) return;
+    const rect = el.getBoundingClientRect();
+    if (rect.top < window.innerHeight - 40) {
+      el.dataset.animated = '1';
+      const target = +el.dataset.target;
+      let count = 0;
+      const step = Math.ceil(target / 40);
+      const interval = setInterval(() => {
+        count = Math.min(count + step, target);
+        el.textContent = count + '+';
+        if (count >= target) clearInterval(interval);
+      }, 40);
+    }
+  });
+}
+window.addEventListener('scroll', animateCounters, { passive: true });
+window.addEventListener('load', animateCounters);
+
+// ── CTA FORM ─────────────────────────────
+function handleCTA() {
+  const email = document.getElementById('cta-email').value;
+  const msg = document.getElementById('cta-msg');
+  if (!email || !email.includes('@')) {
+    document.getElementById('cta-email').style.borderColor = 'var(--mg-orange)';
+    return;
+  }
+  document.getElementById('cta-email').style.borderColor = '';
+  document.getElementById('cta-email').value = '';
+  msg.classList.remove('hidden');
+  setTimeout(() => msg.classList.add('hidden'), 5000);
+}
+
+function handleFooterSub() {
+  const email = document.getElementById('footer-email').value;
+  const msg = document.getElementById('footer-msg');
+  if (!email || !email.includes('@')) return;
+  document.getElementById('footer-email').value = '';
+  msg.classList.remove('hidden');
+  setTimeout(() => msg.classList.add('hidden'), 4000);
+}
+
+// CTA email Enter key
+document.getElementById('cta-email').addEventListener('keydown', e => {
+  if (e.key === 'Enter') handleCTA();
+});
+</script>
+</body>
+</html>

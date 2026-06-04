@@ -1,1 +1,1243 @@
-<h1 class="text-3xl font-bold text-red">What We Offer In Progress</h1>
+<!-- <h1 class="text-3xl font-bold text-red">What We Offer In Progress</h1>  -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Services — MG Innovation Hub</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --mg-ink:        #0A0A0F;
+      --mg-electric:   #30aadf;
+      --mg-neon:       #B6FF4E;
+      --mg-orange:     #FF6B2B;
+      --mg-mid:        #1A1A2E;
+      --mg-surface:    #111128;
+      --mg-glass:      rgba(255,255,255,0.04);
+      --mg-border:     rgba(255,255,255,0.08);
+      --mg-text:       #ffffff;
+      --mg-text-muted: rgba(255,255,255,0.55);
+      --mg-text-faint: rgba(255,255,255,0.25);
+      --mg-footer-bg:  #07070D;
+      --mg-nav-scrolled:   rgba(10,10,15,0.88);
+      --mg-mobile-menu-bg: rgba(10,10,15,0.97);
+    }
+
+    /* ── LIGHT MODE ─────────────────────── */
+    html.light {
+      --mg-ink:        #F0F4F8;
+      --mg-electric:   #30aadf;
+      --mg-neon:       #3d8c00;
+      --mg-orange:     #D9541A;
+      --mg-surface:    #FFFFFF;
+      --mg-glass:      rgba(255, 255, 255, 0.03);
+      --mg-border:     rgba(0,0,0,0.10);
+      --mg-text:       #000000;
+      --mg-text-muted: rgba(0,0,0,0.55);
+      --mg-text-faint: rgba(0,0,0,0.30);
+      --mg-footer-bg:  #1A1A2E;
+      --mg-nav-scrolled:   rgba(240,244,248,0.94);
+      --mg-mobile-menu-bg: rgba(240,244,248,0.98);
+    }
+
+    /* Force black text in light mode */
+    html.light body,
+    html.light h1, html.light h2, html.light h3, html.light h4,
+    html.light p, html.light li { color: #000000; }
+    html.light p { color: rgba(0,0,0,0.65); }
+    html.light .nav-link { color: rgba(0,0,0,0.65); }
+    html.light .nav-link:hover { color: #000; }
+    html.light .service-num { color: rgba(0,0,0,0.08); }
+    html.light .faq-q { color: #000; }
+    html.light .faq-a { color: rgba(0,0,0,0.6); }
+    html.light .process-num { color: rgba(0,0,0,0.06); }
+    html.light .pricing-card { background: #fff; }
+    html.light .pricing-card.featured { background: #0A1628; }
+    html.light .pricing-card.featured h3,
+    html.light .pricing-card.featured p,
+    html.light .pricing-card.featured li { color: #fff; }
+    html.light .pricing-card.featured .price-val { color: #30aadf; }
+    html.light .tab-btn { color: rgba(0,0,0,0.5); }
+    html.light .tab-btn.active { color: #000; }
+    /* Page hero stays white text over image */
+    html.light .page-hero h1,
+    html.light .page-hero p,
+    html.light .page-hero .section-label,
+    html.light .page-hero .breadcrumb { color: #fff; }
+    html.light .page-hero .breadcrumb span { color: #30aadf; }
+    /* Footer stays dark */
+    html.light footer,
+    html.light footer p, html.light footer li,
+    html.light footer span, html.light footer h4 { color: rgba(255,255,255,0.7); }
+    html.light .footer-link { color: rgba(255,255,255,0.5); }
+    html.light .footer-link:hover { color: #30aadf; }
+    html.light .social-btn { color: rgba(255,255,255,0.45); border-color: rgba(255,255,255,0.12); }
+    html.light .social-btn:hover { color: #30aadf; border-color: #30aadf; }
+    html.light .ticker-wrap { background: #e2e8f0; }
+    html.light .ticker-inner span { color: rgba(0,0,0,0.4); }
+    html.light .stat-card { background: #fff; }
+
+    /* Smooth theme transition */
+    *, *::before, *::after {
+      transition-property: background-color, border-color, color, box-shadow;
+      transition-duration: .3s;
+      transition-timing-function: ease;
+    }
+    .reveal, .btn-primary, .btn-outline, .service-card-full,
+    .pricing-card, .faq-item, .nav-link, .footer-link, .social-btn {
+      transition-property: background-color, border-color, color,
+                           box-shadow, opacity, transform;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--mg-ink);
+      color: var(--mg-text);
+      font-family: 'DM Sans', sans-serif;
+      overflow-x: hidden;
+    }
+    h1,h2,h3,h4,nav a,.syne { font-family: 'Syne', sans-serif; }
+
+    /* Noise overlay */
+    body::before {
+      content: ''; position: fixed; inset: 0; z-index: 0; pointer-events: none;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      opacity: .4;
+    }
+
+    /* ── NAV ── */
+    #navbar {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      transition: background .4s, backdrop-filter .4s, box-shadow .4s;
+    }
+    #navbar.scrolled {
+      background: var(--mg-nav-scrolled);
+      backdrop-filter: blur(20px);
+      box-shadow: 0 1px 0 var(--mg-border);
+    }
+    .nav-link {
+      position: relative; font-weight: 500; font-size: .9rem;
+      color: var(--mg-text-muted); transition: color .25s; padding-bottom: 2px;
+    }
+    .nav-link::after {
+      content: ''; position: absolute; bottom: -4px; left: 0;
+      width: 0; height: 2px; background: var(--mg-electric); transition: width .3s;
+    }
+    .nav-link:hover { color: var(--mg-text); }
+    .nav-link:hover::after, .nav-link.active::after { width: 100%; }
+    .nav-link.active { color: var(--mg-text); }
+    .btn-primary {
+      background: var(--mg-electric); color: var(--mg-ink);
+      font-family: 'Syne', sans-serif; font-weight: 700;
+      padding: .55rem 1.4rem; border-radius: 2px;
+      transition: transform .2s, box-shadow .2s;
+      letter-spacing: .03em; font-size: .85rem;
+    }
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 28px rgba(0,229,255,.3);
+    }
+    .btn-outline {
+      border: 1.5px solid var(--mg-electric); color: var(--mg-electric);
+      font-family: 'Syne', sans-serif; font-weight: 700;
+      padding: .55rem 1.4rem; border-radius: 2px;
+      transition: background .2s, color .2s; font-size: .85rem;
+    }
+    .btn-outline:hover { background: var(--mg-electric); color: var(--mg-ink); }
+
+    /* Mobile menu */
+    #mobile-menu {
+      display: none; flex-direction: column; gap: 1rem;
+      padding: 1.5rem 1.5rem 2rem;
+      background: var(--mg-mobile-menu-bg);
+      backdrop-filter: blur(20px);
+      border-top: 1px solid var(--mg-border);
+    }
+    #mobile-menu.open { display: flex; }
+
+    /* ── THEME TOGGLE ── */
+    .theme-toggle {
+      width: 44px; height: 24px; border-radius: 12px;
+      background: var(--mg-border); border: 1px solid var(--mg-border);
+      position: relative; cursor: pointer; flex-shrink: 0;
+    }
+    .theme-toggle::before {
+      content: ''; position: absolute; top: 2px; left: 2px;
+      width: 18px; height: 18px; border-radius: 50%;
+      background: var(--mg-electric); transition: transform .3s;
+    }
+    html.light .theme-toggle::before { transform: translateX(20px); }
+    .theme-toggle-wrap { display: flex; align-items: center; gap: .5rem; }
+    .theme-icon { font-size: .85rem; line-height: 1; user-select: none; transition: opacity .3s; }
+
+    /* ── SECTION UTILS ── */
+    .section-label {
+      font-family: 'Syne', sans-serif; font-size: .7rem; letter-spacing: .2em;
+      text-transform: uppercase; color: var(--mg-electric);
+      display: flex; align-items: center; gap: .6rem;
+    }
+    .section-label::before {
+      content: ''; display: block; width: 2rem; height: 1.5px; background: var(--mg-electric);
+    }
+    .section-title {
+      font-size: clamp(2rem,4vw,3.2rem); font-weight: 800;
+      line-height: 1.1; letter-spacing: -.02em;
+    }
+    .section-title .hl  { color: var(--mg-electric); }
+    .section-title .hl-neon   { color: var(--mg-neon); }
+    .section-title .hl-orange { color: var(--mg-orange); }
+
+    /* ── PAGE HERO ── */
+    .page-hero {
+      position: relative; min-height: 500px; overflow: hidden;
+      display: flex; align-items: flex-end; padding-bottom: 5rem;
+    }
+    .hero-bg {
+      position: absolute; inset: 0;
+      background-image: url('https://images.unsplash.com/photo-1553484771-371a605b060b?w=1600&q=80');
+      background-size: cover; background-position: center top;
+      filter: brightness(.2);
+    }
+    .hero-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(135deg, rgba(0,10,30,.75) 0%, rgba(0,229,255,.03) 100%);
+    }
+    .hero-grid {
+      position: absolute; inset: 0; pointer-events: none; opacity: .05;
+      background-image:
+        linear-gradient(rgba(0,229,255,.5) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,229,255,.5) 1px, transparent 1px);
+      background-size: 60px 60px;
+    }
+    .breadcrumb { font-size: .75rem; color: rgba(255,255,255,.35); letter-spacing: .08em; }
+    .breadcrumb span { color: var(--mg-electric); }
+
+    /* ── TABS ── */
+    .tab-bar {
+      display: flex; gap: .25rem;
+      border-bottom: 1px solid var(--mg-border);
+      overflow-x: auto; padding-bottom: 0;
+    }
+    .tab-bar::-webkit-scrollbar { display: none; }
+    .tab-btn {
+      font-family: 'Syne', sans-serif; font-weight: 600; font-size: .68rem;
+      padding: .75rem 1.4rem; color: var(--mg-text-muted);
+      border-bottom: 2px solid transparent; white-space: nowrap;
+      cursor: pointer; transition: color .25s, border-color .25s;
+      background: none; border-top: none; border-left: none; border-right: none;
+    }
+    .tab-btn:hover { color: var(--mg-text); }
+    .tab-btn.active { color: var(--mg-electric); border-bottom-color: var(--mg-electric); }
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+
+    /* ── SERVICE CARDS (full detail) ── */
+    .service-card-full {
+      border: 1px solid var(--mg-border);
+      background: var(--mg-surface);
+      border-radius: 4px; overflow: hidden;
+      transition: border-color .3s, transform .3s;
+    }
+    .service-card-full:hover { border-color: var(--mg-electric); transform: translateY(-4px); }
+    .service-img {
+      width: 100%; height: 220px; object-fit: cover;
+      filter: brightness(.7); transition: filter .4s;
+    }
+    .service-card-full:hover .service-img { filter: brightness(.9); }
+    .service-num {
+      font-family: 'Syne', sans-serif; font-size: .7rem; font-weight: 700;
+      letter-spacing: .15em; color: rgba(255,255,255,.12);
+    }
+    .service-tag {
+      font-family: 'Syne', sans-serif; font-size: .65rem; letter-spacing: .12em;
+      text-transform: uppercase; padding: .2rem .6rem;
+      border-radius: 2px; display: inline-block; margin-bottom: .8rem;
+    }
+
+    /* ── PROCESS STEPS ── */
+    .process-step {
+      position: relative; display: flex; gap: 1.5rem; align-items: flex-start;
+    }
+    .process-line {
+      position: absolute; left: 1.9rem; top: 4rem; bottom: -2rem;
+      width: 1px; background: var(--mg-border);
+    }
+    .process-num {
+      font-family: 'Syne', sans-serif; font-size: 4rem; font-weight: 800;
+      line-height: 1; color: rgba(255,255,255,.05); position: absolute;
+      top: -.5rem; left: -.5rem; pointer-events: none;
+    }
+    .step-dot {
+      width: 40px; height: 40px; border-radius: 50%; flex-shrink: 0;
+      border: 1px solid var(--mg-electric);
+      display: flex; align-items: center; justify-content: center;
+      background: var(--mg-surface); z-index: 1;
+      font-family: 'Syne', sans-serif; font-weight: 700; font-size: .8rem;
+      color: var(--mg-electric);
+    }
+
+    /* ── PRICING ── */
+    .pricing-card {
+      border: 1px solid var(--mg-border);
+      background: var(--mg-surface);
+      border-radius: 4px; padding: 2rem;
+      transition: border-color .3s, transform .3s;
+      position: relative;
+    }
+    .pricing-card:hover { border-color: var(--mg-electric); transform: translateY(-6px); }
+    .pricing-card.featured {
+      border-color: var(--mg-electric);
+      background: linear-gradient(160deg, #041A2E 0%, #0A1628 100%);
+    }
+    .price-val {
+      font-family: 'Syne', sans-serif; font-size: 2.8rem;
+      font-weight: 800; color: var(--mg-electric); line-height: 1;
+    }
+    .price-period { font-size: .85rem; color: var(--mg-text-muted); }
+    .pricing-feature {
+      display: flex; align-items: flex-start; gap: .6rem;
+      font-size: .875rem; color: var(--mg-text-muted); margin-bottom: .6rem;
+    }
+    .pricing-feature .check { color: var(--mg-neon); flex-shrink: 0; margin-top: .15rem; }
+    .pricing-feature .cross { color: rgba(255,255,255,.2); flex-shrink: 0; margin-top: .15rem; }
+    html.light .pricing-feature .cross { color: rgba(0,0,0,.2); }
+    .badge-popular {
+      position: absolute; top: -12px; left: 50%; transform: translateX(-50%);
+      background: var(--mg-electric); color: var(--mg-ink);
+      font-family: 'Syne', sans-serif; font-size: .65rem; font-weight: 700;
+      letter-spacing: .1em; padding: .2rem .8rem; border-radius: 2px;
+      white-space: nowrap;
+    }
+
+    /* ── FAQ ── */
+    .faq-item {
+      border-bottom: 1px solid var(--mg-border);
+    }
+    .faq-q {
+      font-family: 'Syne', sans-serif; font-weight: 600; font-size: 1rem;
+      padding: 1.25rem 0; cursor: pointer;
+      display: flex; justify-content: space-between; align-items: center;
+      color: var(--mg-text); gap: 1rem;
+    }
+    .faq-icon {
+      width: 24px; height: 24px; border: 1px solid var(--mg-border);
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; font-size: .75rem; color: var(--mg-electric);
+      transition: transform .3s, border-color .3s;
+    }
+    .faq-item.open .faq-icon { transform: rotate(45deg); border-color: var(--mg-electric); }
+    .faq-a {
+      font-size: .9rem; color: var(--mg-text-muted); padding-bottom: 1.25rem;
+      line-height: 1.7; max-height: 0; overflow: hidden;
+      transition: max-height .4s ease, padding .4s ease;
+    }
+    .faq-item.open .faq-a { max-height: 300px; }
+
+    /* ── STAT CARD ── */
+    .stat-card {
+      border: 1px solid var(--mg-border);
+      background: var(--mg-glass); backdrop-filter: blur(12px);
+      padding: 1.5rem; border-radius: 4px;
+      transition: border-color .3s, transform .3s;
+    }
+    .stat-card:hover { border-color: var(--mg-electric); transform: translateY(-4px); }
+    .stat-value {
+      font-family: 'Syne', sans-serif; font-size: 2.8rem;
+      font-weight: 800; color: var(--mg-electric); line-height: 1;
+    }
+
+    /* ── TICKER ── */
+    .ticker-wrap {
+      overflow: hidden; white-space: nowrap;
+      border-top: 1px solid var(--mg-border);
+      border-bottom: 1px solid var(--mg-border);
+      background: var(--mg-surface); padding: .7rem 0;
+    }
+    .ticker-inner { display: inline-block; animation: ticker 30s linear infinite; }
+    .ticker-inner span {
+      padding: 0 2.5rem; font-family: 'Syne', sans-serif;
+      font-size: .75rem; letter-spacing: .12em; text-transform: uppercase;
+      color: rgba(255,255,255,.4);
+    }
+    .ticker-inner span b { color: var(--mg-electric); }
+    @keyframes ticker { from { transform: translateX(0) } to { transform: translateX(-50%) } }
+
+    /* ── CTA SECTION ── */
+    .cta-section {
+      position: relative; overflow: hidden;
+      background: linear-gradient(135deg, #041A2E 0%, #0A1628 50%, #041A20 100%);
+    }
+    .cta-grid {
+      position: absolute; inset: 0; pointer-events: none; opacity: .05;
+      background-image:
+        linear-gradient(rgba(0,229,255,.5) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,229,255,.5) 1px, transparent 1px);
+      background-size: 60px 60px;
+    }
+
+    /* ── FOOTER ── */
+    footer { background: var(--mg-footer-bg); border-top: 1px solid var(--mg-border); }
+    .footer-link { color: var(--mg-text-muted); font-size: .875rem; transition: color .25s; }
+    .footer-link:hover { color: var(--mg-electric); }
+    .social-btn {
+      width: 38px; height: 38px; border-radius: 4px;
+      border: 1px solid var(--mg-border);
+      display: flex; align-items: center; justify-content: center;
+      color: rgba(255,255,255,.45); transition: border-color .25s, color .25s;
+    }
+    .social-btn:hover { border-color: var(--mg-electric); color: var(--mg-electric); }
+
+    /* ── SCROLL REVEAL ── */
+    .reveal { opacity: 0; transform: translateY(28px); transition: opacity .7s ease, transform .7s ease; }
+    .reveal.visible { opacity: 1; transform: none; }
+    .reveal-delay-1 { transition-delay: .1s; }
+    .reveal-delay-2 { transition-delay: .2s; }
+    .reveal-delay-3 { transition-delay: .3s; }
+    .reveal-delay-4 { transition-delay: .4s; }
+
+    /* Glow blobs */
+    .glow-blob {
+      position: absolute; border-radius: 50%; pointer-events: none;
+      filter: blur(80px); opacity: .07;
+    }
+
+    ::-webkit-scrollbar { width: 5px; }
+    ::-webkit-scrollbar-track { background: var(--mg-ink); }
+    ::-webkit-scrollbar-thumb { background: var(--mg-electric); border-radius: 10px; }
+  </style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════
+     NAV
+════════════════════════════════════════ -->
+<nav id="navbar" class="py-4">
+  <div class="max-w-7xl mx-auto px-6 flex items-center justify-between">
+
+    <a href="/Home/home.html" class="flex items-center gap-2">
+      <div class="w-28 h-12 rounded-lg flex items-center justify-center amber-glow">
+        <img src="/images/MG_LOGO_2-removebg-preview.png" alt="Logo">
+      </div>
+    </a>
+
+    <div class="hidden md:flex items-center gap-8">
+      <a href="/Home/home.html" class="nav-link">Home</a>
+      <a href="/About/about.html" class="nav-link">About</a>
+      <a href="/services.html" class="nav-link active">Services</a>
+      <a href="/suppliers.html" class="nav-link">Suppliers</a>
+      <a href="/Events.html" class="nav-link">Events</a>
+      <a href="/gallery.html" class="nav-link">Gallery</a>
+      <a href="/contact.html" class="nav-link">Contact</a>
+    </div>
+
+    <div class="flex items-center gap-3">
+      <div class="theme-toggle-wrap">
+        <span class="theme-icon" id="icon-moon">🌙</span>
+        <button class="theme-toggle" id="theme-toggle" aria-label="Toggle light/dark mode"></button>
+        <span class="theme-icon" id="icon-sun">☀️</span>
+      </div>
+      <a href="/Explore.html" class="btn-primary hidden md:inline-block">Explore Hub</a>
+      <button id="hamburger" class="md:hidden flex flex-col gap-1.5 p-1" aria-label="Menu">
+        <span class="w-6 h-0.5 bg-white transition-all"></span>
+        <span class="w-6 h-0.5 bg-white transition-all"></span>
+        <span class="w-4 h-0.5 bg-white transition-all"></span>
+      </button>
+    </div>
+  </div>
+
+  <div id="mobile-menu">
+    <a href="/Home/home.html" class="nav-link text-lg">Home</a>
+    <a href="/About/about.html" class="nav-link text-lg">About</a>
+    <a href="/services.html" class="nav-link text-lg active">Services</a>
+    <a href="/suppliers.html" class="nav-link text-lg">Suppliers</a>
+    <a href="/Events.html" class="nav-link text-lg">Events</a>
+    <a href="/gallery.html" class="nav-link text-lg">Gallery</a>
+    <a href="/contact.html" class="nav-link text-lg">Contact</a>
+    <a href="/Explore.html" class="btn-primary text-center mt-2">Get Started</a>
+  </div>
+</nav>
+
+<!-- ══════════════════════════════════════
+     PAGE HERO
+════════════════════════════════════════ -->
+<section class="page-hero pt-24">
+  <div class="hero-bg"></div>
+  <div class="hero-overlay"></div>
+  <div class="hero-grid"></div>
+  <div class="glow-blob w-[500px] h-[400px] top-0 right-0" style="background:var(--mg-electric)"></div>
+
+  <div class="relative z-10 max-w-7xl mx-auto px-6 w-full">
+    <p class="breadcrumb mb-4">
+      <a href="index.html" class="hover:text-white transition-colors">Home</a>
+      &nbsp;/&nbsp;<span>Services</span>
+    </p>
+    <p class="section-label reveal">What We Offer</p>
+    <h1 class="reveal reveal-delay-1 mt-4"
+        style="font-size:clamp(3rem,7vw,5.5rem);font-weight:800;line-height:1.05;letter-spacing:-.03em">
+      Services Built<br>to <span style="color:var(--mg-electric)">Propel</span> You.
+    </h1>
+    <p class="reveal reveal-delay-2 mt-5 max-w-xl text-white/55 text-lg leading-relaxed">
+      From your first idea to your hundredth hire — every program at MG Innovation Hub is designed to meet you exactly where you are and get you to where you need to be.
+    </p>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     TICKER
+════════════════════════════════════════ -->
+<div class="ticker-wrap relative z-10">
+  <div class="ticker-inner">
+    <span>Incubation &nbsp;<b>✦</b></span>
+    <span>AI Bootcamps &nbsp;<b>✦</b></span>
+    <span>Co-working &nbsp;<b>✦</b></span>
+    <span>Corporate Innovation &nbsp;<b>✦</b></span>
+    <span>Investor Matchmaking &nbsp;<b>✦</b></span>
+    <span>Community &amp; Events &nbsp;<b>✦</b></span>
+    <span>MG Labs &nbsp;<b>✦</b></span>
+    <span>Mentorship &nbsp;<b>✦</b></span>
+    <span>Incubation &nbsp;<b>✦</b></span>
+    <span>AI Bootcamps &nbsp;<b>✦</b></span>
+    <span>Co-working &nbsp;<b>✦</b></span>
+    <span>Corporate Innovation &nbsp;<b>✦</b></span>
+    <span>Investor Matchmaking &nbsp;<b>✦</b></span>
+    <span>Community &amp; Events &nbsp;<b>✦</b></span>
+    <span>MG Labs &nbsp;<b>✦</b></span>
+    <span>Mentorship &nbsp;<b>✦</b></span>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     STATS STRIP
+════════════════════════════════════════ -->
+<section class="relative z-10 py-16">
+  <div class="max-w-7xl mx-auto px-6">
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div class="stat-card reveal text-center">
+        <div class="stat-value counter" data-target="6">0</div>
+        <div class="text-[var(--mg-text-muted)] text-sm mt-2">Core Service Lines</div>
+      </div>
+      <div class="stat-card reveal reveal-delay-1 text-center">
+        <div class="stat-value counter" data-target="120">0</div>
+        <div class="text-[var(--mg-text-muted)] text-sm mt-2">Startups Served</div>
+      </div>
+      <div class="stat-card reveal reveal-delay-2 text-center">
+        <div class="stat-value counter" data-target="48">0</div>
+        <div class="text-[var(--mg-text-muted)] text-sm mt-2">Expert Mentors</div>
+      </div>
+      <div class="stat-card reveal reveal-delay-3 text-center">
+        <div class="stat-value counter" data-target="94">0</div>
+        <div class="text-[var(--mg-text-muted)] text-sm mt-2">% Satisfaction Rate</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     TABBED SERVICES
+════════════════════════════════════════ -->
+<section class="relative z-10 py-10 pb-28" style="background:var(--mg-surface)">
+  <div class="glow-blob w-[500px] h-[500px] -right-40 top-1/3" style="background:var(--mg-electric)"></div>
+  <div class="max-w-7xl mx-auto px-6">
+
+    <div class="text-center mb-12">
+      <p class="section-label justify-center reveal">All Services</p>
+      <h2 class="section-title mt-4 reveal reveal-delay-1">
+        Every Tool You Need<br>to <span class="hl">Build &amp; Scale.</span>
+      </h2>
+    </div>
+
+    <!-- Tab Bar -->
+    <div class="tab-bar mb-10 reveal">
+      <button class="tab-btn active" data-tab="incubation">🚀 Entreprenurship & Business Development</button>
+      <button class="tab-btn" data-tab="workshops">🧠Digital Skills and Future Tech</button>
+      <button class="tab-btn" data-tab="coworking">💼 Innovation Labs</button>
+      <button class="tab-btn" data-tab="corporate">🌱 Growth & Scale</button>
+      <button class="tab-btn" data-tab="investors">📈 Marketing and Market Access</button>
+      <button class="tab-btn" data-tab="community">🌐 Community & Events</button>
+    </div>
+
+    <!-- ── INCUBATION ── -->
+    <div class="tab-panel active" id="tab-incubation">
+      <div class="grid lg:grid-cols-2 gap-10 items-center">
+        <div>
+          <span class="service-tag" style="background:rgba(0,184,204,.12);color:var(--mg-electric)">Flagship Program</span>
+          <h3 class="syne font-bold text-3xl mb-4">Entrepereneurship & Business Development</h3>
+          <p class="text-[var(--mg-text-muted)] leading-relaxed mb-4">
+            Our 6-month incubation program is the most comprehensive startup support offering in East Africa. We take pre-revenue ideas and early-stage companies through a structured journey — from validation all the way to market entry.
+          </p>
+          <p class="text-[var(--mg-text-muted)] leading-relaxed mb-6">
+            Every cohort is capped at 12 startups to ensure deeply personalised mentorship. You'll work with dedicated program managers, weekly 1:1 sessions with domain experts, and bi-weekly pitch practice with real investors in the room.
+          </p>
+          <ul class="space-y-3 mb-8">
+            <li class="flex items-start gap-3 text-sm text-[var(--mg-text-muted)]"><span style="color:var(--mg-neon)" class="mt-0.5">✓</span> 6-month structured curriculum</li>
+            <li class="flex items-start gap-3 text-sm text-[var(--mg-text-muted)]"><span style="color:var(--mg-neon)" class="mt-0.5">✓</span> Dedicated mentor (min. 2 sessions/week)</li>
+            <li class="flex items-start gap-3 text-sm text-[var(--mg-text-muted)]"><span style="color:var(--mg-neon)" class="mt-0.5">✓</span> Legal, financial &amp; IP support</li>
+            <li class="flex items-start gap-3 text-sm text-[var(--mg-text-muted)]"><span style="color:var(--mg-neon)" class="mt-0.5">✓</span> Access to co-working space throughout</li>
+            <li class="flex items-start gap-3 text-sm text-[var(--mg-text-muted)]"><span style="color:var(--mg-neon)" class="mt-0.5">✓</span> Demo Day with 80+ investors &amp; press</li>
+            <li class="flex items-start gap-3 text-sm text-[var(--mg-text-muted)]"><span style="color:var(--mg-neon)" class="mt-0.5">✓</span> No equity taken</li>
+          </ul>
+          <div class="flex gap-3 flex-wrap">
+            <a href="/contact.html" class="btn-primary px-6 py-3">Apply Now</a>
+            <a href="#" class="btn-outline px-6 py-3">Download Brochure</a>
+          </div>
+        </div>
+        <div class="relative">
+          <img src="https://images.unsplash.com/photo-1515187029135-18ee286d815b?w=800&q=80"
+               alt="Incubation" class="w-full h-80 object-cover rounded-sm border border-[var(--mg-border)]"/>
+          <div class="absolute -bottom-5 -left-5 border border-[var(--mg-electric)] bg-[var(--mg-ink)] px-5 py-3">
+            <div class="syne font-black text-2xl" style="color:var(--mg-electric)">Cohort 8</div>
+            <div class="text-xs text-[var(--mg-text-muted)]">Applications Open</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── WORKSHOPS ── -->
+    <div class="tab-panel" id="tab-workshops">
+      <div class="grid lg:grid-cols-2 gap-10 items-center">
+        <div>
+          <span class="service-tag" style="background:rgba(182,255,78,.1);color:var(--mg-neon)">Digital Skills & Future Tech</span>
+          <h3 class="syne font-bold text-3xl mb-4">AI &amp; Tech Bootcamps</h3>
+          <p class="text-[var(--mg-text-muted)] leading-relaxed mb-4">
+            Practical, project-based bootcamps led by engineers who build real products. We cover the full modern tech stack — from machine learning pipelines to cloud infrastructure — in formats that fit working professionals.
+          </p>
+          <p class="text-[var(--mg-text-muted)] leading-relaxed mb-6">
+            Bootcamps run in 4-week and 8-week formats, evenings and weekends. Remote attendance available for 60% of sessions.
+          </p>
+          <div class="grid grid-cols-2 gap-3 mb-8">
+            <div class="border border-[var(--mg-border)] p-3 rounded-sm">
+              <div class="syne font-bold text-sm mb-1" style="color:var(--mg-neon)">AI &amp; Machine Learning</div>
+              <div class="text-xs text-[var(--mg-text-muted)]">8 weeks · Next: Feb 2026</div>
+            </div>
+            <div class="border border-[var(--mg-border)] p-3 rounded-sm">
+              <div class="syne font-bold text-sm mb-1" style="color:var(--mg-neon)">Full-Stack Engineering</div>
+              <div class="text-xs text-[var(--mg-text-muted)]">8 weeks · Next: Mar 2026</div>
+            </div>
+            <div class="border border-[var(--mg-border)] p-3 rounded-sm">
+              <div class="syne font-bold text-sm mb-1" style="color:var(--mg-neon)">Data Engineering</div>
+              <div class="text-xs text-[var(--mg-text-muted)]">4 weeks · Next: Jan 2026</div>
+            </div>
+            <div class="border border-[var(--mg-border)] p-3 rounded-sm">
+              <div class="syne font-bold text-sm mb-1" style="color:var(--mg-neon)">Product Management</div>
+              <div class="text-xs text-[var(--mg-text-muted)]">4 weeks · Next: Feb 2026</div>
+            </div>
+          </div>
+          <a href="/contact.html" class="btn-primary px-6 py-3">Reserve a Spot</a>
+        </div>
+        <div>
+          <img src="https://images.unsplash.com/photo-1531482615713-2afd69097998?w=800&q=80"
+               alt="Workshop" class="w-full h-80 object-cover rounded-sm border border-[var(--mg-border)]"/>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── CO-WORKING ── -->
+    <div class="tab-panel" id="tab-coworking">
+      <div class="grid lg:grid-cols-2 gap-10 items-center">
+        <div>
+          <span class="service-tag" style="background:rgba(255,107,43,.1);color:var(--mg-orange)">Innovation Labs</span>
+          <h3 class="syne font-bold text-3xl mb-4">Premium Co-working Spaces</h3>
+          <p class="text-[var(--mg-text-muted)] leading-relaxed mb-6">
+            Three floors of thoughtfully designed workspace in Nairobi's Upperhill — optimised for deep work, spontaneous collaboration, and the kind of serendipitous meeting that changes a company's trajectory.
+          </p>
+          <div class="grid grid-cols-3 gap-3 mb-8">
+            <div class="border border-[var(--mg-border)] p-3 rounded-sm text-center">
+              <div class="syne font-black text-2xl" style="color:var(--mg-orange)">120</div>
+              <div class="text-xs text-[var(--mg-text-muted)] mt-1">Hot Desks</div>
+            </div>
+            <div class="border border-[var(--mg-border)] p-3 rounded-sm text-center">
+              <div class="syne font-black text-2xl" style="color:var(--mg-orange)">18</div>
+              <div class="text-xs text-[var(--mg-text-muted)] mt-1">Private Offices</div>
+            </div>
+            <div class="border border-[var(--mg-border)] p-3 rounded-sm text-center">
+              <div class="syne font-black text-2xl" style="color:var(--mg-orange)">5</div>
+              <div class="text-xs text-[var(--mg-text-muted)] mt-1">Event Venues</div>
+            </div>
+          </div>
+          <ul class="space-y-3 mb-8">
+            <li class="flex items-start gap-3 text-sm text-[var(--mg-text-muted)]"><span style="color:var(--mg-neon)" class="mt-0.5">✓</span> 1 Gbps fibre, backup 4G</li>
+            <li class="flex items-start gap-3 text-sm text-[var(--mg-text-muted)]"><span style="color:var(--mg-neon)" class="mt-0.5">✓</span> 24/7 biometric access</li>
+            <li class="flex items-start gap-3 text-sm text-[var(--mg-text-muted)]"><span style="color:var(--mg-neon)" class="mt-0.5">✓</span> Dedicated printing &amp; prototyping lab</li>
+            <li class="flex items-start gap-3 text-sm text-[var(--mg-text-muted)]"><span style="color:var(--mg-neon)" class="mt-0.5">✓</span> Podcast &amp; recording studio</li>
+            <li class="flex items-start gap-3 text-sm text-[var(--mg-text-muted)]"><span style="color:var(--mg-neon)" class="mt-0.5">✓</span> Fully catered café</li>
+          </ul>
+          <a href="#pricing" class="btn-primary px-6 py-3">See Pricing</a>
+        </div>
+        <div>
+          <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&q=80"
+               alt="Co-working" class="w-full h-80 object-cover rounded-sm border border-[var(--mg-border)]"/>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── CORPORATE ── -->
+    <div class="tab-panel" id="tab-corporate">
+      <div class="grid lg:grid-cols-2 gap-10 items-center">
+        <div>
+          <span class="service-tag" style="background:rgba(0,184,204,.12);color:var(--mg-electric)">Enterprise</span>
+          <h3 class="syne font-bold text-3xl mb-4">Community & Events</h3>
+          <p class="text-[var(--mg-text-muted)] leading-relaxed mb-4">
+            We help enterprises build the innovation muscle they need to compete in a rapidly shifting landscape. Whether you want to run an internal hackathon, build an innovation lab, or identify startups to partner with — we architect the entire experience.
+          </p>
+          <ul class="space-y-3 mb-8">
+            <li class="flex items-start gap-3 text-sm text-[var(--mg-text-muted)]"><span style="color:var(--mg-neon)" class="mt-0.5">✓</span> Custom hackathon design &amp; facilitation</li>
+            <li class="flex items-start gap-3 text-sm text-[var(--mg-text-muted)]"><span style="color:var(--mg-neon)" class="mt-0.5">✓</span> Innovation lab setup &amp; management</li>
+            <li class="flex items-start gap-3 text-sm text-[var(--mg-text-muted)]"><span style="color:var(--mg-neon)" class="mt-0.5">✓</span> Startup scouting &amp; deal facilitation</li>
+            <li class="flex items-start gap-3 text-sm text-[var(--mg-text-muted)]"><span style="color:var(--mg-neon)" class="mt-0.5">✓</span> Corporate venture studio</li>
+            <li class="flex items-start gap-3 text-sm text-[var(--mg-text-muted)]"><span style="color:var(--mg-neon)" class="mt-0.5">✓</span> Innovation culture training</li>
+          </ul>
+          <div class="flex gap-3 flex-wrap">
+            <a href="/contact.html" class="btn-primary px-6 py-3">Request a Proposal</a>
+            <a href="#" class="btn-outline px-6 py-3">Case Studies</a>
+          </div>
+        </div>
+        <div>
+          <img src="https://images.unsplash.com/photo-1560179707-f14e90ef3623?w=800&q=80"
+               alt="Corporate" class="w-full h-80 object-cover rounded-sm border border-[var(--mg-border)]"/>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── INVESTORS ── -->
+    <div class="tab-panel" id="tab-investors">
+      <div class="grid lg:grid-cols-2 gap-10 items-center">
+        <div>
+          <span class="service-tag" style="background:rgba(182,255,78,.1);color:var(--mg-neon)">Capital</span>
+          <h3 class="syne font-bold text-3xl mb-4">Marketing and Market Access</h3>
+          <p class="text-[var(--mg-text-muted)] leading-relaxed mb-4">
+            Getting to the right investor at the right time is still one of the hardest challenges for African founders. We've spent 7 years building the relationships that matter — so you don't have to start from zero.
+          </p>
+          <p class="text-[var(--mg-text-muted)] leading-relaxed mb-6">
+            Our network includes 200+ angels, 45 institutional VCs, and a growing cohort of strategic corporates actively looking to deploy into East African startups.
+          </p>
+          <ul class="space-y-3 mb-8">
+            <li class="flex items-start gap-3 text-sm text-[var(--mg-text-muted)]"><span style="color:var(--mg-neon)" class="mt-0.5">✓</span> Monthly pitch nights (80+ investors)</li>
+            <li class="flex items-start gap-3 text-sm text-[var(--mg-text-muted)]"><span style="color:var(--mg-neon)" class="mt-0.5">✓</span> Curated warm introductions</li>
+            <li class="flex items-start gap-3 text-sm text-[var(--mg-text-muted)]"><span style="color:var(--mg-neon)" class="mt-0.5">✓</span> Pitch deck &amp; data room review</li>
+            <li class="flex items-start gap-3 text-sm text-[var(--mg-text-muted)]"><span style="color:var(--mg-neon)" class="mt-0.5">✓</span> Term sheet &amp; deal support</li>
+          </ul>
+          <a href="/contact.html" class="btn-primary px-6 py-3">Get Introduced</a>
+        </div>
+        <div>
+          <img src="https://images.unsplash.com/photo-1444653614773-995cb1ef9efa?w=800&q=80"
+               alt="Investors" class="w-full h-80 object-cover rounded-sm border border-[var(--mg-border)]"/>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── COMMUNITY ── -->
+    <div class="tab-panel" id="tab-community">
+      <div class="grid lg:grid-cols-2 gap-10 items-center">
+        <div>
+          <span class="service-tag" style="background:rgba(255,107,43,.1);color:var(--mg-orange)">Growth & Scale</span>
+          <h3 class="syne font-bold text-3xl mb-4">Community &amp; Events</h3>
+          <p class="text-[var(--mg-text-muted)] leading-relaxed mb-4">
+            The MG community is a living network of 1,200+ engineers, founders, investors, and operators who share one goal: building Africa's tech future. Our events calendar keeps the momentum going year-round.
+          </p>
+          <div class="grid grid-cols-2 gap-3 mb-8">
+            <div class="border border-[var(--mg-border)] p-3 rounded-sm">
+              <div class="syne font-bold text-sm mb-1" style="color:var(--mg-orange)">Weekly Demo Days</div>
+              <div class="text-xs text-[var(--mg-text-muted)]">Every Friday, 5 PM</div>
+            </div>
+            <div class="border border-[var(--mg-border)] p-3 rounded-sm">
+              <div class="syne font-bold text-sm mb-1" style="color:var(--mg-orange)">Monthly Summit</div>
+              <div class="text-xs text-[var(--mg-text-muted)]">500+ attendees</div>
+            </div>
+            <div class="border border-[var(--mg-border)] p-3 rounded-sm">
+              <div class="syne font-bold text-sm mb-1" style="color:var(--mg-orange)">Cross-border Tours</div>
+              <div class="text-xs text-[var(--mg-text-muted)]">Quarterly, 7 cities</div>
+            </div>
+            <div class="border border-[var(--mg-border)] p-3 rounded-sm">
+              <div class="syne font-bold text-sm mb-1" style="color:var(--mg-orange)">Online Community</div>
+              <div class="text-xs text-[var(--mg-text-muted)]">Slack · 1,200+ members</div>
+            </div>
+          </div>
+          <a href="/contact.html" class="btn-primary px-6 py-3">Join the Community</a>
+        </div>
+        <div>
+          <img src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=800&q=80"
+               alt="Community" class="w-full h-80 object-cover rounded-sm border border-[var(--mg-border)]"/>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     HOW IT WORKS — PROCESS
+════════════════════════════════════════ -->
+<section class="relative z-10 py-28">
+  <div class="glow-blob w-[400px] h-[400px] -left-32 top-1/2 -translate-y-1/2" style="background:var(--mg-neon)"></div>
+  <div class="max-w-7xl mx-auto px-6">
+
+    <div class="text-center mb-16">
+      <p class="section-label justify-center reveal">How It Works</p>
+      <h2 class="section-title mt-4 reveal reveal-delay-1">
+        Your Journey<br>Through the <span class="hl">Hub.</span>
+      </h2>
+      <p class="mt-4 text-[var(--mg-text-muted)] max-w-xl mx-auto reveal reveal-delay-2">
+        Every engagement follows a clear arc — from first contact to funded, shipped, or scaled.
+      </p>
+    </div>
+
+    <div class="max-w-3xl mx-auto space-y-12">
+
+      <div class="process-step reveal">
+        <div class="process-line"></div>
+        <div class="step-dot">01</div>
+        <div class="relative pl-2">
+          <div class="process-num">01</div>
+          <h3 class="syne font-bold text-xl mb-2">Apply &amp; Qualify</h3>
+          <p class="text-[var(--mg-text-muted)] text-sm leading-relaxed">
+            Submit your application online. Our team reviews every submission within 48 hours and books a discovery call with qualifying founders. No pitch deck required at this stage — just your story.
+          </p>
+        </div>
+      </div>
+
+      <div class="process-step reveal reveal-delay-1">
+        <div class="process-line"></div>
+        <div class="step-dot">02</div>
+        <div class="relative pl-2">
+          <div class="process-num">02</div>
+          <h3 class="syne font-bold text-xl mb-2">Onboarding &amp; Orientation</h3>
+          <p class="text-[var(--mg-text-muted)] text-sm leading-relaxed">
+            Accepted cohort members spend the first week getting matched to mentors, setting 90-day goals, and meeting fellow founders. Orientation is free — no commitment required until Week 2.
+          </p>
+        </div>
+      </div>
+
+      <div class="process-step reveal reveal-delay-2">
+        <div class="process-line"></div>
+        <div class="step-dot">03</div>
+        <div class="relative pl-2">
+          <div class="process-num">03</div>
+          <h3 class="syne font-bold text-xl mb-2">Build &amp; Iterate</h3>
+          <p class="text-[var(--mg-text-muted)] text-sm leading-relaxed">
+            Weeks 2–18 are where the real work happens. You'll run user research sprints, build MVPs, pressure-test your business model, and receive structured feedback at every milestone checkpoint.
+          </p>
+        </div>
+      </div>
+
+      <div class="process-step reveal reveal-delay-3">
+        <div class="process-line"></div>
+        <div class="step-dot">04</div>
+        <div class="relative pl-2">
+          <div class="process-num">04</div>
+          <h3 class="syne font-bold text-xl mb-2">Demo Day &amp; Capital</h3>
+          <p class="text-[var(--mg-text-muted)] text-sm leading-relaxed">
+            The program culminates in our flagship Demo Day — a live event with 80+ investors, media, and corporate partners. We coach you on pitch delivery, data room prep, and follow-up strategy.
+          </p>
+        </div>
+      </div>
+
+      <div class="process-step reveal reveal-delay-4">
+        <div class="step-dot" style="border-color:var(--mg-neon);color:var(--mg-neon)">05</div>
+        <div class="relative pl-2">
+          <div class="process-num">05</div>
+          <h3 class="syne font-bold text-xl mb-2">Alumni Network &amp; Beyond</h3>
+          <p class="text-[var(--mg-text-muted)] text-sm leading-relaxed">
+            Graduation isn't an exit — it's an upgrade. Alumni retain access to the space, the community, and preferential rates on all services. Many of our strongest mentors today are alumni from Cohort 1.
+          </p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     PRICING
+════════════════════════════════════════ -->
+<section id="pricing" class="relative z-10 py-28" style="background:var(--mg-surface)">
+  <div class="glow-blob w-[500px] h-[400px] right-0 top-1/4" style="background:var(--mg-electric)"></div>
+  <div class="max-w-7xl mx-auto px-6">
+
+    <div class="text-center mb-16">
+      <p class="section-label justify-center reveal">Transparent Pricing</p>
+      <h2 class="section-title mt-4 reveal reveal-delay-1">
+        Simple Plans,<br><span class="hl">No Surprises.</span>
+      </h2>
+      <p class="mt-4 text-[var(--mg-text-muted)] max-w-xl mx-auto reveal reveal-delay-2">
+        Co-working membership plans. Incubation and corporate programs are scoped individually — contact us for a custom proposal.
+      </p>
+    </div>
+
+    <div class="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+
+      <!-- Starter -->
+      <div class="pricing-card reveal">
+        <div class="syne font-bold text-sm tracking-wide text-[var(--mg-text-muted)] mb-4 uppercase">Starter</div>
+        <div class="price-val">KES 6K</div>
+        <div class="price-period mb-6">/ month</div>
+        <div class="border-t border-[var(--mg-border)] pt-6 space-y-0">
+          <div class="pricing-feature"><span class="check">✓</span> 8 hot-desk days / month</div>
+          <div class="pricing-feature"><span class="check">✓</span> High-speed WiFi</div>
+          <div class="pricing-feature"><span class="check">✓</span> Community Slack access</div>
+          <div class="pricing-feature"><span class="check">✓</span> 2 meeting room hours</div>
+          <div class="pricing-feature"><span class="cross">✗</span> Private office</div>
+          <div class="pricing-feature"><span class="cross">✗</span> Dedicated desk</div>
+          <div class="pricing-feature"><span class="cross">✗</span> Priority event seating</div>
+        </div>
+        <a href="/contact.html" class="btn-outline w-full text-center block mt-8 py-3">Get Started</a>
+      </div>
+
+      <!-- Pro (Featured) -->
+      <div class="pricing-card featured reveal reveal-delay-1">
+        <div class="badge-popular">MOST POPULAR</div>
+        <div class="syne font-bold text-sm tracking-wide mb-4 uppercase" style="color:var(--mg-electric)">Pro</div>
+        <div class="price-val">KES 12K</div>
+        <div class="price-period mb-6" style="color:rgba(255,255,255,0.5)">/ month</div>
+        <div class="border-t pt-6 space-y-0" style="border-color:rgba(255,255,255,.1)">
+          <div class="pricing-feature" style="color:rgba(255,255,255,.7)"><span class="check">✓</span> Unlimited hot-desk access</div>
+          <div class="pricing-feature" style="color:rgba(255,255,255,.7)"><span class="check">✓</span> Dedicated desk (lockable)</div>
+          <div class="pricing-feature" style="color:rgba(255,255,255,.7)"><span class="check">✓</span> 10 meeting room hours</div>
+          <div class="pricing-feature" style="color:rgba(255,255,255,.7)"><span class="check">✓</span> Priority event seating</div>
+          <div class="pricing-feature" style="color:rgba(255,255,255,.7)"><span class="check">✓</span> 1 mentor coffee chat / month</div>
+          <div class="pricing-feature" style="color:rgba(255,255,255,.7)"><span class="check">✓</span> Podcast studio access</div>
+          <div class="pricing-feature" style="color:rgba(255,255,255,.4)"><span class="cross">✗</span> Private office</div>
+        </div>
+        <a href="/contact.html" class="btn-primary w-full text-center block mt-8 py-3">Get Started</a>
+      </div>
+
+      <!-- Scale -->
+      <div class="pricing-card reveal reveal-delay-2">
+        <div class="syne font-bold text-sm tracking-wide text-[var(--mg-text-muted)] mb-4 uppercase">Scale</div>
+        <div class="price-val">KES 35K</div>
+        <div class="price-period mb-6">/ month</div>
+        <div class="border-t border-[var(--mg-border)] pt-6 space-y-0">
+          <div class="pricing-feature"><span class="check">✓</span> Private office (up to 4 pax)</div>
+          <div class="pricing-feature"><span class="check">✓</span> Unlimited meeting rooms</div>
+          <div class="pricing-feature"><span class="check">✓</span> Priority event seating &amp; hosting</div>
+          <div class="pricing-feature"><span class="check">✓</span> 3 mentor sessions / month</div>
+          <div class="pricing-feature"><span class="check">✓</span> Dedicated account manager</div>
+          <div class="pricing-feature"><span class="check">✓</span> Podcast &amp; recording studio</div>
+          <div class="pricing-feature"><span class="check">✓</span> Investor intro privileges</div>
+        </div>
+        <a href="/contact.html" class="btn-outline w-full text-center block mt-8 py-3">Get Started</a>
+      </div>
+
+    </div>
+
+    <p class="text-center text-[var(--mg-text-muted)] text-sm mt-8 reveal">
+      All plans include free orientation week &amp; community access. Annual billing saves 15%.
+    </p>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     FAQ
+════════════════════════════════════════ -->
+<section class="relative z-10 py-28">
+  <div class="max-w-3xl mx-auto px-6">
+
+    <div class="text-center mb-14">
+      <p class="section-label justify-center reveal">Got Questions?</p>
+      <h2 class="section-title mt-4 reveal reveal-delay-1">
+        Frequently Asked <span class="hl">Questions.</span>
+      </h2>
+    </div>
+
+    <div class="space-y-0 reveal">
+
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          Do you take equity from incubated startups?
+          <div class="faq-icon">+</div>
+        </div>
+        <div class="faq-a">
+          No — MG Innovation Hub does not take any equity from startups in our incubation program. We believe founders should retain full ownership of their companies. Our incubation fees are program-based and clearly outlined during the application process.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          What stage should my startup be at to apply?
+          <div class="faq-icon">+</div>
+        </div>
+        <div class="faq-a">
+          We work with founders from idea stage all the way to Series A. Most cohort members are pre-seed or seed stage — they have a clear problem, some early validation, and a team. We also have a "pre-incubation" track for solo founders still forming their team.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          Can I attend workshops without a co-working membership?
+          <div class="faq-icon">+</div>
+        </div>
+        <div class="faq-a">
+          Absolutely. Our bootcamps and workshops are open to the public. You don't need a membership to enrol — just register and pay the bootcamp fee. Existing members get a 20% discount on all workshops.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          Is remote participation available?
+          <div class="faq-icon">+</div>
+        </div>
+        <div class="faq-a">
+          For bootcamps, yes — approximately 60% of sessions are available remotely via our live-stream and recording platform. For the incubation program, we require physical presence for at least 70% of sessions, particularly the milestone reviews and Demo Day.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          How do I know if I qualify for investor introductions?
+          <div class="faq-icon">+</div>
+        </div>
+        <div class="faq-a">
+          Investor matchmaking is available to active incubation cohort members and Pro/Scale co-working members. Your account manager will assess your funding readiness and match you to appropriate investors based on your sector, stage, and raise size. We never make cold introductions — every intro is warm and pre-qualified on both sides.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          Are there discounts for teams or NGOs?
+          <div class="faq-icon">+</div>
+        </div>
+        <div class="faq-a">
+          Yes. Teams of 3 or more get 10% off co-working plans. Registered NGOs and social enterprises get 20% off all programs. Contact us with proof of registration to access these rates.
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     CTA
+════════════════════════════════════════ -->
+<section class="cta-section relative py-28 z-10">
+  <div class="cta-grid"></div>
+  <div class="absolute inset-0 pointer-events-none"
+       style="background:radial-gradient(ellipse 70% 60% at 50% 50%,rgba(0,229,255,.1) 0%,transparent 70%)"></div>
+
+  <div class="relative z-10 max-w-3xl mx-auto px-6 text-center">
+    <p class="section-label justify-center reveal" style="color:var(--mg-electric)">Ready to Start?</p>
+    <h2 class="reveal reveal-delay-1 mt-4"
+        style="font-size:clamp(2rem,4vw,3.2rem);font-weight:800;line-height:1.1;color:#fff">
+      Let's Find the Right<br><span style="color:var(--mg-electric)">Service for You.</span>
+    </h2>
+    <p class="mt-5 reveal reveal-delay-2" style="color:rgba(255,255,255,.55);font-size:1.1rem;max-width:36rem;margin-left:auto;margin-right:auto">
+      Not sure where to start? Drop us a message and we'll match you to the right program within 24 hours — no pressure, no sales pitch.
+    </p>
+    <div class="mt-10 max-w-md mx-auto reveal reveal-delay-3">
+      <div class="flex flex-col sm:flex-row gap-3">
+        <input type="email" id="cta-email" placeholder="Enter your email address"
+          class="flex-1 bg-white/5 border border-white/10 px-4 py-3 text-white placeholder-white/30 focus:outline-none focus:border-[var(--mg-electric)] transition-colors text-sm rounded-sm"/>
+        <button onclick="handleCTA()" class="btn-primary px-6 py-3 whitespace-nowrap">
+          Talk to Us ↗
+        </button>
+      </div>
+      <p id="cta-msg" class="mt-3 text-sm hidden" style="color:var(--mg-neon)">✓ Message received! We'll be in touch within 24 hours.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     FOOTER
+════════════════════════════════════════ -->
+<footer class="relative z-10">
+  <div class="max-w-7xl mx-auto px-6 py-16">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
+
+      <div class="lg:col-span-1">
+        <a href="index.html" class="flex items-center gap-2 mb-4">
+          <div class="w-28 h-12 rounded-lg flex items-center justify-center amber-glow">
+        <img src="/images/MG_LOGO_2-removebg-preview.png" alt="Logo">
+      </div>
+        </a>
+        <p class="text-white/40 text-sm leading-relaxed">Africa's premier innovation ecosystem. Building the future, one breakthrough at a time.</p>
+        <div class="flex gap-2 mt-5">
+          <a href="#" class="social-btn">𝕏</a>
+          <a href="#" class="social-btn">in</a>
+          <a href="#" class="social-btn">◎</a>
+          <a href="#" class="social-btn">▶</a>
+        </div>
+      </div>
+
+      <div>
+        <h4 class="syne font-bold text-sm mb-4 tracking-wide">Company</h4>
+        <ul class="space-y-2.5">
+          <li><a href="/About/about.html" class="footer-link">About Us</a></li>
+          <li><a href="/services.html" class="footer-link">Services</a></li>
+          <li><a href="/suppliers.html" class="footer-link">Suppliers</a></li>
+          <li><a href="/Events.html" class="footer-link">Events</a></li>
+          <li><a href="/gallery.html" class="footer-link">Gallery</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="syne font-bold text-sm mb-4 tracking-wide">Services</h4>
+        <ul class="space-y-2.5">
+          <li><a href="/services.html" class="footer-link" style="color:var(--mg-electric)">All Services</a></li>
+          <li><a href="/services.html" class="footer-link">Entrepreneurship & Business Development</a></li>
+          <li><a href="/services.html" class="footer-link">Innovation Labs</a></li>
+          <li><a href="/services.html" class="footer-link">Community & Events</a></li>
+          <li><a href="#pricing" class="footer-link">Pricing</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="syne font-bold text-sm mb-4 tracking-wide">Contact</h4>
+        <ul class="space-y-3">
+          <li class="text-white/40 text-sm flex gap-2 items-start">
+            <span style="color:var(--mg-electric)" class="mt-0.5">📍</span> Riva Plaza, Nakuru, Kenya
+          </li>
+          <li><a href="mailto:hello@mginnovationhub.co" class="footer-link text-sm">hello@mginnovationhub.co</a></li>
+          <li><a href="tel:+254700000000" class="footer-link text-sm">+254 700 000 000</a></li>
+        </ul>
+        <div class="mt-5">
+          <p class="text-white/25 text-xs mb-2">Newsletter</p>
+          <div class="flex gap-2">
+            <input type="email" id="footer-email" placeholder="your@email.com"
+              class="flex-1 bg-white/5 border border-white/10 px-3 py-2 text-xs text-white placeholder-white/20 focus:outline-none focus:border-[var(--mg-electric)] transition-colors rounded-sm min-w-0"/>
+            <button onclick="handleFooterSub()" class="px-3 py-2 text-xs font-bold syne rounded-sm"
+                    style="background:var(--mg-electric);color:var(--mg-ink)">→</button>
+          </div>
+          <p id="footer-msg" class="text-xs mt-1 hidden" style="color:var(--mg-neon)">✓ Subscribed!</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="border-t" style="border-color:rgba(255,255,255,.05)">
+    <div class="max-w-7xl mx-auto px-6 py-5 flex flex-col sm:flex-row justify-between items-center gap-3">
+      <p class="text-white/25 text-xs">© 2025 MG Innovation Hub Ltd. All rights reserved.</p>
+      <div class="flex gap-5">
+        <a href="#" class="footer-link text-xs">Privacy Policy</a>
+        <a href="#" class="footer-link text-xs">Terms of Use</a>
+        <a href="#" class="footer-link text-xs">Cookie Settings</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- ══════════════════════════════════════
+     JAVASCRIPT
+════════════════════════════════════════ -->
+<script>
+// ── THEME TOGGLE ──────────────────────────
+(function() {
+  if (localStorage.getItem('mg-theme') === 'light')
+    document.documentElement.classList.add('light');
+})();
+
+function applyTheme(isLight) {
+  document.documentElement.classList.toggle('light', isLight);
+  localStorage.setItem('mg-theme', isLight ? 'light' : 'dark');
+  document.getElementById('icon-moon').style.opacity = isLight ? '.35' : '1';
+  document.getElementById('icon-sun').style.opacity  = isLight ? '1'   : '.35';
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  const isLight = document.documentElement.classList.contains('light');
+  document.getElementById('icon-moon').style.opacity = isLight ? '.35' : '1';
+  document.getElementById('icon-sun').style.opacity  = isLight ? '1'   : '.35';
+  document.getElementById('theme-toggle').addEventListener('click', () => {
+    applyTheme(!document.documentElement.classList.contains('light'));
+  });
+});
+
+// ── NAV SCROLL ────────────────────────────
+window.addEventListener('scroll', () => {
+  document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 60);
+});
+
+// ── HAMBURGER ─────────────────────────────
+document.getElementById('hamburger').addEventListener('click', () => {
+  document.getElementById('mobile-menu').classList.toggle('open');
+});
+document.querySelectorAll('#mobile-menu a').forEach(a =>
+  a.addEventListener('click', () => document.getElementById('mobile-menu').classList.remove('open'))
+);
+
+// ── TABS ──────────────────────────────────
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    // Deactivate all
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    // Activate clicked
+    btn.classList.add('active');
+    const target = document.getElementById('tab-' + btn.dataset.tab);
+    if (target) target.classList.add('active');
+  });
+});
+
+// ── FAQ ───────────────────────────────────
+function toggleFaq(el) {
+  const item = el.parentElement;
+  const isOpen = item.classList.contains('open');
+  // Close all
+  document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+  // Toggle clicked
+  if (!isOpen) item.classList.add('open');
+}
+
+// ── SCROLL REVEAL ─────────────────────────
+function triggerReveal() {
+  document.querySelectorAll('.reveal:not(.visible)').forEach(el => {
+    if (el.getBoundingClientRect().top < window.innerHeight - 60)
+      el.classList.add('visible');
+  });
+}
+window.addEventListener('scroll', triggerReveal, { passive: true });
+window.addEventListener('load', triggerReveal);
+setTimeout(triggerReveal, 200);
+
+// ── COUNTER ANIMATION ─────────────────────
+function animateCounters() {
+  document.querySelectorAll('.counter').forEach(el => {
+    if (el.dataset.animated) return;
+    if (el.getBoundingClientRect().top < window.innerHeight - 40) {
+      el.dataset.animated = '1';
+      const target = +el.dataset.target;
+      const suffix = el.dataset.target >= 90 ? '%' : '+';
+      let count = 0;
+      const step = Math.ceil(target / 40);
+      const iv = setInterval(() => {
+        count = Math.min(count + step, target);
+        el.textContent = count + suffix;
+        if (count >= target) clearInterval(iv);
+      }, 40);
+    }
+  });
+}
+window.addEventListener('scroll', animateCounters, { passive: true });
+window.addEventListener('load', animateCounters);
+
+// ── CTA FORM ──────────────────────────────
+function handleCTA() {
+  const email = document.getElementById('cta-email');
+  const msg   = document.getElementById('cta-msg');
+  if (!email.value || !email.value.includes('@')) {
+    email.style.borderColor = 'var(--mg-orange)';
+    return;
+  }
+  email.style.borderColor = '';
+  email.value = '';
+  msg.classList.remove('hidden');
+  setTimeout(() => msg.classList.add('hidden'), 5000);
+}
+document.getElementById('cta-email').addEventListener('keydown', e => {
+  if (e.key === 'Enter') handleCTA();
+});
+
+function handleFooterSub() {
+  const el  = document.getElementById('footer-email');
+  const msg = document.getElementById('footer-msg');
+  if (!el.value || !el.value.includes('@')) return;
+  el.value = '';
+  msg.classList.remove('hidden');
+  setTimeout(() => msg.classList.add('hidden'), 4000);
+}
+document.getElementById('footer-email').addEventListener('keydown', e => {
+  if (e.key === 'Enter') handleFooterSub();
+});
+</script>
+</body>
+</html>

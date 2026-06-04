@@ -1,1 +1,1134 @@
-<h1 class="text-3xl font-bold text-red">Memories Update In Progress</h1>
+<!-- <h1 class="text-3xl font-bold text-red">Memories Update In Progress</h1> -->
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Gallery — MG Innovation Hub</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet"/>
+  <style>
+    /* ══════════════════════════════════════
+       DESIGN TOKENS
+    ════════════════════════════════════════ */
+    :root {
+      --mg-ink:        #0A0A0F;
+      --mg-electric:   #30aadf;
+      --mg-neon:       #B6FF4e;
+      --mg-orange:     #FF6B2B;
+      --mg-mid:        #1A1A2E;
+      --mg-surface:    #111128;
+      --mg-glass:      rgba(255,255,255,0.04);
+      --mg-border:     rgba(255,255,255,0.08);
+      --mg-text:       #ffffff;
+      --mg-text-muted: rgba(255,255,255,0.55);
+      --mg-text-faint: rgba(255,255,255,0.25);
+      --mg-footer-bg:  #07070D;
+      --mg-nav-scrolled:   rgba(10,10,15,0.88);
+      --mg-mobile-menu-bg: rgba(10,10,15,0.97);
+    }
+
+    /* ── LIGHT MODE ── */
+    html.light {
+      --mg-ink:        #F0F4F8;
+      --mg-electric:   #30aadf;
+      --mg-neon:       #3d8c00;
+      --mg-orange:     #D9541A;
+      --mg-surface:    #FFFFFF;
+      --mg-glass:      rgba(0,0,0,0.03);
+      --mg-border:     rgba(0,0,0,0.10);
+      --mg-text:       #000000;
+      --mg-text-muted: rgba(0,0,0,0.55);
+      --mg-text-faint: rgba(0,0,0,0.30);
+      --mg-footer-bg:  #1A1A2E;
+      --mg-nav-scrolled:   rgba(240,244,248,0.94);
+      --mg-mobile-menu-bg: rgba(240,244,248,0.98);
+    }
+
+    /* ── LIGHT MODE OVERRIDES ── */
+    html.light body,
+    html.light h1,html.light h2,html.light h3,html.light h4,
+    html.light p,html.light li,html.light span:not(.theme-icon):not(.gallery-cat):not(.badge-popular) { color: #000; }
+    html.light p { color: rgba(0,0,0,.65); }
+    html.light .nav-link { color: rgba(0,0,0,.65); }
+    html.light .nav-link:hover { color: #000; }
+    html.light .filter-btn { color: rgba(0,0,0,.5); border-color: rgba(0,0,0,.12); }
+    html.light .filter-btn.active { color: #000; border-color: #30aadf; background: rgba(48,170,223,.08); }
+    html.light .gallery-item-overlay { background: linear-gradient(to top,rgba(0,0,0,.75) 0%,transparent 60%); }
+    html.light .stat-card { background: #fff; }
+    html.light .video-card { background: #fff; }
+    html.light .ticker-wrap { background: #e2e8f0; }
+    html.light .ticker-inner span { color: rgba(0,0,0,.4); }
+    /* Page hero stays white */
+    html.light .page-hero h1,
+    html.light .page-hero p,
+    html.light .page-hero .section-label,
+    html.light .page-hero .breadcrumb { color: #fff; }
+    html.light .page-hero .breadcrumb span { color: #30aadf; }
+    /* Lightbox always dark */
+    html.light #lightbox { background: rgba(0,0,0,.92); }
+    html.light .lb-caption h3,
+    html.light .lb-caption p { color: #fff; }
+    html.light .lb-caption span { color: rgba(255,255,255,.55); }
+    /* Footer stays dark */
+    html.light footer,
+    html.light footer p,html.light footer li,
+    html.light footer span,html.light footer h4 { color: rgba(255,255,255,.7); }
+    html.light .footer-link { color: rgba(255,255,255,.5); }
+    html.light .footer-link:hover { color: #30aadf; }
+    html.light .social-btn { color: rgba(255,255,255,.45); border-color: rgba(255,255,255,.12); }
+    html.light .social-btn:hover { color: #30aadf; border-color: #30aadf; }
+
+    /* Smooth theme transitions */
+    *,*::before,*::after {
+      transition-property: background-color,border-color,color,box-shadow;
+      transition-duration: .3s; transition-timing-function: ease;
+    }
+    .reveal,.btn-primary,.btn-outline,.gallery-item,.filter-btn,
+    .stat-card,.video-card,.nav-link,.footer-link,.social-btn {
+      transition-property: background-color,border-color,color,box-shadow,opacity,transform;
+    }
+
+    /* ══════════════════════════════════════
+       BASE
+    ════════════════════════════════════════ */
+    *{ box-sizing:border-box; margin:0; padding:0; }
+    html{ scroll-behavior:smooth; }
+    body{ background:var(--mg-ink); color:var(--mg-text); font-family:'DM Sans',sans-serif; overflow-x:hidden; }
+    h1,h2,h3,h4,nav a,.syne{ font-family:'Syne',sans-serif; }
+
+    body::before{
+      content:''; position:fixed; inset:0; z-index:0; pointer-events:none;
+      background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      opacity:.4;
+    }
+
+    /* ══════════════════════════════════════
+       NAV
+    ════════════════════════════════════════ */
+    #navbar{ position:fixed; top:0; left:0; right:0; z-index:100; transition:background .4s,backdrop-filter .4s,box-shadow .4s; }
+    #navbar.scrolled{ background:var(--mg-nav-scrolled); backdrop-filter:blur(20px); box-shadow:0 1px 0 var(--mg-border); }
+    .nav-link{ position:relative; font-weight:500; font-size:.9rem; color:var(--mg-text-muted); transition:color .25s; padding-bottom:2px; }
+    .nav-link::after{ content:''; position:absolute; bottom:-4px; left:0; width:0; height:2px; background:var(--mg-electric); transition:width .3s; }
+    .nav-link:hover{ color:var(--mg-text); }
+    .nav-link:hover::after,.nav-link.active::after{ width:100%; }
+    .nav-link.active{ color:var(--mg-text); }
+    .btn-primary{ background:var(--mg-electric); color:var(--mg-ink); font-family:'Syne',sans-serif; font-weight:700; padding:.55rem 1.4rem; border-radius:2px; transition:transform .2s,box-shadow .2s; letter-spacing:.03em; font-size:.85rem; }
+    .btn-primary:hover{ transform:translateY(-2px); box-shadow:0 8px 28px rgba(0,184,204,.3); }
+    .btn-outline{ border:1.5px solid var(--mg-electric); color:var(--mg-electric); font-family:'Syne',sans-serif; font-weight:700; padding:.55rem 1.4rem; border-radius:2px; transition:background .2s,color .2s; font-size:.85rem; }
+    .btn-outline:hover{ background:var(--mg-electric); color:var(--mg-ink); }
+    #mobile-menu{ display:none; flex-direction:column; gap:1rem; padding:1.5rem 1.5rem 2rem; background:var(--mg-mobile-menu-bg); backdrop-filter:blur(20px); border-top:1px solid var(--mg-border); }
+    #mobile-menu.open{ display:flex; }
+
+    /* ══════════════════════════════════════
+       THEME TOGGLE
+    ════════════════════════════════════════ */
+    .theme-toggle{ width:44px; height:24px; border-radius:12px; background:var(--mg-border); border:1px solid var(--mg-border); position:relative; cursor:pointer; flex-shrink:0; }
+    .theme-toggle::before{ content:''; position:absolute; top:2px; left:2px; width:18px; height:18px; border-radius:50%; background:var(--mg-electric); transition:transform .3s; }
+    html.light .theme-toggle::before{ transform:translateX(20px); }
+    .theme-toggle-wrap{ display:flex; align-items:center; gap:.5rem; }
+    .theme-icon{ font-size:.85rem; line-height:1; user-select:none; transition:opacity .3s; }
+
+    /* ══════════════════════════════════════
+       SECTION UTILS
+    ════════════════════════════════════════ */
+    .section-label{ font-family:'Syne',sans-serif; font-size:.7rem; letter-spacing:.2em; text-transform:uppercase; color:var(--mg-electric); display:flex; align-items:center; gap:.6rem; }
+    .section-label::before{ content:''; display:block; width:2rem; height:1.5px; background:var(--mg-electric); }
+    .section-title{ font-size:clamp(2rem,4vw,3.2rem); font-weight:800; line-height:1.1; letter-spacing:-.02em; }
+    .section-title .hl{ color:var(--mg-electric); }
+    .section-title .hl-neon{ color:var(--mg-neon); }
+    .section-title .hl-orange{ color:var(--mg-orange); }
+
+    /* ══════════════════════════════════════
+       PAGE HERO
+    ════════════════════════════════════════ */
+    .page-hero{ position:relative; min-height:480px; overflow:hidden; display:flex; align-items:flex-end; padding-bottom:5rem; }
+    .hero-bg{ position:absolute; inset:0; background-image:url('https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=1600&q=80'); background-size:cover; background-position:center; filter:brightness(.18); }
+    .hero-overlay{ position:absolute; inset:0; background:linear-gradient(135deg,rgba(0,10,30,.82) 0%,rgba(0,184,204,.04) 100%); }
+    .hero-grid{ position:absolute; inset:0; pointer-events:none; opacity:.05; background-image:linear-gradient(rgba(0,229,255,.5) 1px,transparent 1px),linear-gradient(90deg,rgba(0,229,255,.5) 1px,transparent 1px); background-size:60px 60px; }
+    .breadcrumb{ font-size:.75rem; color:rgba(255,255,255,.35); letter-spacing:.08em; }
+    .breadcrumb span{ color:var(--mg-electric); }
+
+    /* ══════════════════════════════════════
+       FILTER PILLS
+    ════════════════════════════════════════ */
+    .filter-btn{ font-family:'Syne',sans-serif; font-size:.75rem; font-weight:600; letter-spacing:.06em; text-transform:uppercase; padding:.4rem 1rem; border:1px solid var(--mg-border); color:var(--mg-text-muted); border-radius:2px; cursor:pointer; background:none; white-space:nowrap; }
+    .filter-btn:hover{ border-color:var(--mg-text-muted); color:var(--mg-text); }
+    .filter-btn.active{ border-color:var(--mg-electric); color:var(--mg-electric); background:rgba(0,184,204,.08); }
+
+    /* ══════════════════════════════════════
+       MASONRY GALLERY GRID
+    ════════════════════════════════════════ */
+    .masonry-grid{
+      columns: 4;
+      column-gap: 12px;
+    }
+    @media(max-width:1024px){ .masonry-grid{ columns:3; } }
+    @media(max-width:640px){ .masonry-grid{ columns:2; } }
+    @media(max-width:400px){ .masonry-grid{ columns:1; } }
+
+    .gallery-item{
+      break-inside: avoid;
+      margin-bottom: 12px;
+      position: relative;
+      overflow: hidden;
+      border-radius: 4px;
+      cursor: pointer;
+      border: 1px solid var(--mg-border);
+    }
+    .gallery-item img{
+      width: 100%; display: block;
+      transition: transform .5s ease, filter .5s ease;
+      filter: brightness(.85);
+    }
+    .gallery-item:hover img{
+      transform: scale(1.05);
+      filter: brightness(1);
+    }
+    .gallery-item-overlay{
+      position: absolute; inset: 0;
+      background: linear-gradient(to top,rgba(0,0,0,.72) 0%,transparent 55%);
+      opacity: 0; transition: opacity .35s;
+      display: flex; flex-direction: column;
+      justify-content: flex-end; padding: .9rem;
+    }
+    .gallery-item:hover .gallery-item-overlay{ opacity: 1; }
+    .gallery-item-title{
+      font-family:'Syne',sans-serif; font-weight:700;
+      font-size:.8rem; color:#fff; line-height:1.3;
+    }
+    .gallery-cat{
+      font-family:'Syne',sans-serif; font-size:.6rem;
+      font-weight:700; letter-spacing:.12em; text-transform:uppercase;
+      padding:.18rem .5rem; border-radius:2px;
+      display:inline-block; margin-bottom:.4rem;
+    }
+    .gallery-zoom{
+      position:absolute; top:.7rem; right:.7rem;
+      width:30px; height:30px; border-radius:50%;
+      background:rgba(0,0,0,.55); border:1px solid rgba(255,255,255,.2);
+      display:flex; align-items:center; justify-content:center;
+      color:#fff; font-size:.75rem;
+      opacity:0; transition:opacity .3s; backdrop-filter:blur(4px);
+    }
+    .gallery-item:hover .gallery-zoom{ opacity:1; }
+
+    /* Span modifiers for visual interest */
+    .tall img{ aspect-ratio:2/3; object-fit:cover; }
+    .wide img{ aspect-ratio:16/9; object-fit:cover; }
+    .square img{ aspect-ratio:1/1; object-fit:cover; }
+    .portrait img{ aspect-ratio:3/4; object-fit:cover; }
+
+    /* ══════════════════════════════════════
+       LIGHTBOX
+    ════════════════════════════════════════ */
+    #lightbox{
+      position:fixed; inset:0; z-index:500;
+      background:rgba(0,0,0,.93);
+      backdrop-filter:blur(14px);
+      display:none; align-items:center; justify-content:center;
+      flex-direction:column;
+      padding:1rem;
+    }
+    #lightbox.open{ display:flex; }
+    #lb-img{
+      max-width:min(900px,90vw); max-height:75vh;
+      object-fit:contain; border-radius:4px;
+      border:1px solid rgba(255,255,255,.1);
+      box-shadow:0 32px 80px rgba(0,0,0,.6);
+    }
+    .lb-caption{
+      text-align:center; margin-top:1.2rem; max-width:560px;
+    }
+    .lb-caption h3{ font-family:'Syne',sans-serif; font-weight:700; font-size:1rem; color:#fff; margin-bottom:.2rem; }
+    .lb-caption p{ font-size:.825rem; color:rgba(255,255,255,.55); }
+    .lb-caption span{ font-size:.7rem; color:rgba(255,255,255,.3); letter-spacing:.1em; text-transform:uppercase; }
+    .lb-close{
+      position:fixed; top:1rem; right:1rem;
+      width:40px; height:40px; border-radius:50%;
+      background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.12);
+      display:flex; align-items:center; justify-content:center;
+      color:#fff; font-size:1.1rem; cursor:pointer;
+      transition:background .2s;
+    }
+    .lb-close:hover{ background:rgba(255,255,255,.18); }
+    .lb-nav{
+      position:fixed; top:50%; transform:translateY(-50%);
+      width:44px; height:44px;
+      background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.12);
+      display:flex; align-items:center; justify-content:center;
+      color:#fff; font-size:1.2rem; cursor:pointer; border-radius:2px;
+      transition:background .2s,border-color .2s;
+    }
+    .lb-nav:hover{ background:rgba(0,184,204,.2); border-color:var(--mg-electric); }
+    #lb-prev{ left:1rem; }
+    #lb-next{ right:1rem; }
+    .lb-counter{ font-family:'Syne',sans-serif; font-size:.7rem; letter-spacing:.1em; color:rgba(255,255,255,.35); margin-top:.6rem; }
+
+    /* ══════════════════════════════════════
+       STAT CARDS
+    ════════════════════════════════════════ */
+    .stat-card{ border:1px solid var(--mg-border); background:var(--mg-glass); backdrop-filter:blur(12px); padding:1.5rem; border-radius:4px; transition:border-color .3s,transform .3s; }
+    .stat-card:hover{ border-color:var(--mg-electric); transform:translateY(-4px); }
+    .stat-value{ font-family:'Syne',sans-serif; font-size:2.8rem; font-weight:800; color:var(--mg-electric); line-height:1; }
+
+    /* ══════════════════════════════════════
+       VIDEO CARDS
+    ════════════════════════════════════════ */
+    .video-card{ border:1px solid var(--mg-border); background:var(--mg-surface); border-radius:4px; overflow:hidden; transition:border-color .3s,transform .3s; }
+    .video-card:hover{ border-color:var(--mg-electric); transform:translateY(-5px); }
+    .video-thumb-wrap{ position:relative; overflow:hidden; }
+    .video-thumb{ width:100%; height:180px; object-fit:cover; filter:brightness(.65); transition:filter .4s; }
+    .video-card:hover .video-thumb{ filter:brightness(.85); }
+    .play-btn{
+      position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
+    }
+    .play-circle{
+      width:52px; height:52px; border-radius:50%;
+      background:rgba(0,184,204,.85); border:2px solid rgba(255,255,255,.3);
+      display:flex; align-items:center; justify-content:center;
+      transition:transform .3s,background .3s;
+    }
+    .video-card:hover .play-circle{ transform:scale(1.1); background:var(--mg-electric); }
+    .play-circle svg{ margin-left:3px; }
+
+    /* ══════════════════════════════════════
+       FEATURED STRIP
+    ════════════════════════════════════════ */
+    .featured-strip{ display:grid; grid-template-columns:2fr 1fr 1fr; gap:12px; }
+    @media(max-width:768px){ .featured-strip{ grid-template-columns:1fr; } }
+    .featured-strip .main-img{ border-radius:4px; overflow:hidden; cursor:pointer; position:relative; border:1px solid var(--mg-border); }
+    .featured-strip .main-img img{ width:100%; height:380px; object-fit:cover; filter:brightness(.75); transition:filter .4s,transform .5s; }
+    .featured-strip .main-img:hover img{ filter:brightness(1); transform:scale(1.03); }
+    .featured-strip .side-stack{ display:flex; flex-direction:column; gap:12px; }
+    .featured-strip .side-img{ border-radius:4px; overflow:hidden; cursor:pointer; position:relative; border:1px solid var(--mg-border); flex:1; }
+    .featured-strip .side-img img{ width:100%; height:100%; min-height:160px; object-fit:cover; filter:brightness(.7); transition:filter .4s,transform .5s; }
+    .featured-strip .side-img:hover img{ filter:brightness(1); transform:scale(1.04); }
+
+    /* ══════════════════════════════════════
+       TICKER
+    ════════════════════════════════════════ */
+    .ticker-wrap{ overflow:hidden; white-space:nowrap; border-top:1px solid var(--mg-border); border-bottom:1px solid var(--mg-border); background:var(--mg-surface); padding:.7rem 0; }
+    .ticker-inner{ display:inline-block; animation:ticker 30s linear infinite; }
+    .ticker-inner span{ padding:0 2.5rem; font-family:'Syne',sans-serif; font-size:.75rem; letter-spacing:.12em; text-transform:uppercase; color:rgba(255,255,255,.4); }
+    .ticker-inner span b{ color:var(--mg-electric); }
+    @keyframes ticker{ from{transform:translateX(0)} to{transform:translateX(-50%)} }
+
+    /* ══════════════════════════════════════
+       CTA
+    ════════════════════════════════════════ */
+    .cta-section{ position:relative; overflow:hidden; background:linear-gradient(135deg,#041A2E 0%,#0A1628 50%,#041A20 100%); }
+    .cta-grid{ position:absolute; inset:0; pointer-events:none; opacity:.05; background-image:linear-gradient(rgba(0,229,255,.5) 1px,transparent 1px),linear-gradient(90deg,rgba(0,229,255,.5) 1px,transparent 1px); background-size:60px 60px; }
+
+    /* ══════════════════════════════════════
+       FOOTER
+    ════════════════════════════════════════ */
+    footer{ background:var(--mg-footer-bg); border-top:1px solid var(--mg-border); }
+    .footer-link{ color:var(--mg-text-muted); font-size:.875rem; transition:color .25s; }
+    .footer-link:hover{ color:var(--mg-electric); }
+    .social-btn{ width:38px; height:38px; border-radius:4px; border:1px solid var(--mg-border); display:flex; align-items:center; justify-content:center; color:rgba(255,255,255,.45); transition:border-color .25s,color .25s; }
+    .social-btn:hover{ border-color:var(--mg-electric); color:var(--mg-electric); }
+
+    /* ══════════════════════════════════════
+       SCROLL REVEAL
+       — items start visible; JS adds .will-animate
+         before the page paints, then .visible
+         triggers the fade-up on scroll/load.
+    ════════════════════════════════════════ */
+    .reveal{ opacity:1; transform:none; }
+    .reveal.will-animate{ opacity:0; transform:translateY(24px); transition:opacity .65s ease,transform .65s ease; }
+    .reveal.will-animate.visible{ opacity:1; transform:none; }
+    .reveal-delay-1{ transition-delay:.1s; }
+    .reveal-delay-2{ transition-delay:.2s; }
+    .reveal-delay-3{ transition-delay:.3s; }
+
+    .glow-blob{ position:absolute; border-radius:50%; pointer-events:none; filter:blur(90px); opacity:.07; }
+
+    ::-webkit-scrollbar{ width:5px; }
+    ::-webkit-scrollbar-track{ background:var(--mg-ink); }
+    ::-webkit-scrollbar-thumb{ background:var(--mg-electric); border-radius:10px; }
+
+    /* Load more btn state */
+    #load-more{ display:flex; align-items:center; justify-content:center; gap:.5rem; }
+    .spinner{ width:14px; height:14px; border:2px solid rgba(0,0,0,.2); border-top-color:var(--mg-ink); border-radius:50%; animation:spin .6s linear infinite; display:none; }
+    @keyframes spin{ to{transform:rotate(360deg)} }
+  </style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════
+     NAV
+════════════════════════════════════════ -->
+<nav id="navbar" class="py-4">
+  <div class="max-w-7xl mx-auto px-6 flex items-center justify-between">
+
+    <a href="/Home/home.html" class="flex items-center gap-2">
+      <div class="w-28 h-12 rounded-lg flex items-center justify-center amber-glow">
+        <img src="/images/MG_LOGO_2-removebg-preview.png" alt="Logo">
+      </div>
+    </a>
+
+    <div class="hidden md:flex items-center gap-8">
+      <a href="/Home/home.html"     class="nav-link">Home</a>
+      <a href="/About/about.html"  class="nav-link">About</a>
+      <a href="/services.html" class="nav-link">Services</a>
+      <a href="/Suppliers.html"  class="nav-link">Suppliers</a>
+      <a href="/Events.html" class="nav-link">Events</a>
+      <a href="/gallery.html" class="nav-link active">Gallery</a>
+      <a href="/contact.html" class="nav-link">Contact</a>
+    </div>
+
+    <div class="flex items-center gap-3">
+      <div class="theme-toggle-wrap">
+        <span class="theme-icon" id="icon-moon">🌙</span>
+        <button class="theme-toggle" id="theme-toggle" aria-label="Toggle light/dark mode"></button>
+        <span class="theme-icon" id="icon-sun">☀️</span>
+      </div>
+      <a href="/contact.html" class="btn-primary hidden md:inline-block">Get Started</a>
+      <button id="hamburger" class="md:hidden flex flex-col gap-1.5 p-1" aria-label="Menu">
+        <span class="w-6 h-0.5 bg-white transition-all"></span>
+        <span class="w-6 h-0.5 bg-white transition-all"></span>
+        <span class="w-4 h-0.5 bg-white transition-all"></span>
+      </button>
+    </div>
+  </div>
+
+  <div id="mobile-menu">
+    <a href="/Home/home.html" class="nav-link text-lg">Home</a>
+    <a href="/About/about.html" class="nav-link text-lg">About</a>
+    <a href="/services.html" class="nav-link text-lg">Services</a>
+    <a href="/Events.html" class="nav-link text-lg">Events</a>
+    <a href="/gallery.html" class="nav-link text-lg active">Gallery</a>
+    <a href="/contact.html" class="nav-link text-lg">Contact</a>
+    <a href="/contact.html" class="btn-primary text-center mt-2">Get Started</a>
+  </div>
+</nav>
+
+<!-- ══════════════════════════════════════
+     PAGE HERO
+════════════════════════════════════════ -->
+<section class="page-hero pt-24">
+  <div class="hero-bg"></div>
+  <div class="hero-overlay"></div>
+  <div class="hero-grid"></div>
+  <div class="glow-blob w-[500px] h-[400px] top-0 right-0" style="background:var(--mg-electric)"></div>
+  <div class="glow-blob w-[300px] h-[300px] bottom-0 left-20" style="background:var(--mg-neon)"></div>
+
+  <div class="relative z-10 max-w-7xl mx-auto px-6 w-full">
+    <p class="breadcrumb mb-4">
+      <a href="index.html" class="hover:text-white transition-colors">Home</a>
+      &nbsp;/&nbsp;<span>Gallery</span>
+    </p>
+    <p class="section-label reveal">Visual Stories</p>
+    <h1 class="reveal reveal-delay-1 mt-4"
+        style="font-size:clamp(3rem,7vw,5.5rem);font-weight:800;line-height:1.05;letter-spacing:-.03em">
+      Life Inside<br>the <span style="color:var(--mg-electric)">Hub.</span>
+    </h1>
+    <p class="reveal reveal-delay-2 mt-5 max-w-xl text-white/55 text-lg leading-relaxed">
+      From pitch nights to hackathons, co-working mornings to Demo Day celebrations — here's a window into the MG Innovation Hub community in Nakuru, Kenya.
+    </p>
+    <div class="reveal reveal-delay-3 mt-6 flex gap-3 flex-wrap">
+      <a href="#gallery-grid" class="btn-primary px-6 py-3">Browse Photos</a>
+      <a href="#videos" class="btn-outline px-6 py-3">Watch Videos</a>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     TICKER
+════════════════════════════════════════ -->
+<div class="ticker-wrap relative z-10">
+  <div class="ticker-inner">
+    <span>Nakuru, Kenya &nbsp;<b>✦</b></span>
+    <span>Innovation Hub &nbsp;<b>✦</b></span>
+    <span>Pitch Nights &nbsp;<b>✦</b></span>
+    <span>Hackathons &nbsp;<b>✦</b></span>
+    <span>Demo Days &nbsp;<b>✦</b></span>
+    <span>Co-working Spaces &nbsp;<b>✦</b></span>
+    <span>Community &nbsp;<b>✦</b></span>
+    <span>Tech Workshops &nbsp;<b>✦</b></span>
+    <span>Summits &nbsp;<b>✦</b></span>
+    <span>Nakuru, Kenya &nbsp;<b>✦</b></span>
+    <span>Innovation Hub &nbsp;<b>✦</b></span>
+    <span>Pitch Nights &nbsp;<b>✦</b></span>
+    <span>Hackathons &nbsp;<b>✦</b></span>
+    <span>Demo Days &nbsp;<b>✦</b></span>
+    <span>Co-working Spaces &nbsp;<b>✦</b></span>
+    <span>Community &nbsp;<b>✦</b></span>
+    <span>Tech Workshops &nbsp;<b>✦</b></span>
+    <span>Summits &nbsp;<b>✦</b></span>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     STATS STRIP
+════════════════════════════════════════ -->
+<section class="relative z-10 py-16">
+  <div class="max-w-7xl mx-auto px-6">
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div class="stat-card reveal text-center">
+        <div class="stat-value counter" data-target="400" data-suffix="+">0</div>
+        <div class="text-[var(--mg-text-muted)] text-sm mt-2">Photos in Archive</div>
+      </div>
+      <div class="stat-card reveal reveal-delay-1 text-center">
+        <div class="stat-value counter" data-target="80" data-suffix="+">0</div>
+        <div class="text-[var(--mg-text-muted)] text-sm mt-2">Events Captured</div>
+      </div>
+      <div class="stat-card reveal reveal-delay-2 text-center">
+        <div class="stat-value counter" data-target="24" data-suffix="">0</div>
+        <div class="text-[var(--mg-text-muted)] text-sm mt-2">Videos Published</div>
+      </div>
+      <div class="stat-card reveal reveal-delay-3 text-center">
+        <div class="stat-value counter" data-target="7" data-suffix="">0</div>
+        <div class="text-[var(--mg-text-muted)] text-sm mt-2">Years of Memories</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     FEATURED STRIP
+════════════════════════════════════════ -->
+<section class="relative z-10 pb-6" style="background:var(--mg-surface)">
+  <div class="max-w-7xl mx-auto px-6 pt-16 pb-10">
+    <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
+      <div>
+        <p class="section-label reveal">Editor's Pick</p>
+        <h2 class="section-title mt-4 reveal reveal-delay-1">Featured <span class="hl">Moments.</span></h2>
+      </div>
+      <p class="text-[var(--mg-text-muted)] text-sm max-w-xs reveal reveal-delay-2">Hand-picked highlights from our most memorable sessions in Nakuru.</p>
+    </div>
+
+    <div class="featured-strip reveal reveal-delay-1">
+      <!-- Main large image -->
+      <div class="main-img" onclick="openLightbox(0)">
+        <img src="https://images.unsplash.com/photo-1475721027785-f74eccf877e2?w=900&q=80" alt="MG Summit Nakuru"/>
+        <div class="gallery-item-overlay" style="opacity:1">
+          <span class="gallery-cat" style="background:rgba(255,107,43,.85);color:#fff">Summit</span>
+          <div class="gallery-item-title">MG Innovation Summit 2025 — Main Stage, Nakuru</div>
+        </div>
+        <div class="gallery-zoom">⤢</div>
+      </div>
+      <!-- Side stack -->
+      <div class="side-stack">
+        <div class="side-img" onclick="openLightbox(1)">
+          <img src="https://images.unsplash.com/photo-1558403194-611308249627?w=500&q=80" alt="Pitch Night"/>
+          <div class="gallery-item-overlay" style="opacity:1">
+            <span class="gallery-cat" style="background:rgba(0,184,204,.85);color:#000">Pitch Night</span>
+            <div class="gallery-item-title">Pitch Night #28 · Nakuru Hub</div>
+          </div>
+        </div>
+        <div class="side-img" onclick="openLightbox(2)">
+          <img src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=500&q=80" alt="Hackathon"/>
+          <div class="gallery-item-overlay" style="opacity:1">
+            <span class="gallery-cat" style="background:rgba(182,255,78,.85);color:#000">Hackathon</span>
+            <div class="gallery-item-title">48hr AgriTech Hackathon · Teams at work</div>
+          </div>
+        </div>
+      </div>
+      <!-- Second side stack -->
+      <div class="side-stack">
+        <div class="side-img" onclick="openLightbox(3)">
+          <img src="https://images.unsplash.com/photo-1515187029135-18ee286d815b?w=500&q=80" alt="Co-working"/>
+          <div class="gallery-item-overlay" style="opacity:1">
+            <span class="gallery-cat" style="background:rgba(182,255,78,.85);color:#000">Workspace</span>
+            <div class="gallery-item-title">Open floor · Morning session energy</div>
+          </div>
+        </div>
+        <div class="side-img" onclick="openLightbox(4)">
+          <img src="https://images.unsplash.com/photo-1551632436-cbf8dd35adfa?w=500&q=80" alt="Tech Tour"/>
+          <div class="gallery-item-overlay" style="opacity:1">
+            <span class="gallery-cat" style="background:rgba(255,107,43,.85);color:#fff">Tech Tour</span>
+            <div class="gallery-item-title">East Africa Tech Safari · Nakuru Cohort</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     MASONRY GALLERY
+════════════════════════════════════════ -->
+<section id="gallery-grid" class="relative z-10 py-28">
+  <div class="glow-blob w-[500px] h-[400px] -right-40 top-1/4" style="background:var(--mg-electric)"></div>
+  <div class="glow-blob w-[400px] h-[400px] -left-32 bottom-1/4" style="background:var(--mg-neon)"></div>
+
+  <div class="max-w-7xl mx-auto px-6">
+
+    <!-- Header + filter row -->
+    <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
+      <div>
+        <p class="section-label reveal">Photo Gallery</p>
+        <h2 class="section-title mt-4 reveal reveal-delay-1">Every Shot, a <span class="hl">Story.</span></h2>
+      </div>
+      <!-- Search -->
+      <div class="reveal reveal-delay-2">
+        <input type="text" id="gallery-search" placeholder="Search photos…"
+          class="w-56 px-4 py-2.5 text-sm border border-[var(--mg-border)] rounded-sm bg-[var(--mg-surface)] text-[var(--mg-text)] placeholder-[var(--mg-text-muted)] focus:outline-none focus:border-[var(--mg-electric)] transition-colors"/>
+      </div>
+    </div>
+
+    <!-- Filter pills -->
+    <div class="flex gap-2 flex-wrap mb-10 reveal" id="filter-bar">
+      <button class="filter-btn active" data-cat="all">All Photos</button>
+      <button class="filter-btn" data-cat="summit">Summit</button>
+      <button class="filter-btn" data-cat="pitch">Pitch Night</button>
+      <button class="filter-btn" data-cat="hackathon">Hackathon</button>
+      <button class="filter-btn" data-cat="workspace">Workspace</button>
+      <button class="filter-btn" data-cat="workshop">Workshop</button>
+      <button class="filter-btn" data-cat="community">Community</button>
+      <button class="filter-btn" data-cat="tour">Tech Tour</button>
+    </div>
+
+    <!-- Masonry grid — items injected by JS -->
+    <div class="masonry-grid" id="masonry"></div>
+
+    <!-- No results -->
+    <p id="no-results" class="text-center text-[var(--mg-text-muted)] py-12 hidden">No photos match that filter. Try a different category.</p>
+
+    <!-- Load more -->
+    <div class="text-center mt-12">
+      <button id="load-more" class="btn-outline px-8 py-3">
+        <span class="spinner" id="load-spinner"></span>
+        <span id="load-text">Load More Photos</span>
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     VIDEO SECTION
+════════════════════════════════════════ -->
+<section id="videos" class="relative z-10 py-28" style="background:var(--mg-surface)">
+  <div class="glow-blob w-[400px] h-[350px] right-0 top-0" style="background:var(--mg-orange)"></div>
+  <div class="max-w-7xl mx-auto px-6">
+
+    <div class="text-center mb-14">
+      <p class="section-label justify-center reveal">In Motion</p>
+      <h2 class="section-title mt-4 reveal reveal-delay-1">Watch the <span class="hl-neon">Hub</span> in Action.</h2>
+      <p class="mt-4 text-[var(--mg-text-muted)] max-w-xl mx-auto reveal reveal-delay-2">
+        Recaps, founder stories, event highlights, and behind-the-scenes footage from Nakuru and beyond.
+      </p>
+    </div>
+
+    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+
+        <!-- <h1>Event Recaps</h1> -->
+
+      <div class="video-card reveal" onclick="playVideo('https://www.youtube.com/embed/dQw4w9WgXcQ','MG Summit 2025 Full Recap')">
+        <div class="video-thumb-wrap">
+          <img src="https://images.unsplash.com/photo-1475721027785-f74eccf877e2?w=600&q=80" alt="Summit Recap" class="video-thumb"/>
+          <div class="play-btn">
+            <div class="play-circle">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="white"><polygon points="5,3 19,12 5,21"/></svg>
+            </div>
+          </div>
+          <div style="position:absolute;top:.6rem;right:.6rem;background:rgba(0,0,0,.6);color:#fff;font-size:.6rem;font-family:'Syne',sans-serif;padding:.15rem .45rem;border-radius:2px">8:42</div>
+        </div>
+        <div class="p-4">
+          <div style="color:var(--mg-orange)" class="syne font-bold text-xs mb-1">Summit · 2025</div>
+          <h3 class="syne font-bold text-sm">MG Innovation Summit 2025 — Full Recap</h3>
+          <p class="text-[var(--mg-text-muted)] text-xs mt-1 leading-relaxed">1,200 attendees. 65 speakers. Two days of pure energy in Nakuru's heart.</p>
+        </div>
+      </div>
+
+      <!-- <h1>Founder Stories</h1> -->
+
+      <div class="video-card reveal reveal-delay-1" onclick="playVideo('https://www.youtube.com/embed/dQw4w9WgXcQ','Founder Stories: From Idea to Funding')">
+        <div class="video-thumb-wrap">
+          <img src="https://images.unsplash.com/photo-1560523159-4a9692d222ef?w=600&q=80" alt="Founder Story" class="video-thumb"/>
+          <div class="play-btn">
+            <div class="play-circle">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="white"><polygon points="5,3 19,12 5,21"/></svg>
+            </div>
+          </div>
+          <div style="position:absolute;top:.6rem;right:.6rem;background:rgba(0,0,0,.6);color:#fff;font-size:.6rem;font-family:'Syne',sans-serif;padding:.15rem .45rem;border-radius:2px">12:17</div>
+        </div>
+        <div class="p-4">
+          <div style="color:var(--mg-electric)" class="syne font-bold text-xs mb-1">Founder Story</div>
+          <h3 class="syne font-bold text-sm">From Idea to Funding in 6 Months</h3>
+          <p class="text-[var(--mg-text-muted)] text-xs mt-1 leading-relaxed">Amara Kimani shares her journey through MG Incubation — the highs, the pivots, and the cheque.</p>
+        </div>
+      </div>
+
+      <!-- <h1>Hub Tour</h1> -->
+
+      <div class="video-card reveal reveal-delay-2" onclick="playVideo('https://www.youtube.com/embed/dQw4w9WgXcQ','Inside MG Innovation Hub Nakuru')">
+        <div class="video-thumb-wrap">
+          <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?w=600&q=80" alt="Hub Tour" class="video-thumb"/>
+          <div class="play-btn">
+            <div class="play-circle">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="white"><polygon points="5,3 19,12 5,21"/></svg>
+            </div>
+          </div>
+          <div style="position:absolute;top:.6rem;right:.6rem;background:rgba(0,0,0,.6);color:#fff;font-size:.6rem;font-family:'Syne',sans-serif;padding:.15rem .45rem;border-radius:2px">4:55</div>
+        </div>
+        <div class="p-4">
+          <div style="color:var(--mg-neon)" class="syne font-bold text-xs mb-1">Hub Tour</div>
+          <h3 class="syne font-bold text-sm">Inside MG Innovation Hub — Nakuru</h3>
+          <p class="text-[var(--mg-text-muted)] text-xs mt-1 leading-relaxed">A full walk-through of three floors of workspace, labs, and event venues on Kenyatta Avenue.</p>
+        </div>
+      </div>
+
+      <!-- <h1>AgriTech Hackathon</h1> -->
+
+      <div class="video-card reveal" onclick="playVideo('https://www.youtube.com/embed/dQw4w9WgXcQ','AgriTech Hackathon 48hr Timelapse')">
+        <div class="video-thumb-wrap">
+          <img src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=600&q=80" alt="Hackathon" class="video-thumb"/>
+          <div class="play-btn">
+            <div class="play-circle">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="white"><polygon points="5,3 19,12 5,21"/></svg>
+            </div>
+          </div>
+          <div style="position:absolute;top:.6rem;right:.6rem;background:rgba(0,0,0,.6);color:#fff;font-size:.6rem;font-family:'Syne',sans-serif;padding:.15rem .45rem;border-radius:2px">3:30</div>
+        </div>
+        <div class="p-4">
+          <div style="color:var(--mg-neon)" class="syne font-bold text-xs mb-1">Hackathon</div>
+          <h3 class="syne font-bold text-sm">AgriTech Hackathon 2025 — 48hr Timelapse</h3>
+          <p class="text-[var(--mg-text-muted)] text-xs mt-1 leading-relaxed">220 participants. 48 hours. Watch an entire innovation cycle compressed into 3 minutes.</p>
+        </div>
+      </div>
+
+      <!-- <h1>Pitch Night</h1> -->
+
+      <div class="video-card reveal reveal-delay-1" onclick="playVideo('https://www.youtube.com/embed/dQw4w9WgXcQ','Pitch Night #28 Highlights')">
+        <div class="video-thumb-wrap">
+          <img src="https://images.unsplash.com/photo-1558403194-611308249627?w=600&q=80" alt="Pitch Night" class="video-thumb"/>
+          <div class="play-btn">
+            <div class="play-circle">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="white"><polygon points="5,3 19,12 5,21"/></svg>
+            </div>
+          </div>
+          <div style="position:absolute;top:.6rem;right:.6rem;background:rgba(0,0,0,.6);color:#fff;font-size:.6rem;font-family:'Syne',sans-serif;padding:.15rem .45rem;border-radius:2px">6:14</div>
+        </div>
+        <div class="p-4">
+          <div style="color:var(--mg-electric)" class="syne font-bold text-xs mb-1">Pitch Night</div>
+          <h3 class="syne font-bold text-sm">Pitch Night #28 — Investor Reactions & Highlights</h3>
+          <p class="text-[var(--mg-text-muted)] text-xs mt-1 leading-relaxed">Best moments from one of our most competitive pitch nights — $2.4M in deals initiated on the night.</p>
+        </div>
+      </div>
+
+      <!-- <h1>Tech Safari</h1> -->
+
+      <div class="video-card reveal reveal-delay-2" onclick="playVideo('https://www.youtube.com/embed/dQw4w9WgXcQ','Tech Safari Kigali 2025')">
+        <div class="video-thumb-wrap">
+          <img src="https://images.unsplash.com/photo-1551632436-cbf8dd35adfa?w=600&q=80" alt="Tech Tour" class="video-thumb"/>
+          <div class="play-btn">
+            <div class="play-circle">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="white"><polygon points="5,3 19,12 5,21"/></svg>
+            </div>
+          </div>
+          <div style="position:absolute;top:.6rem;right:.6rem;background:rgba(0,0,0,.6);color:#fff;font-size:.6rem;font-family:'Syne',sans-serif;padding:.15rem .45rem;border-radius:2px">9:03</div>
+        </div>
+        <div class="p-4">
+          <div style="color:var(--mg-orange)" class="syne font-bold text-xs mb-1">Tech Tour</div>
+          <h3 class="syne font-bold text-sm">East Africa Tech Safari — Kigali 2025</h3>
+          <p class="text-[var(--mg-text-muted)] text-xs mt-1 leading-relaxed">Follow our Nakuru cohort on a three-day cross-border immersion into Rwanda's booming tech scene.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     CTA
+════════════════════════════════════════ -->
+<section class="cta-section relative z-10 py-28">
+  <div class="cta-grid"></div>
+  <div class="absolute inset-0 pointer-events-none"
+       style="background:radial-gradient(ellipse 70% 60% at 50% 50%,rgba(0,229,255,.1) 0%,transparent 70%)"></div>
+  <div class="relative z-10 max-w-3xl mx-auto px-6 text-center">
+    <p class="section-label justify-center reveal" style="color:var(--mg-electric)">Be Part of the Story</p>
+    <h2 class="reveal reveal-delay-1 mt-4"
+        style="font-size:clamp(2rem,4vw,3rem);font-weight:800;line-height:1.1;color:#fff">
+      Your Next Chapter<br>Starts in <span style="color:var(--mg-electric)">Nakuru.</span>
+    </h2>
+    <p class="mt-5 reveal reveal-delay-2" style="color:rgba(255,255,255,.55);font-size:1.05rem;max-width:36rem;margin-left:auto;margin-right:auto">
+      Join our growing community of founders, engineers, and innovators. Show up, build something, and let us capture your story.
+    </p>
+    <div class="mt-10 flex gap-4 justify-center flex-wrap reveal reveal-delay-3">
+      <a href="/contact.html" class="btn-primary text-base px-8 py-3">Join the Hub</a>
+      <a href="/Events.html"  class="btn-outline  text-base px-8 py-3">Upcoming Events</a>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     FOOTER
+════════════════════════════════════════ -->
+<footer class="relative z-10">
+  <div class="max-w-7xl mx-auto px-6 py-16">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
+
+      <div class="lg:col-span-1">
+        <a href="/Home/home.html" class="flex items-center gap-2 mb-4">
+          <div class="w-28 h-12 rounded-lg flex items-center justify-center amber-glow">
+        <img src="/images/MG_LOGO_2-removebg-preview.png" alt="Logo">
+      </div>
+        </a>
+        <p class="text-white/40 text-sm leading-relaxed">Africa's premier innovation ecosystem, proudly rooted in Nakuru, Kenya.</p>
+        <div class="flex gap-2 mt-5">
+          <a href="#" class="social-btn">𝕏</a>
+          <a href="#" class="social-btn">in</a>
+          <a href="#" class="social-btn">◎</a>
+          <a href="#" class="social-btn">▶</a>
+        </div>
+      </div>
+
+      <div>
+        <h4 class="syne font-bold text-sm mb-4 tracking-wide">Company</h4>
+        <ul class="space-y-2.5">
+          <li><a href="/About/about.html"    class="footer-link">About Us</a></li>
+          <li><a href="/services.html" class="footer-link">Services</a></li>
+          <li><a href="/suppliers.html" class="footer-link">Suppliers</a></li>
+          <li><a href="/Events.html" class="footer-link">Events</a></li>
+          <li><a href="/Explore.html" class="footer-link">Explore Hub</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="syne font-bold text-sm mb-4 tracking-wide">Quick Links</h4>
+        <ul class="space-y-2.5">
+          <li><a href="/services.html" class="footer-link">Services</a></li>
+          <li><a href="/events.html"   class="footer-link">Events</a></li>
+          <li><a href="/gallery.html"  class="footer-link" style="color:var(--mg-electric)">Gallery</a></li>
+          <li><a href="/contact.html"  class="footer-link">Contact</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="syne font-bold text-sm mb-4 tracking-wide">Contact</h4>
+        <ul class="space-y-3">
+          <li class="text-white/40 text-sm flex gap-2 items-start">
+            <span style="color:var(--mg-electric)" class="mt-0.5">📍</span>
+            Riva Plaza, Nakuru CBD<br>Nakuru, Kenya
+          </li>
+          <li><a href="mailto:hello@mginnovationhub.co" class="footer-link text-sm">hello@mginnovationhub.co</a></li>
+          <li><a href="tel:+254700000000"               class="footer-link text-sm">+254 700 000 000</a></li>
+        </ul>
+        <div class="mt-5">
+          <p class="text-white/25 text-xs mb-2">Newsletter</p>
+          <div class="flex gap-2">
+            <input type="email" id="footer-email" placeholder="your@email.com"
+              class="flex-1 bg-white/5 border border-white/10 px-3 py-2 text-xs text-white placeholder-white/20 focus:outline-none focus:border-[var(--mg-electric)] transition-colors rounded-sm min-w-0"/>
+            <button onclick="handleFooterSub()" class="px-3 py-2 text-xs font-bold syne rounded-sm"
+                    style="background:var(--mg-electric);color:var(--mg-ink)">→</button>
+          </div>
+          <p id="footer-msg" class="text-xs mt-1 hidden" style="color:var(--mg-neon)">✓ Subscribed!</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="border-t" style="border-color:rgba(255,255,255,.05)">
+    <div class="max-w-7xl mx-auto px-6 py-5 flex flex-col sm:flex-row justify-between items-center gap-3">
+      <p class="text-white/25 text-xs">© 2025 MG Innovation Hub Ltd. All rights reserved. Nakuru, Kenya.</p>
+      <div class="flex gap-5">
+        <a href="#" class="footer-link text-xs">Privacy Policy</a>
+        <a href="#" class="footer-link text-xs">Terms of Use</a>
+        <a href="#" class="footer-link text-xs">Cookie Settings</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- ══════════════════════════════════════
+     LIGHTBOX
+════════════════════════════════════════ -->
+<div id="lightbox" role="dialog" aria-modal="true">
+  <button class="lb-close" onclick="closeLightbox()" aria-label="Close">✕</button>
+  <button class="lb-nav" id="lb-prev" onclick="navLightbox(-1)" aria-label="Previous">←</button>
+  <button class="lb-nav" id="lb-next" onclick="navLightbox(1)"  aria-label="Next">→</button>
+  <img id="lb-img" src="" alt="Gallery image"/>
+  <div class="lb-caption">
+    <span id="lb-cat"></span>
+    <h3 id="lb-title"></h3>
+    <p  id="lb-desc"></p>
+    <div class="lb-counter" id="lb-counter"></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     VIDEO MODAL
+════════════════════════════════════════ -->
+<div id="video-modal" style="position:fixed;inset:0;z-index:500;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.88);backdrop-filter:blur(12px)">
+  <button onclick="closeVideo()" style="position:fixed;top:1rem;right:1rem;width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);color:#fff;font-size:1.1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;">✕</button>
+  <iframe id="video-iframe" width="840" height="473" src="" frameborder="0" allow="autoplay;encrypted-media" allowfullscreen
+          style="max-width:92vw;max-height:52vw;border-radius:4px;border:1px solid rgba(255,255,255,.1)"></iframe>
+</div>
+
+<!-- ══════════════════════════════════════
+     JAVASCRIPT
+════════════════════════════════════════ -->
+<script>
+/* ── THEME TOGGLE ──────────────────────── */
+(function(){
+  if(localStorage.getItem('mg-theme')==='light')
+    document.documentElement.classList.add('light');
+})();
+function applyTheme(isLight){
+  document.documentElement.classList.toggle('light',isLight);
+  localStorage.setItem('mg-theme',isLight?'light':'dark');
+  document.getElementById('icon-moon').style.opacity=isLight?'.35':'1';
+  document.getElementById('icon-sun').style.opacity =isLight?'1':'.35';
+}
+document.addEventListener('DOMContentLoaded',()=>{
+  const il=document.documentElement.classList.contains('light');
+  document.getElementById('icon-moon').style.opacity=il?'.35':'1';
+  document.getElementById('icon-sun').style.opacity =il?'1':'.35';
+  document.getElementById('theme-toggle').addEventListener('click',()=>{
+    applyTheme(!document.documentElement.classList.contains('light'));
+  });
+  // Force all currently-visible reveals to show immediately
+  triggerReveal();
+});
+
+/* ── NAV ───────────────────────────────── */
+window.addEventListener('scroll',()=>{
+  document.getElementById('navbar').classList.toggle('scrolled',window.scrollY>60);
+},{passive:true});
+document.getElementById('hamburger').addEventListener('click',()=>{
+  document.getElementById('mobile-menu').classList.toggle('open');
+});
+document.querySelectorAll('#mobile-menu a').forEach(a=>
+  a.addEventListener('click',()=>document.getElementById('mobile-menu').classList.remove('open'))
+);
+
+/* ── GALLERY DATA ────────────────────────
+   Each item: { src, thumb, title, desc, cat, aspect }
+   aspect: 'tall' | 'wide' | 'square' | 'portrait'
+   cat matches filter-btn data-cat values
+────────────────────────────────────────── */
+const allPhotos = [
+  // SUMMITS
+  { src:'https://images.unsplash.com/photo-1475721027785-f74eccf877e2?w=1200&q=85', thumb:'https://images.unsplash.com/photo-1475721027785-f74eccf877e2?w=600&q=75', title:'MG Innovation Summit 2025 — Main Stage', desc:'The headline event at KICC Nakuru. 1,200 founders, investors & operators under one roof.', cat:'summit', aspect:'wide', accent:'#FF6B2B' },
+  { src:'https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=1200&q=85', thumb:'https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=600&q=75', title:'Summit 2025 — Crowd Energy', desc:'Standing-room attendance during the keynote address by MG co-founder Michael Gitau.', cat:'summit', aspect:'square', accent:'#FF6B2B' },
+  { src:'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=1200&q=85', thumb:'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=600&q=75', title:'Summit Networking — Evening Gala', desc:'The official after-party on the Innovation Tower rooftop, Nakuru skyline as backdrop.', cat:'summit', aspect:'portrait', accent:'#FF6B2B' },
+
+  // PITCH NIGHTS
+  { src:'https://images.unsplash.com/photo-1558403194-611308249627?w=1200&q=85', thumb:'https://images.unsplash.com/photo-1558403194-611308249627?w=600&q=75', title:'Pitch Night #32 — On Stage', desc:'A founder presents her FinTech solution to a room of 80 active investors.', cat:'pitch', aspect:'wide', accent:'#00B8CC' },
+  { src:'https://images.unsplash.com/photo-1560523159-4a9692d222ef?w=1200&q=85', thumb:'https://images.unsplash.com/photo-1560523159-4a9692d222ef?w=600&q=75', title:'Fireside — Investor Panel', desc:'Three VCs share what they look for in early-stage African startups.', cat:'pitch', aspect:'square', accent:'#00B8CC' },
+  { src:'https://images.unsplash.com/photo-1515187029135-18ee286d815b?w=1200&q=85', thumb:'https://images.unsplash.com/photo-1515187029135-18ee286d815b?w=600&q=75', title:'Pre-Pitch Prep', desc:'Teams rehearse their 5-minute pitches in the MG Hub workshop lab, Nakuru.', cat:'pitch', aspect:'tall', accent:'#00B8CC' },
+
+  // HACKATHONS
+  { src:'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=1200&q=85', thumb:'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=600&q=75', title:'AgriTech Hackathon — 3AM Sprint', desc:'Hour 36 of 48. Exhaustion sets in but the momentum never stops.', cat:'hackathon', aspect:'wide', accent:'#B6FF4E' },
+  { src:'https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=1200&q=85', thumb:'https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=600&q=75', title:'FinTech Hackathon — Demo Table', desc:'Teams showcase working prototypes to the judging panel on Sunday afternoon.', cat:'hackathon', aspect:'portrait', accent:'#B6FF4E' },
+  { src:'https://images.unsplash.com/photo-1531482615713-2afd69097998?w=1200&q=85', thumb:'https://images.unsplash.com/photo-1531482615713-2afd69097998?w=600&q=75', title:'Hackathon Opening Keynote', desc:'200+ participants gather in the main auditorium for the briefing and challenge reveal.', cat:'hackathon', aspect:'square', accent:'#B6FF4E' },
+
+  // WORKSPACE
+  { src:'https://images.unsplash.com/photo-1497366216548-37526070297c?w=1200&q=85', thumb:'https://images.unsplash.com/photo-1497366216548-37526070297c?w=600&q=75', title:'Open Floor — Morning Rush', desc:'Hot desks fill up by 8:30 AM. Nakurus founder community starts early.', cat:'workspace', aspect:'wide', accent:'#B6FF4E' },
+  { src:'https://images.unsplash.com/photo-1556761175-4b46a572b786?w=1200&q=85', thumb:'https://images.unsplash.com/photo-1556761175-4b46a572b786?w=600&q=75', title:'Private Office — Scale Plan', desc:'One of 18 lockable offices. Climate-controlled, 24/7 access for Scale members.', cat:'workspace', aspect:'portrait', accent:'#B6FF4E' },
+  { src:'https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=1200&q=85', thumb:'https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=600&q=75', title:'Collaboration Corner', desc:'Where the best ideas happen — at the intersection of two whiteboards.', cat:'workspace', aspect:'square', accent:'#B6FF4E' },
+
+  // WORKSHOPS
+  { src:'https://images.unsplash.com/photo-1542744173-8e7e53415bb0?w=1200&q=85', thumb:'https://images.unsplash.com/photo-1542744173-8e7e53415bb0?w=600&q=75', title:'AI Bootcamp — Week 3', desc:'Students build their first machine learning pipeline using real Kenyan datasets.', cat:'workshop', aspect:'wide', accent:'#00B8CC' },
+  { src:'https://images.unsplash.com/photo-1553484771-371a605b060b?w=1200&q=85', thumb:'https://images.unsplash.com/photo-1553484771-371a605b060b?w=600&q=75', title:'Product Management Workshop', desc:'A full-day session on user research, prioritisation, and roadmap building.', cat:'workshop', aspect:'portrait', accent:'#00B8CC' },
+  { src:'https://images.unsplash.com/photo-1444653614773-995cb1ef9efa?w=1200&q=85', thumb:'https://images.unsplash.com/photo-1444653614773-995cb1ef9efa?w=600&q=75', title:'FinTech Fundamentals', desc:'Regulators, founders, and engineers in the same room, finally talking the same language.', cat:'workshop', aspect:'square', accent:'#00B8CC' },
+
+  // COMMUNITY
+  { src:'https://images.unsplash.com/photo-1521737604893-d14cc237f11d?w=1200&q=85', thumb:'https://images.unsplash.com/photo-1521737604893-d14cc237f11d?w=600&q=75', title:'Community Hangout — Friday Vibes', desc:'Every Friday at 5 PM, the hub loosens up and the real conversations begin.', cat:'community', aspect:'wide', accent:'#FF6B2B' },
+  { src:'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=1200&q=85', thumb:'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=600&q=75', title:'Cohort 7 — First Day', desc:'New cohort members meet their mentors and fellow founders on Day 1.', cat:'community', aspect:'portrait', accent:'#FF6B2B' },
+  { src:'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=1200&q=85', thumb:'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=600&q=75', title:'Demo Day Celebration', desc:'Graduation night. Six months of building, failing, learning — and launching.', cat:'community', aspect:'square', accent:'#FF6B2B' },
+
+  // TECH TOURS
+  { src:'https://images.unsplash.com/photo-1551632436-cbf8dd35adfa?w=1200&q=85', thumb:'https://images.unsplash.com/photo-1551632436-cbf8dd35adfa?w=600&q=75', title:'East Africa Tech Safari — Kigali', desc:'30 founders from Nakuru explore Rwandas tech ecosystem over three days.', cat:'tour', aspect:'wide', accent:'#B6FF4E' },
+  { src:'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1200&q=85', thumb:'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=600&q=75', title:'Tech Safari — Dar es Salaam', desc:'Visiting five startups in TZs Bongo innovation district on Day 2 of the tour.', cat:'tour', aspect:'portrait', accent:'#B6FF4E' },
+  { src:'https://images.unsplash.com/photo-1560179707-f14e90ef3623?w=1200&q=85', thumb:'https://images.unsplash.com/photo-1560179707-f14e90ef3623?w=600&q=75', title:'Lagos Tech Week — MG Delegation', desc:'Our founders represented Nakuru at West Africas biggest annual tech gathering.', cat:'tour', aspect:'square', accent:'#B6FF4E' },
+]
+
+// Lightbox items include the featured strip images + the grid
+const featuredPhotos = [
+  { src:'https://images.unsplash.com/photo-1475721027785-f74eccf877e2?w=1200&q=85', title:'MG Innovation Summit 2025 — Main Stage, Nakuru', desc:'The headline event. 1,200 founders, investors & operators under one roof.', cat:'Summit' },
+  { src:'https://images.unsplash.com/photo-1558403194-611308249627?w=1200&q=85', title:'Pitch Night #28 · Nakuru Hub', desc:'Ten startups. Eighty investors. One unforgettable evening.', cat:'Pitch Night' },
+  { src:'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=1200&q=85', title:'48hr AgriTech Hackathon · Teams at work', desc:'Hour 36. Exhaustion sets in but momentum never stops.', cat:'Hackathon' },
+  { src:'https://images.unsplash.com/photo-1515187029135-18ee286d815b?w=1200&q=85', title:'Open floor · Morning session energy', desc:'Hot desks fill up by 8:30 AM. Nakuru founders start early.', cat:'Workspace' },
+  { src:'https://images.unsplash.com/photo-1551632436-cbf8dd35adfa?w=1200&q=85', title:'East Africa Tech Safari · Nakuru Cohort', desc:'30 founders explore Rwandas tech ecosystem over three days.', cat:'Tech Tour' },
+];
+
+/* ── MASONRY GRID BUILD ─────────────────── */
+let visibleCount = 12;
+let currentFilter = 'all';
+let currentSearch = '';
+
+function getFiltered(){
+  return allPhotos.filter(p=>{
+    const catOk = currentFilter==='all' || p.cat===currentFilter;
+    const srchOk = currentSearch==='' ||
+      p.title.toLowerCase().includes(currentSearch) ||
+      p.desc.toLowerCase().includes(currentSearch) ||
+      p.cat.toLowerCase().includes(currentSearch);
+    return catOk && srchOk;
+  });
+}
+
+function buildMasonry(){
+  const grid = document.getElementById('masonry');
+  const filtered = getFiltered();
+  const toShow = filtered.slice(0, visibleCount);
+  grid.innerHTML = '';
+  toShow.forEach((p, i) => {
+    const el = document.createElement('div');
+    // No reveal class on grid items — they're injected dynamically, show immediately
+    el.className = `gallery-item ${p.aspect}`;
+    el.setAttribute('data-cat', p.cat);
+    el.innerHTML = `
+      <img src="${p.thumb}" alt="${p.title}" loading="lazy"/>
+      <div class="gallery-item-overlay">
+        <span class="gallery-cat" style="background:${p.accent}CC;color:${p.accent==='#B6FF4E'?'#000':'#fff'}">${p.cat.charAt(0).toUpperCase()+p.cat.slice(1)}</span>
+        <div class="gallery-item-title">${p.title}</div>
+      </div>
+      <div class="gallery-zoom">⤢</div>`;
+    el.addEventListener('click', ()=> openLightboxGrid(i, filtered));
+    grid.appendChild(el);
+  });
+  // No results
+  document.getElementById('no-results').classList.toggle('hidden', filtered.length > 0);
+  // Load more
+  document.getElementById('load-more').style.display = filtered.length > visibleCount ? 'flex' : 'none';
+}
+buildMasonry();
+
+/* ── FILTER PILLS ── */
+document.querySelectorAll('.filter-btn').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    currentFilter = btn.dataset.cat;
+    visibleCount = 12;
+    buildMasonry();
+  });
+});
+
+/* Search */
+document.getElementById('gallery-search').addEventListener('input', e=>{
+  currentSearch = e.target.value.toLowerCase();
+  visibleCount = 12;
+  buildMasonry();
+});
+
+/* Load more */
+document.getElementById('load-more').addEventListener('click',()=>{
+  const spinner = document.getElementById('load-spinner');
+  const txt     = document.getElementById('load-text');
+  spinner.style.display = 'block'; txt.textContent = 'Loading…';
+  setTimeout(()=>{
+    visibleCount += 6;
+    buildMasonry();
+    spinner.style.display = 'none'; txt.textContent = 'Load More Photos';
+    triggerReveal();
+  }, 900);
+});
+
+/* ── LIGHTBOX ────────────────────────────── */
+let lbPhotos = [];
+let lbIndex  = 0;
+
+function openLightbox(idx){
+  lbPhotos = featuredPhotos;
+  lbIndex  = idx;
+  showLb();
+}
+function openLightboxGrid(idx, arr){
+  lbPhotos = arr.map(p=>({ src:p.src, title:p.title, desc:p.desc, cat:p.cat.charAt(0).toUpperCase()+p.cat.slice(1) }));
+  lbIndex  = idx;
+  showLb();
+}
+function showLb(){
+  const p = lbPhotos[lbIndex];
+  document.getElementById('lb-img').src       = p.src;
+  document.getElementById('lb-title').textContent = p.title;
+  document.getElementById('lb-desc').textContent  = p.desc;
+  document.getElementById('lb-cat').textContent   = p.cat + ' ·';
+  document.getElementById('lb-counter').textContent = (lbIndex+1)+' / '+lbPhotos.length;
+  document.getElementById('lightbox').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeLightbox(){
+  document.getElementById('lightbox').classList.remove('open');
+  document.body.style.overflow = '';
+}
+function navLightbox(dir){
+  lbIndex = (lbIndex + dir + lbPhotos.length) % lbPhotos.length;
+  showLb();
+}
+document.addEventListener('keydown',e=>{
+  if(!document.getElementById('lightbox').classList.contains('open')) return;
+  if(e.key==='Escape')     closeLightbox();
+  if(e.key==='ArrowRight') navLightbox(1);
+  if(e.key==='ArrowLeft')  navLightbox(-1);
+});
+document.getElementById('lightbox').addEventListener('click',e=>{
+  if(e.target===document.getElementById('lightbox')) closeLightbox();
+});
+
+/* ── VIDEO MODAL ────────────────────────── */
+function playVideo(src, title){
+  document.getElementById('video-iframe').src = src + '?autoplay=1';
+  document.getElementById('video-modal').style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+}
+function closeVideo(){
+  document.getElementById('video-iframe').src = '';
+  document.getElementById('video-modal').style.display = 'none';
+  document.body.style.overflow = '';
+}
+document.getElementById('video-modal').addEventListener('click',e=>{
+  if(e.target===document.getElementById('video-modal')) closeVideo();
+});
+
+/* ── SCROLL REVEAL ────────────────────────── */
+function initReveal(){
+  // Mark all reveal elements for animation (called after full DOM build)
+  document.querySelectorAll('.reveal').forEach(el=>{
+    el.classList.add('will-animate');
+  });
+}
+function triggerReveal(){
+  document.querySelectorAll('.reveal.will-animate:not(.visible)').forEach(el=>{
+    if(el.getBoundingClientRect().top < window.innerHeight - 40)
+      el.classList.add('visible');
+  });
+}
+// Run after everything is in the DOM
+window.addEventListener('load', ()=>{ initReveal(); triggerReveal(); });
+document.addEventListener('DOMContentLoaded', ()=>{ initReveal(); triggerReveal(); });
+window.addEventListener('scroll', triggerReveal, {passive:true});
+setTimeout(()=>{ initReveal(); triggerReveal(); }, 100);
+setTimeout(triggerReveal, 400);
+
+/* ── COUNTERS ─────────────────────────────── */
+function animateCounters(){
+  document.querySelectorAll('.counter').forEach(el=>{
+    if(el.dataset.animated) return;
+    if(el.getBoundingClientRect().top < window.innerHeight-40){
+      el.dataset.animated='1';
+      const target=+el.dataset.target;
+      const suffix=el.dataset.suffix||'+';
+      let count=0; const step=Math.ceil(target/40);
+      const iv=setInterval(()=>{
+        count=Math.min(count+step,target);
+        el.textContent=count+suffix;
+        if(count>=target) clearInterval(iv);
+      },40);
+    }
+  });
+}
+window.addEventListener('scroll',animateCounters,{passive:true});
+window.addEventListener('load',animateCounters);
+
+/* ── FOOTER SUB ────────────────────────── */
+function handleFooterSub(){
+  const el=document.getElementById('footer-email');
+  const msg=document.getElementById('footer-msg');
+  if(!el.value||!el.value.includes('@')) return;
+  el.value='';
+  msg.classList.remove('hidden');
+  setTimeout(()=>msg.classList.add('hidden'),4000);
+}
+document.getElementById('footer-email').addEventListener('keydown',e=>{
+  if(e.key==='Enter') handleFooterSub();
+});
+</script>
+</body>
+</html>

@@ -1,1 +1,1064 @@
-<h1 class="text-3xl font-bold text-red">Contact Us In Progress</h1>
+<!-- <h1 class="text-3xl font-bold text-red">Contact Us In Progress</h1> -->
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Contact Us — MG Innovation Hub</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --mg-ink:        #0A0A0F;
+      --mg-electric:   #30aadf;
+      --mg-neon:       #B6FF4E;
+      --mg-orange:     #FF6B2B;
+      --mg-mid:        #1A1A2E;
+      --mg-surface:    #111128;
+      --mg-glass:      rgba(255,255,255,0.04);
+      --mg-border:     rgba(255,255,255,0.08);
+      --mg-text:       #ffffff;
+      --mg-text-muted: rgba(255,255,255,0.55);
+      --mg-text-faint: rgba(255,255,255,0.25);
+      --mg-footer-bg:  #07070D;
+      --mg-nav-scrolled:   rgba(10,10,15,0.88);
+      --mg-mobile-menu-bg: rgba(10,10,15,0.97);
+      --mg-input-bg:   rgba(255,255,255,0.04);
+    }
+
+    /* ── LIGHT MODE ─────────────────────── */
+    html.light {
+      --mg-ink:        #F0F4F8;
+      --mg-electric:   #30aadf;
+      --mg-neon:       #3d8c00;
+      --mg-orange:     #D9541A;
+      --mg-surface:    #FFFFFF;
+      --mg-glass:      rgba(0,0,0,0.03);
+      --mg-border:     rgba(0,0,0,0.10);
+      --mg-text:       #000000;
+      --mg-text-muted: rgba(0,0,0,0.55);
+      --mg-text-faint: rgba(0,0,0,0.30);
+      --mg-footer-bg:  #1A1A2E;
+      --mg-nav-scrolled:   rgba(240,244,248,0.94);
+      --mg-mobile-menu-bg: rgba(240,244,248,0.98);
+      --mg-input-bg:   rgba(0,0,0,0.03);
+    }
+
+    /* ── LIGHT MODE OVERRIDES ── */
+    html.light body,
+    html.light h1,html.light h2,html.light h3,html.light h4,
+    html.light p,html.light li,html.light label { color: #000000; }
+    html.light p { color: rgba(0,0,0,0.65); }
+    html.light label { color: rgba(0,0,0,0.75); }
+    html.light .nav-link { color: rgba(0,0,0,0.65); }
+    html.light .nav-link:hover { color: #000; }
+    html.light .contact-card { background: #fff; }
+    html.light .form-input,
+    html.light .form-select,
+    html.light .form-textarea {
+      background: #fff; color: #000;
+      border-color: rgba(0,0,0,0.12);
+    }
+    html.light .form-input::placeholder,
+    html.light .form-textarea::placeholder { color: rgba(0,0,0,0.3); }
+    html.light .form-input:focus,
+    html.light .form-select:focus,
+    html.light .form-textarea:focus { border-color: #30aadf; }
+    html.light .info-icon-box { background: rgba(48,170,223,0.1); }
+    html.light .faq-q { color: #000; }
+    html.light .faq-a { color: rgba(0,0,0,0.6); }
+    html.light .map-overlay { background: #fff; }
+    html.light .map-overlay p { color: rgba(0,0,0,0.6); }
+    html.light .office-card { background: #fff; }
+    html.light .hours-row { border-color: rgba(0,0,0,0.07); }
+    /* Page hero white text */
+    html.light .page-hero h1,
+    html.light .page-hero p,
+    html.light .page-hero .section-label,
+    html.light .page-hero .breadcrumb { color: #fff; }
+    html.light .page-hero .breadcrumb span { color: #30aadf; }
+    /* Footer stays dark */
+    html.light footer,
+    html.light footer p,html.light footer li,
+    html.light footer span,html.light footer h4 { color: rgba(255,255,255,0.7); }
+    html.light .footer-link { color: rgba(255,255,255,0.5); }
+    html.light .footer-link:hover { color: #30aadf; }
+    html.light .social-btn { color: rgba(255,255,255,0.45); border-color: rgba(255,255,255,0.12); }
+    html.light .social-btn:hover { color: #30aadf; border-color: #30aadf; }
+    html.light .ticker-wrap { background: #e2e8f0; }
+    html.light .ticker-inner span { color: rgba(0,0,0,0.4); }
+
+    /* Smooth theme transition */
+    *,*::before,*::after {
+      transition-property: background-color,border-color,color,box-shadow;
+      transition-duration: .3s; transition-timing-function: ease;
+    }
+    .reveal,.btn-primary,.btn-outline,.contact-card,.form-input,
+    .form-textarea,.form-select,.nav-link,.footer-link,.social-btn {
+      transition-property: background-color,border-color,color,box-shadow,opacity,transform;
+    }
+
+    *{ box-sizing:border-box; margin:0; padding:0; }
+    html{ scroll-behavior:smooth; }
+    body{ background:var(--mg-ink); color:var(--mg-text); font-family:'DM Sans',sans-serif; overflow-x:hidden; }
+    h1,h2,h3,h4,nav a,.syne{ font-family:'Syne',sans-serif; }
+
+    /* Noise */
+    body::before{
+      content:''; position:fixed; inset:0; z-index:0; pointer-events:none;
+      background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      opacity:.4;
+    }
+
+    /* ── NAV ── */
+    #navbar{ position:fixed; top:0; left:0; right:0; z-index:100; transition:background .4s,backdrop-filter .4s,box-shadow .4s; }
+    #navbar.scrolled{ background:var(--mg-nav-scrolled); backdrop-filter:blur(20px); box-shadow:0 1px 0 var(--mg-border); }
+    .nav-link{ position:relative; font-weight:500; font-size:.9rem; color:var(--mg-text-muted); transition:color .25s; padding-bottom:2px; }
+    .nav-link::after{ content:''; position:absolute; bottom:-4px; left:0; width:0; height:2px; background:var(--mg-electric); transition:width .3s; }
+    .nav-link:hover{ color:var(--mg-text); }
+    .nav-link:hover::after,.nav-link.active::after{ width:100%; }
+    .nav-link.active{ color:var(--mg-text); }
+    .btn-primary{ background:var(--mg-electric); color:var(--mg-ink); font-family:'Syne',sans-serif; font-weight:700; padding:.55rem 1.4rem; border-radius:2px; transition:transform .2s,box-shadow .2s; letter-spacing:.03em; font-size:.85rem; }
+    .btn-primary:hover{ transform:translateY(-2px); box-shadow:0 8px 28px rgba(0,184,204,.3); }
+    .btn-outline{ border:1.5px solid var(--mg-electric); color:var(--mg-electric); font-family:'Syne',sans-serif; font-weight:700; padding:.55rem 1.4rem; border-radius:2px; transition:background .2s,color .2s; font-size:.85rem; }
+    .btn-outline:hover{ background:var(--mg-electric); color:var(--mg-ink); }
+    #mobile-menu{ display:none; flex-direction:column; gap:1rem; padding:1.5rem 1.5rem 2rem; background:var(--mg-mobile-menu-bg); backdrop-filter:blur(20px); border-top:1px solid var(--mg-border); }
+    #mobile-menu.open{ display:flex; }
+
+    /* ── THEME TOGGLE ── */
+    .theme-toggle{ width:44px; height:24px; border-radius:12px; background:var(--mg-border); border:1px solid var(--mg-border); position:relative; cursor:pointer; flex-shrink:0; }
+    .theme-toggle::before{ content:''; position:absolute; top:2px; left:2px; width:18px; height:18px; border-radius:50%; background:var(--mg-electric); transition:transform .3s; }
+    html.light .theme-toggle::before{ transform:translateX(20px); }
+    .theme-toggle-wrap{ display:flex; align-items:center; gap:.5rem; }
+    .theme-icon{ font-size:.85rem; line-height:1; user-select:none; transition:opacity .3s; }
+
+    /* ── SECTION UTILS ── */
+    .section-label{ font-family:'Syne',sans-serif; font-size:.7rem; letter-spacing:.2em; text-transform:uppercase; color:var(--mg-electric); display:flex; align-items:center; gap:.6rem; }
+    .section-label::before{ content:''; display:block; width:2rem; height:1.5px; background:var(--mg-electric); }
+    .section-title{ font-size:clamp(2rem,4vw,3.2rem); font-weight:800; line-height:1.1; letter-spacing:-.02em; }
+    .section-title .hl{ color:var(--mg-electric); }
+    .section-title .hl-neon{ color:var(--mg-neon); }
+    .section-title .hl-orange{ color:var(--mg-orange); }
+
+    /* ── PAGE HERO ── */
+    .page-hero{ position:relative; min-height:480px; overflow:hidden; display:flex; align-items:flex-end; padding-bottom:5rem; }
+    .hero-bg{ position:absolute; inset:0; background-image:url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1600&q=80'); background-size:cover; background-position:center; filter:brightness(.18); }
+    .hero-overlay{ position:absolute; inset:0; background:linear-gradient(135deg,rgba(0,10,30,.82) 0%,rgba(0,184,204,.04) 100%); }
+    .hero-grid{ position:absolute; inset:0; pointer-events:none; opacity:.05; background-image:linear-gradient(rgba(0,229,255,.5) 1px,transparent 1px),linear-gradient(90deg,rgba(0,229,255,.5) 1px,transparent 1px); background-size:60px 60px; }
+    .breadcrumb{ font-size:.75rem; color:rgba(255,255,255,.35); letter-spacing:.08em; }
+    .breadcrumb span{ color:var(--mg-electric); }
+
+    /* ── CONTACT CARDS ── */
+    .contact-card{ border:1px solid var(--mg-border); background:var(--mg-surface); border-radius:4px; padding:1.75rem; transition:border-color .3s,transform .3s; }
+    .contact-card:hover{ border-color:var(--mg-electric); transform:translateY(-5px); }
+    .info-icon-box{ width:48px; height:48px; border-radius:4px; background:rgba(0,184,204,.1); display:flex; align-items:center; justify-content:center; font-size:1.3rem; margin-bottom:1rem; flex-shrink:0; }
+
+    /* ── FORM ── */
+    .form-group{ display:flex; flex-direction:column; gap:.4rem; }
+    label{ font-family:'Syne',sans-serif; font-size:.78rem; font-weight:600; letter-spacing:.06em; text-transform:uppercase; color:var(--mg-text-muted); }
+    .form-input,
+    .form-select,
+    .form-textarea{
+      background:var(--mg-input-bg);
+      border:1px solid var(--mg-border);
+      color:var(--mg-text);
+      padding:.75rem 1rem;
+      font-family:'DM Sans',sans-serif;
+      font-size:.9rem;
+      border-radius:2px;
+      width:100%;
+      outline:none;
+      appearance:none;
+    }
+    .form-input::placeholder,.form-textarea::placeholder{ color:var(--mg-text-faint); }
+    .form-input:focus,.form-select:focus,.form-textarea:focus{ border-color:var(--mg-electric); box-shadow:0 0 0 3px rgba(0,184,204,.1); }
+    .form-textarea{ resize:vertical; min-height:140px; }
+    .form-select{ cursor:pointer; }
+    .char-count{ font-size:.72rem; color:var(--mg-text-faint); text-align:right; }
+    .form-error{ font-size:.75rem; color:var(--mg-orange); display:none; }
+    .form-input.error,.form-textarea.error{ border-color:var(--mg-orange); }
+
+    /* ── MAP ── */
+    .map-container{ position:relative; border-radius:4px; overflow:hidden; border:1px solid var(--mg-border); }
+    .map-iframe{ width:100%; height:420px; display:block; filter:grayscale(40%) contrast(1.1); }
+    html.light .map-iframe{ filter:none; }
+    .map-overlay{ position:absolute; bottom:1rem; left:1rem; background:var(--mg-surface); border:1px solid var(--mg-border); border-radius:4px; padding:1rem 1.25rem; max-width:260px; }
+    .map-overlay h4{ font-family:'Syne',sans-serif; font-size:.9rem; font-weight:700; margin-bottom:.3rem; }
+    .map-overlay p{ font-size:.78rem; color:var(--mg-text-muted); line-height:1.5; }
+
+    /* ── HOURS TABLE ── */
+    .hours-row{ display:flex; justify-content:space-between; align-items:center; padding:.6rem 0; border-bottom:1px solid var(--mg-border); font-size:.875rem; }
+    .hours-row:last-child{ border-bottom:none; }
+    .hours-day{ color:var(--mg-text-muted); }
+    .hours-time{ font-family:'Syne',sans-serif; font-weight:600; font-size:.8rem; }
+    .hours-open{ color:var(--mg-neon); }
+    .hours-closed{ color:var(--mg-orange); }
+
+    /* ── OFFICE CARD ── */
+    .office-card{ border:1px solid var(--mg-border); background:var(--mg-surface); border-radius:4px; overflow:hidden; transition:border-color .3s,transform .3s; }
+    .office-card:hover{ border-color:var(--mg-electric); transform:translateY(-4px); }
+    .office-img{ width:100%; height:160px; object-fit:cover; filter:brightness(.65); transition:filter .4s; }
+    .office-card:hover .office-img{ filter:brightness(.85); }
+
+    /* ── FAQ ── */
+    .faq-item{ border-bottom:1px solid var(--mg-border); }
+    .faq-q{ font-family:'Syne',sans-serif; font-weight:600; font-size:.95rem; padding:1.1rem 0; cursor:pointer; display:flex; justify-content:space-between; align-items:center; color:var(--mg-text); gap:1rem; }
+    .faq-icon{ width:24px; height:24px; border:1px solid var(--mg-border); border-radius:50%; display:flex; align-items:center; justify-content:center; flex-shrink:0; font-size:.75rem; color:var(--mg-electric); transition:transform .3s,border-color .3s; }
+    .faq-item.open .faq-icon{ transform:rotate(45deg); border-color:var(--mg-electric); }
+    .faq-a{ font-size:.88rem; color:var(--mg-text-muted); padding-bottom:1.1rem; line-height:1.7; max-height:0; overflow:hidden; transition:max-height .4s ease,padding .4s ease; }
+    .faq-item.open .faq-a{ max-height:300px; }
+
+    /* ── TICKER ── */
+    .ticker-wrap{ overflow:hidden; white-space:nowrap; border-top:1px solid var(--mg-border); border-bottom:1px solid var(--mg-border); background:var(--mg-surface); padding:.7rem 0; }
+    .ticker-inner{ display:inline-block; animation:ticker 28s linear infinite; }
+    .ticker-inner span{ padding:0 2.5rem; font-family:'Syne',sans-serif; font-size:.75rem; letter-spacing:.12em; text-transform:uppercase; color:rgba(255,255,255,.4); }
+    .ticker-inner span b{ color:var(--mg-electric); }
+    @keyframes ticker{ from{transform:translateX(0)} to{transform:translateX(-50%)} }
+
+    /* ── CTA BANNER ── */
+    .cta-section{ position:relative; overflow:hidden; background:linear-gradient(135deg,#041A2E 0%,#0A1628 50%,#041A20 100%); }
+    .cta-grid{ position:absolute; inset:0; pointer-events:none; opacity:.05; background-image:linear-gradient(rgba(0,229,255,.5) 1px,transparent 1px),linear-gradient(90deg,rgba(0,229,255,.5) 1px,transparent 1px); background-size:60px 60px; }
+
+    /* ── SUCCESS OVERLAY ── */
+    #success-overlay{ position:fixed; inset:0; z-index:300; display:none; align-items:center; justify-content:center; }
+    #success-overlay.show{ display:flex; }
+    .success-backdrop{ position:absolute; inset:0; background:rgba(0,0,0,.7); backdrop-filter:blur(10px); }
+    .success-box{ position:relative; z-index:1; background:var(--mg-surface); border:1px solid var(--mg-electric); border-radius:4px; padding:2.5rem; max-width:420px; width:100%; text-align:center; }
+    html.light .success-box{ background:#fff; }
+    .success-icon{ font-size:3rem; margin-bottom:1rem; display:block; }
+    .success-box h3{ font-family:'Syne',sans-serif; font-weight:800; font-size:1.5rem; margin-bottom:.5rem; }
+    html.light .success-box h3{ color:#000; }
+    .success-box p{ color:var(--mg-text-muted); font-size:.9rem; line-height:1.6; margin-bottom:1.5rem; }
+
+    /* ── FOOTER ── */
+    footer{ background:var(--mg-footer-bg); border-top:1px solid var(--mg-border); }
+    .footer-link{ color:var(--mg-text-muted); font-size:.875rem; transition:color .25s; }
+    .footer-link:hover{ color:var(--mg-electric); }
+    .social-btn{ width:38px; height:38px; border-radius:4px; border:1px solid var(--mg-border); display:flex; align-items:center; justify-content:center; color:rgba(255,255,255,.45); transition:border-color .25s,color .25s; }
+    .social-btn:hover{ border-color:var(--mg-electric); color:var(--mg-electric); }
+
+    /* ── SCROLL REVEAL ── */
+    .reveal{ opacity:0; transform:translateY(28px); transition:opacity .7s ease,transform .7s ease; }
+    .reveal.visible{ opacity:1; transform:none; }
+    .reveal-delay-1{ transition-delay:.1s; }
+    .reveal-delay-2{ transition-delay:.2s; }
+    .reveal-delay-3{ transition-delay:.3s; }
+    .reveal-delay-4{ transition-delay:.4s; }
+
+    .glow-blob{ position:absolute; border-radius:50%; pointer-events:none; filter:blur(90px); opacity:.07; }
+
+    ::-webkit-scrollbar{ width:5px; }
+    ::-webkit-scrollbar-track{ background:var(--mg-ink); }
+    ::-webkit-scrollbar-thumb{ background:var(--mg-electric); border-radius:10px; }
+  </style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════
+     NAV
+════════════════════════════════════════ -->
+<nav id="navbar" class="py-4">
+  <div class="max-w-7xl mx-auto px-6 flex items-center justify-between">
+
+    <a href="/Home/home.html" class="flex items-center gap-2">
+      <div class="w-28 h-12 rounded-lg flex items-center justify-center amber-glow">
+        <img src="/images/MG_LOGO_2-removebg-preview.png" alt="Logo">
+      </div>
+    </a>
+
+    <div class="hidden md:flex items-center gap-8">
+      <a href="/Home/home.html" class="nav-link">Home</a>
+      <a href="/About/about.html" class="nav-link">About</a>
+      <a href="/services.html" class="nav-link">Services</a>
+      <a href="/suppliers.html" class="nav-link">Suppliers</a>
+      <a href="/events.html" class="nav-link">Events</a>
+      <a href="/gallery.html" class="nav-link">Gallery</a>
+      <a href="/Contact/contact.html" class="nav-link active">Contact</a>
+    </div>
+
+    <div class="flex items-center gap-3">
+      <div class="theme-toggle-wrap">
+        <span class="theme-icon" id="icon-moon">🌙</span>
+        <button class="theme-toggle" id="theme-toggle" aria-label="Toggle light/dark mode"></button>
+        <span class="theme-icon" id="icon-sun">☀️</span>
+      </div>
+      <a href="#contact-form" class="btn-primary hidden md:inline-block">Get in Touch</a>
+      <button id="hamburger" class="md:hidden flex flex-col gap-1.5 p-1" aria-label="Menu">
+        <span class="w-6 h-0.5 bg-white transition-all"></span>
+        <span class="w-6 h-0.5 bg-white transition-all"></span>
+        <span class="w-4 h-0.5 bg-white transition-all"></span>
+      </button>
+    </div>
+  </div>
+
+  <div id="mobile-menu">
+    <a href="/Home/home.html" class="nav-link text-lg">Home</a>
+    <a href="/About/about.html" class="nav-link text-lg">About</a>
+    <a href="/services.html" class="nav-link text-lg">Services</a>
+    <a href="/suppliers.html" class="nav-link text-lg">Suppliers</a>
+    <a href="/events.html" class="nav-link text-lg">Events</a>
+    <a href="/gallery.html" class="nav-link text-lg">Gallery</a>
+    <a href="/contact.html" class="nav-link text-lg active">Contact</a>
+    <a href="#contact-form" class="btn-primary text-center mt-2">Get in Touch</a>
+  </div>
+</nav>
+
+<!-- ══════════════════════════════════════
+     PAGE HERO
+════════════════════════════════════════ -->
+<section class="page-hero pt-24">
+  <div class="hero-bg"></div>
+  <div class="hero-overlay"></div>
+  <div class="hero-grid"></div>
+  <div class="glow-blob w-[500px] h-[400px] top-0 right-0" style="background:var(--mg-electric)"></div>
+
+  <div class="relative z-10 max-w-7xl mx-auto px-6 w-full">
+    <p class="breadcrumb mb-4">
+      <a href="/Home/home.html" class="hover:text-white transition-colors">Home</a>
+      &nbsp;/&nbsp;<span>Contact</span>
+    </p>
+    <p class="section-label reveal">Get in Touch</p>
+    <h1 class="reveal reveal-delay-1 mt-4"
+        style="font-size:clamp(3rem,7vw,5.5rem);font-weight:800;line-height:1.05;letter-spacing:-.03em">
+      Let's Build<br><span style="color:var(--mg-electric)">Something</span> Together.
+    </h1>
+    <p class="reveal reveal-delay-2 mt-5 max-w-xl text-white/55 text-lg leading-relaxed">
+      Whether you're a founder with an idea, a corporate looking to innovate, or a mentor ready to give back — we'd love to hear from you. Our team in Nakuru is ready.
+    </p>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     TICKER
+════════════════════════════════════════ -->
+<div class="ticker-wrap relative z-10">
+  <div class="ticker-inner">
+    <span>Nakuru, Kenya &nbsp;<b>✦</b></span>
+    <span>hello@mginnovationhub.co &nbsp;<b>✦</b></span>
+    <span>+254 700 000 000 &nbsp;<b>✦</b></span>
+    <span>Mon–Fri: 8AM–6PM &nbsp;<b>✦</b></span>
+    <span>Sat: 9AM–2PM &nbsp;<b>✦</b></span>
+    <span>48hr Response Guarantee &nbsp;<b>✦</b></span>
+    <span>Nakuru, Kenya &nbsp;<b>✦</b></span>
+    <span>hello@mginnovationhub.co &nbsp;<b>✦</b></span>
+    <span>+254 700 000 000 &nbsp;<b>✦</b></span>
+    <span>Mon–Fri: 8AM–6PM &nbsp;<b>✦</b></span>
+    <span>Sat: 9AM–2PM &nbsp;<b>✦</b></span>
+    <span>48hr Response Guarantee &nbsp;<b>✦</b></span>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     CONTACT INFO CARDS
+════════════════════════════════════════ -->
+<section class="relative z-10 py-20">
+  <div class="glow-blob w-[500px] h-[400px] -left-40 top-0" style="background:var(--mg-electric)"></div>
+  <div class="max-w-7xl mx-auto px-6">
+
+    <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+
+      <!-- Address -->
+      <div class="contact-card reveal">
+        <div class="info-icon-box">📍</div>
+        <h3 class="syne font-bold text-base mb-1">Our Location</h3>
+        <p class="text-[var(--mg-text-muted)] text-sm leading-relaxed">
+          MG Innovation Hub<br>
+          Riva Plaza, Nakuru CBD<br>
+          Nakuru, Kenya
+        </p>
+        <a href="https://maps.google.com/?q=Nakuru+CBD+Kenya" target="_blank"
+           class="mt-3 text-[var(--mg-electric)] text-xs font-semibold syne tracking-wide inline-flex items-center gap-1 hover:underline">
+          Get Directions →
+        </a>
+      </div>
+
+      <!-- Phone -->
+      <div class="contact-card reveal reveal-delay-1">
+        <div class="info-icon-box" style="background:rgba(182,255,78,.1)">📞</div>
+        <h3 class="syne font-bold text-base mb-1">Call Us</h3>
+        <p class="text-[var(--mg-text-muted)] text-sm leading-relaxed">
+          Main: <a href="tel:+254700000000" class="text-[var(--mg-electric)] hover:underline">+254 700 000 000</a><br>
+          Events: <a href="tel:+254711000000" class="text-[var(--mg-electric)] hover:underline">+254 711 000 000</a><br>
+          WhatsApp available
+        </p>
+        <a href="https://wa.me/254700000000" target="_blank"
+           class="mt-3 text-[var(--mg-neon)] text-xs font-semibold syne tracking-wide inline-flex items-center gap-1 hover:underline">
+          Chat on WhatsApp →
+        </a>
+      </div>
+
+      <!-- Email -->
+      <div class="contact-card reveal reveal-delay-2">
+        <div class="info-icon-box" style="background:rgba(255,107,43,.1)">✉️</div>
+        <h3 class="syne font-bold text-base mb-1">Email Us</h3>
+        <p class="text-[var(--mg-text-muted)] text-sm leading-relaxed">
+          General: <a href="mailto:hello@mginnovationhub.co" class="text-[var(--mg-electric)] hover:underline">hello@mginnovationhub.co</a><br>
+          Events: <a href="mailto:events@mginnovationhub.co" class="text-[var(--mg-electric)] hover:underline">events@mginnovationhub.co</a><br>
+          Press: <a href="mailto:press@mginnovationhub.co" class="text-[var(--mg-electric)] hover:underline">press@mginnovationhub.co</a>
+        </p>
+      </div>
+
+      <!-- Hours -->
+      <div class="contact-card reveal reveal-delay-3">
+        <div class="info-icon-box" style="background:rgba(182,255,78,.1)">🕐</div>
+        <h3 class="syne font-bold text-base mb-3">Office Hours</h3>
+        <div class="hours-row">
+          <span class="hours-day text-xs">Mon – Fri</span>
+          <span class="hours-time hours-open">8:00 AM – 6:00 PM</span>
+        </div>
+        <div class="hours-row">
+          <span class="hours-day text-xs">Saturday</span>
+          <span class="hours-time hours-open">9:00 AM – 2:00 PM</span>
+        </div>
+        <div class="hours-row">
+          <span class="hours-day text-xs">Sunday</span>
+          <span class="hours-time hours-closed">Closed</span>
+        </div>
+        <p class="text-xs text-[var(--mg-text-muted)] mt-2">Members enjoy 24/7 access via biometric entry.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     CONTACT FORM + SIDEBAR
+════════════════════════════════════════ -->
+<section id="contact-form" class="relative z-10 py-10 pb-28" style="background:var(--mg-surface)">
+  <div class="glow-blob w-[400px] h-[400px] right-0 top-1/2 -translate-y-1/2" style="background:var(--mg-neon)"></div>
+  <div class="max-w-7xl mx-auto px-6">
+
+    <div class="grid lg:grid-cols-5 gap-12 items-start">
+
+      <!-- ── FORM (3 cols) ── -->
+      <div class="lg:col-span-3">
+        <p class="section-label reveal">Send a Message</p>
+        <h2 class="section-title mt-4 mb-2 reveal reveal-delay-1">
+          We Read Every<br><span class="hl">Message.</span>
+        </h2>
+        <p class="text-[var(--mg-text-muted)] mb-8 reveal reveal-delay-2">
+          Fill in the form and we'll respond within 48 hours. For urgent matters, call us directly.
+        </p>
+
+        <form id="contact-form-el" novalidate class="space-y-5 reveal reveal-delay-2">
+
+          <!-- Name + Email row -->
+          <div class="grid sm:grid-cols-2 gap-5">
+            <div class="form-group">
+              <label for="name">Full Name <span style="color:var(--mg-orange)">*</span></label>
+              <input type="text" id="name" class="form-input" placeholder="Jane Mwangi"/>
+              <span class="form-error" id="name-err">Please enter your full name.</span>
+            </div>
+            <div class="form-group">
+              <label for="email">Email Address <span style="color:var(--mg-orange)">*</span></label>
+              <input type="email" id="email" class="form-input" placeholder="jane@company.co"/>
+              <span class="form-error" id="email-err">Please enter a valid email address.</span>
+            </div>
+          </div>
+
+          <!-- Phone + Organisation row -->
+          <div class="grid sm:grid-cols-2 gap-5">
+            <div class="form-group">
+              <label for="phone">Phone Number</label>
+              <input type="tel" id="phone" class="form-input" placeholder="+254 7XX XXX XXX"/>
+            </div>
+            <div class="form-group">
+              <label for="org">Organisation / Startup</label>
+              <input type="text" id="org" class="form-input" placeholder="TechVentures Ltd"/>
+            </div>
+          </div>
+
+          <!-- Enquiry type -->
+          <div class="form-group">
+            <label for="enquiry">Enquiry Type <span style="color:var(--mg-orange)">*</span></label>
+            <select id="enquiry" class="form-select">
+              <option value="" disabled selected>— Select a topic —</option>
+              <option value="incubation">Entrepreneurship & Business Support</option>
+              <option value="coworking">Innovation Labs</option>
+              <option value="workshop">Digital Skills &amp; Future Tech</option>
+              <option value="corporate">Community & Events</option>
+              <option value="investor">Marketing & Market Access</option>
+              <option value="events">Growth  &amp; Scale</option>
+              <option value="other">Other</option>
+            </select>
+            <span class="form-error" id="enquiry-err">Please select an enquiry type.</span>
+          </div>
+
+          <!-- How did you hear -->
+          <div class="form-group">
+            <label for="source">How did you hear about us?</label>
+            <select id="source" class="form-select">
+              <option value="" disabled selected>— Select one —</option>
+              <option>Social Media</option>
+              <option>Google Search</option>
+              <option>Word of Mouth / Referral</option>
+              <option>Event or Conference</option>
+              <option>News / Media</option>
+              <option>Other</option>
+            </select>
+          </div>
+
+          <!-- Message -->
+          <div class="form-group">
+            <label for="message">Your Message <span style="color:var(--mg-orange)">*</span></label>
+            <textarea id="message" class="form-textarea" placeholder="Tell us about your project, idea, or question…" maxlength="1000" oninput="updateChar(this)"></textarea>
+            <div class="flex justify-between items-center">
+              <span class="form-error" id="message-err">Please enter your message (min. 20 characters).</span>
+              <span class="char-count ml-auto" id="char-count">0 / 1000</span>
+            </div>
+          </div>
+
+          <!-- Consent -->
+          <div class="flex items-start gap-3">
+            <input type="checkbox" id="consent" class="mt-1 accent-[var(--mg-electric)] w-4 h-4 flex-shrink-0"/>
+            <label for="consent" class="text-xs text-[var(--mg-text-muted)] normal-case tracking-normal font-normal" style="font-family:'DM Sans',sans-serif">
+              I agree to MG Innovation Hub's
+              <a href="#" class="text-[var(--mg-electric)] hover:underline">Privacy Policy</a>
+              and consent to being contacted regarding my enquiry.
+            </label>
+          </div>
+          <span class="form-error" id="consent-err">Please accept the privacy policy to continue.</span>
+
+          <!-- Submit -->
+          <button type="button" onclick="submitForm()"
+            class="btn-primary w-full py-4 text-base flex items-center justify-center gap-2">
+            <span id="btn-text">Send Message</span>
+            <svg id="btn-arrow" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            <svg id="btn-spinner" class="hidden animate-spin" width="16" height="16" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"/></svg>
+          </button>
+
+        </form>
+      </div>
+
+      <!-- ── SIDEBAR (2 cols) ── -->
+      <div class="lg:col-span-2 space-y-6">
+
+        <!-- Quick links -->
+        <div class="contact-card reveal reveal-delay-1">
+          <h3 class="syne font-bold text-base mb-4" style="color:var(--mg-electric)">Quick Actions</h3>
+          <div class="space-y-3">
+            <a href="/services.html" class="flex items-center justify-between group py-2 border-b border-[var(--mg-border)]">
+              <span class="text-sm text-[var(--mg-text-muted)] group-hover:text-[var(--mg-electric)] transition-colors">🚀 Apply for Incubation</span>
+              <span style="color:var(--mg-electric)">→</span>
+            </a>
+            <a href="/services.html#pricing" class="flex items-center justify-between group py-2 border-b border-[var(--mg-border)]">
+              <span class="text-sm text-[var(--mg-text-muted)] group-hover:text-[var(--mg-electric)] transition-colors">💼 Co-working Pricing</span>
+              <span style="color:var(--mg-electric)">→</span>
+            </a>
+            <a href="/Events.html" class="flex items-center justify-between group py-2 border-b border-[var(--mg-border)]">
+              <span class="text-sm text-[var(--mg-text-muted)] group-hover:text-[var(--mg-electric)] transition-colors">🎫 Upcoming Events</span>
+              <span style="color:var(--mg-electric)">→</span>
+            </a>
+            <a href="/About/about.html" class="flex items-center justify-between group py-2">
+              <span class="text-sm text-[var(--mg-text-muted)] group-hover:text-[var(--mg-electric)] transition-colors">🌍 About MG Hub</span>
+              <span style="color:var(--mg-electric)">→</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Social media -->
+        <div class="contact-card reveal reveal-delay-2">
+          <h3 class="syne font-bold text-base mb-4" style="color:var(--mg-electric)">Follow Us</h3>
+          <div class="grid grid-cols-2 gap-3">
+            <a href="#" class="flex items-center gap-2 border border-[var(--mg-border)] px-3 py-2.5 rounded-sm hover:border-[var(--mg-electric)] transition-colors group">
+              <span class="text-lg">𝕏</span>
+              <div>
+                <div class="syne font-bold text-xs group-hover:text-[var(--mg-electric)] transition-colors">Twitter / X</div>
+                <div class="text-xs text-[var(--mg-text-muted)]">@MGIHub</div>
+              </div>
+            </a>
+            <a href="#" class="flex items-center gap-2 border border-[var(--mg-border)] px-3 py-2.5 rounded-sm hover:border-[var(--mg-electric)] transition-colors group">
+              <span class="text-lg">in</span>
+              <div>
+                <div class="syne font-bold text-xs group-hover:text-[var(--mg-electric)] transition-colors">LinkedIn</div>
+                <div class="text-xs text-[var(--mg-text-muted)]">MG Innovation Hub</div>
+              </div>
+            </a>
+            <a href="#" class="flex items-center gap-2 border border-[var(--mg-border)] px-3 py-2.5 rounded-sm hover:border-[var(--mg-electric)] transition-colors group">
+              <span class="text-lg">◎</span>
+              <div>
+                <div class="syne font-bold text-xs group-hover:text-[var(--mg-electric)] transition-colors">Instagram</div>
+                <div class="text-xs text-[var(--mg-text-muted)]">@MGIHub</div>
+              </div>
+            </a>
+            <a href="#" class="flex items-center gap-2 border border-[var(--mg-border)] px-3 py-2.5 rounded-sm hover:border-[var(--mg-electric)] transition-colors group">
+              <span class="text-lg">▶</span>
+              <div>
+                <div class="syne font-bold text-xs group-hover:text-[var(--mg-electric)] transition-colors">YouTube</div>
+                <div class="text-xs text-[var(--mg-text-muted)]">MG Innovation Hub</div>
+              </div>
+            </a>
+          </div>
+        </div>
+
+        <!-- Response promise -->
+        <div class="reveal reveal-delay-3" style="border:1px solid rgba(0,184,204,.3);border-radius:4px;padding:1.5rem;background:rgba(0,184,204,.05)">
+          <div class="flex items-start gap-3">
+            <span class="text-2xl mt-0.5">⚡</span>
+            <div>
+              <h4 class="syne font-bold text-sm mb-1">48-Hour Response Guarantee</h4>
+              <p class="text-xs text-[var(--mg-text-muted)] leading-relaxed">
+                Every message is read by a real person on our team. We guarantee a response within 48 business hours — usually much faster.
+              </p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     MAP — NAKURU
+════════════════════════════════════════ -->
+<section class="relative z-10 py-28">
+  <div class="glow-blob w-[450px] h-[400px] -right-32 top-1/2 -translate-y-1/2" style="background:var(--mg-orange)"></div>
+  <div class="max-w-7xl mx-auto px-6">
+
+    <div class="text-center mb-12">
+      <p class="section-label justify-center reveal">Find Us</p>
+      <h2 class="section-title mt-4 reveal reveal-delay-1">
+        We're in <span class="hl">Nakuru</span> — Come Visit.
+      </h2>
+      <p class="mt-4 text-[var(--mg-text-muted)] max-w-xl mx-auto reveal reveal-delay-2">
+        Right in the heart of Nakuru CBD on Kenyatta Avenue. Easy to reach by matatu, boda boda, or car. Ample parking available in the building basement.
+      </p>
+    </div>
+
+    <!-- Map embed -->
+    <div class="map-container reveal">
+      <iframe
+        class="map-iframe"
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3989.4015!2d36.0667!3d-0.3031!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x182972a8efd33d51%3A0x3e3c3f11eab22fe5!2sNakuru%20CBD%2C%20Nakuru%2C%20Kenya!5e0!3m2!1sen!2ske!4v1700000000000"
+        allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+        title="MG Innovation Hub location in Nakuru CBD">
+      </iframe>
+      <!-- Info overlay -->
+      <div class="map-overlay">
+        <div class="flex items-center gap-2 mb-2">
+          <div class="w-2 h-2 rounded-full bg-[var(--mg-electric)] animate-pulse"></div>
+          <span class="syne font-bold text-xs tracking-wide" style="color:var(--mg-electric)">MG INNOVATION HUB</span>
+        </div>
+        <h4>Kenyatta Avenue</h4>
+        <p>Nakuru CBD, Nakuru, Kenya<br>5th Floor, Riva Plaza</p>
+        <a href="https://maps.google.com/?q=Nakuru+CBD+Kenya" target="_blank"
+           class="mt-2 text-xs font-semibold syne inline-block hover:underline"
+           style="color:var(--mg-electric)">Open in Google Maps →</a>
+      </div>
+    </div>
+
+    <!-- Directions grid -->
+    <div class="grid sm:grid-cols-3 gap-5 mt-8">
+      <div class="contact-card reveal text-center">
+        <div class="text-2xl mb-2">🚌</div>
+        <h4 class="syne font-bold text-sm mb-1">By Matatu</h4>
+        <p class="text-xs text-[var(--mg-text-muted)] leading-relaxed">Take any matatu to Nakuru Town stage. We're a 5-minute walk from the main stage along Kenyatta Avenue.</p>
+      </div>
+      <div class="contact-card reveal reveal-delay-1 text-center">
+        <div class="text-2xl mb-2">🏍️</div>
+        <h4 class="syne font-bold text-sm mb-1">By Boda Boda</h4>
+        <p class="text-xs text-[var(--mg-text-muted)] leading-relaxed">Tell the rider "Innovation Tower, Kenyatta Avenue, CBD." Most riders know it. Takes 2–3 minutes from town.</p>
+      </div>
+      <div class="contact-card reveal reveal-delay-2 text-center">
+        <div class="text-2xl mb-2">🚗</div>
+        <h4 class="syne font-bold text-sm mb-1">By Car</h4>
+        <p class="text-xs text-[var(--mg-text-muted)] leading-relaxed">Enter from Kenyatta Avenue. Basement parking available (KES 100/hr). Security managed, 24/7.</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     OFFICE PHOTOS
+════════════════════════════════════════ -->
+<section class="relative z-10 py-10 pb-28" style="background:var(--mg-surface)">
+  <div class="max-w-7xl mx-auto px-6">
+    <div class="text-center mb-12">
+      <p class="section-label justify-center reveal">Inside the Hub</p>
+      <h2 class="section-title mt-4 reveal reveal-delay-1">
+        A Space Built for <span class="hl-neon">Makers.</span>
+      </h2>
+    </div>
+    <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div class="office-card reveal">
+        <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?w=500&q=80" alt="Co-working floor" class="office-img"/>
+        <div class="p-4">
+          <h4 class="syne font-bold text-sm">Open Co-working Floor</h4>
+          <p class="text-xs text-[var(--mg-text-muted)] mt-1">120 hot desks with 1 Gbps WiFi and natural light</p>
+        </div>
+      </div>
+      <div class="office-card reveal reveal-delay-1">
+        <img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=500&q=80" alt="Event space" class="office-img"/>
+        <div class="p-4">
+          <h4 class="syne font-bold text-sm">Event & Pitch Stage</h4>
+          <p class="text-xs text-[var(--mg-text-muted)] mt-1">Capacity 300 · Full AV · Livestream ready</p>
+        </div>
+      </div>
+      <div class="office-card reveal reveal-delay-2">
+        <img src="https://images.unsplash.com/photo-1531482615713-2afd69097998?w=500&q=80" alt="Workshop lab" class="office-img"/>
+        <div class="p-4">
+          <h4 class="syne font-bold text-sm">Workshop Labs</h4>
+          <p class="text-xs text-[var(--mg-text-muted)] mt-1">2 dedicated labs · 40 seats each · Smart boards</p>
+        </div>
+      </div>
+      <div class="office-card reveal reveal-delay-3">
+        <img src="https://images.unsplash.com/photo-1556761175-4b46a572b786?w=500&q=80" alt="Private offices" class="office-img"/>
+        <div class="p-4">
+          <h4 class="syne font-bold text-sm">Private Offices</h4>
+          <p class="text-xs text-[var(--mg-text-muted)] mt-1">18 lockable offices · Climate controlled · 24/7 access</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     FAQ
+════════════════════════════════════════ -->
+<section class="relative z-10 py-28">
+  <div class="glow-blob w-[400px] h-[400px] -left-32 top-1/2 -translate-y-1/2" style="background:var(--mg-electric)"></div>
+  <div class="max-w-3xl mx-auto px-6">
+    <div class="text-center mb-14">
+      <p class="section-label justify-center reveal">Before You Write</p>
+      <h2 class="section-title mt-4 reveal reveal-delay-1">
+        Common <span class="hl">Questions.</span>
+      </h2>
+    </div>
+
+    <div class="space-y-0 reveal">
+
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          Where exactly is MG Innovation Hub in Nakuru?
+          <div class="faq-icon">+</div>
+        </div>
+        <div class="faq-a">
+          We're located on the 5th Floor, Riva Plaza, Kenyatta Avenue in Nakuru CBD — right in the heart of the city. The building is directly opposite CK Patel Building. It's well signposted and easy to find.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          Can I visit the hub without an appointment?
+          <div class="faq-icon">+</div>
+        </div>
+        <div class="faq-a">
+          Yes — drop-ins are welcome during office hours (Mon–Fri 8 AM–6 PM, Sat 9 AM–2 PM). Just sign in at the front desk. If you'd like a tour or a conversation with our team, booking ahead ensures we can give you proper time and attention.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          How quickly will you respond to my message?
+          <div class="faq-icon">+</div>
+        </div>
+        <div class="faq-a">
+          We guarantee a response within 48 business hours. In practice, most enquiries receive a reply within 4–8 hours during working days. For urgent matters, calling or WhatsApp messaging is the fastest route.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          Do you have a Nairobi or other branch?
+          <div class="faq-icon">+</div>
+        </div>
+        <div class="faq-a">
+          Our headquarters is in Nakuru. We have active partnership agreements with hubs in Nairobi, Kampala, Dar es Salaam, and Kigali — so if you're in those cities, we can connect you with the right space. A Nairobi satellite office is planned for Q3 2026.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          I'm a journalist or researcher — who should I contact?
+          <div class="faq-icon">+</div>
+        </div>
+        <div class="faq-a">
+          Email our press team directly at <a href="mailto:press@mginnovationhub.co" style="color:var(--mg-electric)">press@mginnovationhub.co</a>. Please include your publication name, the nature of your enquiry, and your deadline. We typically respond to press enquiries within 24 hours.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          Can I host my own event or workshop at your space?
+          <div class="faq-icon">+</div>
+        </div>
+        <div class="faq-a">
+          Absolutely. Our event spaces are available for hire — including the 300-seat auditorium, workshop labs, and the rooftop terrace. Use the enquiry form above (select "Events & Partnerships") or email <a href="mailto:events@mginnovationhub.co" style="color:var(--mg-electric)">events@mginnovationhub.co</a> with your event details and preferred date.
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     CTA BANNER
+════════════════════════════════════════ -->
+<section class="cta-section relative z-10 py-28">
+  <div class="cta-grid"></div>
+  <div class="absolute inset-0 pointer-events-none"
+       style="background:radial-gradient(ellipse 70% 60% at 50% 50%,rgba(0,229,255,.1) 0%,transparent 70%)"></div>
+  <div class="relative z-10 max-w-3xl mx-auto px-6 text-center">
+    <p class="section-label justify-center reveal" style="color:var(--mg-electric)">One More Thing</p>
+    <h2 class="reveal reveal-delay-1 mt-4"
+        style="font-size:clamp(2rem,4vw,3rem);font-weight:800;line-height:1.1;color:#fff">
+      Not Sure Which Program<br><span style="color:var(--mg-electric)">Is Right for You?</span>
+    </h2>
+    <p class="mt-5 reveal reveal-delay-2" style="color:rgba(255,255,255,.55);font-size:1.05rem">
+      Book a free 20-minute discovery call with our team. No pitch, no pressure — just an honest conversation about where you are and how we can help.
+    </p>
+    <div class="mt-10 flex gap-4 justify-center flex-wrap reveal reveal-delay-3">
+      <a href="#contact-form" class="btn-primary text-base px-8 py-3">Send Us a Message</a>
+      <a href="mg-services.html" class="btn-outline text-base px-8 py-3">Explore Services</a>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     FOOTER
+════════════════════════════════════════ -->
+<footer class="relative z-10">
+  <div class="max-w-7xl mx-auto px-6 py-16">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
+
+      <div class="lg:col-span-1">
+        <a href="/Home/home.html" class="flex items-center gap-2 mb-4">
+          <div class="w-28 h-12 rounded-lg flex items-center justify-center amber-glow">
+        <img src="/images/MG_LOGO_2-removebg-preview.png" alt="Logo">
+      </div>
+        </a>
+        <p class="text-white/40 text-sm leading-relaxed">Africa's premier innovation ecosystem. Building the future, one breakthrough at a time.</p>
+        <div class="flex gap-2 mt-5">
+          <a href="#" class="social-btn">𝕏</a>
+          <a href="#" class="social-btn">in</a>
+          <a href="#" class="social-btn">◎</a>
+          <a href="#" class="social-btn">▶</a>
+        </div>
+      </div>
+
+      <div>
+        <h4 class="syne font-bold text-sm mb-4 tracking-wide">Company</h4>
+        <ul class="space-y-2.5">
+          <li><a href="/About/about.html" class="footer-link">About Us</a></li>
+          <li><a href="#" class="footer-link">Team</a></li>
+          <li><a href="#" class="footer-link">Careers</a></li>
+          <li><a href="#" class="footer-link">Press</a></li>
+          <li><a href="#" class="footer-link">Blog</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="syne font-bold text-sm mb-4 tracking-wide">Quick Links</h4>
+        <ul class="space-y-2.5">
+          <li><a href="/Services/services.html" class="footer-link">Services</a></li>
+          <li><a href="/Events/events.html" class="footer-link">Events</a></li>
+          <li><a href="/services.html#pricing" class="footer-link">Pricing</a></li>
+          <li><a href="/contact.html" class="footer-link" style="color:var(--mg-electric)">Contact</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="syne font-bold text-sm mb-4 tracking-wide">Contact</h4>
+        <ul class="space-y-3">
+          <li class="text-white/40 text-sm flex gap-2 items-start">
+            <span style="color:var(--mg-electric)" class="mt-0.5">📍</span>
+            Riva Plaza, Nakuru CBD<br>Nakuru, Kenya
+          </li>
+          <li><a href="mailto:hello@mginnovationhub.co" class="footer-link text-sm">hello@mginnovationhub.co</a></li>
+          <li><a href="tel:+254700000000" class="footer-link text-sm">+254 700 000 000</a></li>
+        </ul>
+        <div class="mt-5">
+          <p class="text-white/25 text-xs mb-2">Newsletter</p>
+          <div class="flex gap-2">
+            <input type="email" id="footer-email" placeholder="your@email.com"
+              class="flex-1 bg-white/5 border border-white/10 px-3 py-2 text-xs text-white placeholder-white/20 focus:outline-none focus:border-[var(--mg-electric)] transition-colors rounded-sm min-w-0"/>
+            <button onclick="handleFooterSub()" class="px-3 py-2 text-xs font-bold syne rounded-sm"
+                    style="background:var(--mg-electric);color:var(--mg-ink)">→</button>
+          </div>
+          <p id="footer-msg" class="text-xs mt-1 hidden" style="color:var(--mg-neon)">✓ Subscribed!</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="border-t" style="border-color:rgba(255,255,255,.05)">
+    <div class="max-w-7xl mx-auto px-6 py-5 flex flex-col sm:flex-row justify-between items-center gap-3">
+      <p class="text-white/25 text-xs">© 2025 MG Innovation Hub Ltd. All rights reserved. Nakuru, Kenya.</p>
+      <div class="flex gap-5">
+        <a href="#" class="footer-link text-xs">Privacy Policy</a>
+        <a href="#" class="footer-link text-xs">Terms of Use</a>
+        <a href="#" class="footer-link text-xs">Cookie Settings</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- ══════════════════════════════════════
+     SUCCESS OVERLAY
+════════════════════════════════════════ -->
+<div id="success-overlay">
+  <div class="success-backdrop" onclick="closeSuccess()"></div>
+  <div class="success-box">
+    <span class="success-icon">✅</span>
+    <h3>Message Sent!</h3>
+    <p>Thank you for reaching out to MG Innovation Hub. Our Nakuru team will get back to you within 48 business hours.</p>
+    <button onclick="closeSuccess()" class="btn-primary px-8 py-3 w-full">Back to Page</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     JAVASCRIPT
+════════════════════════════════════════ -->
+<script>
+// ── THEME TOGGLE ──────────────────────────
+(function(){
+  if(localStorage.getItem('mg-theme')==='light')
+    document.documentElement.classList.add('light');
+})();
+
+function applyTheme(isLight){
+  document.documentElement.classList.toggle('light',isLight);
+  localStorage.setItem('mg-theme',isLight?'light':'dark');
+  document.getElementById('icon-moon').style.opacity=isLight?'.35':'1';
+  document.getElementById('icon-sun').style.opacity=isLight?'1':'.35';
+}
+
+document.addEventListener('DOMContentLoaded',()=>{
+  const isLight=document.documentElement.classList.contains('light');
+  document.getElementById('icon-moon').style.opacity=isLight?'.35':'1';
+  document.getElementById('icon-sun').style.opacity=isLight?'1':'.35';
+  document.getElementById('theme-toggle').addEventListener('click',()=>{
+    applyTheme(!document.documentElement.classList.contains('light'));
+  });
+});
+
+// ── NAV ───────────────────────────────────
+window.addEventListener('scroll',()=>{
+  document.getElementById('navbar').classList.toggle('scrolled',window.scrollY>60);
+},{passive:true});
+
+document.getElementById('hamburger').addEventListener('click',()=>{
+  document.getElementById('mobile-menu').classList.toggle('open');
+});
+document.querySelectorAll('#mobile-menu a').forEach(a=>
+  a.addEventListener('click',()=>document.getElementById('mobile-menu').classList.remove('open'))
+);
+
+// ── SCROLL REVEAL ─────────────────────────
+function triggerReveal(){
+  document.querySelectorAll('.reveal:not(.visible)').forEach(el=>{
+    if(el.getBoundingClientRect().top<window.innerHeight-60) el.classList.add('visible');
+  });
+}
+window.addEventListener('scroll',triggerReveal,{passive:true});
+window.addEventListener('load',triggerReveal);
+setTimeout(triggerReveal,200);
+
+// ── CHAR COUNTER ──────────────────────────
+function updateChar(el){
+  document.getElementById('char-count').textContent=el.value.length+' / 1000';
+}
+
+// ── FAQ ───────────────────────────────────
+function toggleFaq(el){
+  const item=el.parentElement;
+  const isOpen=item.classList.contains('open');
+  document.querySelectorAll('.faq-item').forEach(i=>i.classList.remove('open'));
+  if(!isOpen) item.classList.add('open');
+}
+
+// ── FORM VALIDATION & SUBMIT ──────────────
+function validate(){
+  let ok=true;
+
+  const fields=[
+    {id:'name',   errId:'name-err',    check:v=>v.trim().length>=2},
+    {id:'email',  errId:'email-err',   check:v=>/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim())},
+    {id:'enquiry',errId:'enquiry-err', check:v=>v!==''},
+    {id:'message',errId:'message-err', check:v=>v.trim().length>=20},
+  ];
+
+  fields.forEach(f=>{
+    const el=document.getElementById(f.id);
+    const errEl=document.getElementById(f.errId);
+    if(!f.check(el.value)){
+      el.classList.add('error');
+      errEl.style.display='block';
+      ok=false;
+    } else {
+      el.classList.remove('error');
+      errEl.style.display='none';
+    }
+  });
+
+  // Consent
+  const consent=document.getElementById('consent');
+  const consentErr=document.getElementById('consent-err');
+  if(!consent.checked){
+    consentErr.style.display='block';
+    ok=false;
+  } else {
+    consentErr.style.display='none';
+  }
+
+  return ok;
+}
+
+// Clear error on input
+['name','email','enquiry','message'].forEach(id=>{
+  const el=document.getElementById(id);
+  el.addEventListener('input',()=>{
+    el.classList.remove('error');
+    document.getElementById(id+'-err').style.display='none';
+  });
+});
+
+function submitForm(){
+  if(!validate()) return;
+
+  // Show spinner
+  document.getElementById('btn-text').textContent='Sending…';
+  document.getElementById('btn-arrow').classList.add('hidden');
+  document.getElementById('btn-spinner').classList.remove('hidden');
+
+  // Simulate network request
+  setTimeout(()=>{
+    // Reset button
+    document.getElementById('btn-text').textContent='Send Message';
+    document.getElementById('btn-arrow').classList.remove('hidden');
+    document.getElementById('btn-spinner').classList.add('hidden');
+    // Clear form
+    document.getElementById('contact-form-el').reset();
+    document.getElementById('char-count').textContent='0 / 1000';
+    // Show success
+    document.getElementById('success-overlay').classList.add('show');
+    document.body.style.overflow='hidden';
+  },1800);
+}
+
+function closeSuccess(){
+  document.getElementById('success-overlay').classList.remove('show');
+  document.body.style.overflow='';
+}
+
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape') closeSuccess();
+});
+
+// ── FOOTER SUB ─────────────────────────────
+function handleFooterSub(){
+  const el=document.getElementById('footer-email');
+  const msg=document.getElementById('footer-msg');
+  if(!el.value||!el.value.includes('@')) return;
+  el.value='';
+  msg.classList.remove('hidden');
+  setTimeout(()=>msg.classList.add('hidden'),4000);
+}
+document.getElementById('footer-email').addEventListener('keydown',e=>{
+  if(e.key==='Enter') handleFooterSub();
+});
+</script>
+</body>
+</html>

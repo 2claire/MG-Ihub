@@ -1,1 +1,1203 @@
-<h1 class="text-3xl font-bold text-red">Events In Progress</h1>
+<!-- <h1 class="text-3xl font-bold text-red">Events In Progress</h1> -->
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Events — MG Innovation Hub</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --mg-ink:        #0A0A0F;
+      --mg-electric:   #30aadf;
+      --mg-neon:       #B6FF4E;
+      --mg-orange:     #FF6B2B;
+      --mg-mid:        #1A1A2E;
+      --mg-surface:    #111128;
+      --mg-glass:      rgba(255,255,255,0.04);
+      --mg-border:     rgba(255,255,255,0.08);
+      --mg-text:       #ffffff;
+      --mg-text-muted: rgba(255,255,255,0.55);
+      --mg-text-faint: rgba(255,255,255,0.25);
+      --mg-footer-bg:  #07070D;
+      --mg-nav-scrolled:   rgba(10,10,15,0.88);
+      --mg-mobile-menu-bg: rgba(10,10,15,0.97);
+    }
+
+    /* ── LIGHT MODE ─────────────────────── */
+    html.light {
+      --mg-ink:        #F0F4F8;
+      --mg-electric:   #30aadf;
+      --mg-neon:       #3d8c00;
+      --mg-orange:     #D9541A;
+      --mg-surface:    #FFFFFF;
+      --mg-glass:      rgba(0,0,0,0.03);
+      --mg-border:     rgba(0,0,0,0.10);
+      --mg-text:       #000000;
+      --mg-text-muted: rgba(0,0,0,0.55);
+      --mg-text-faint: rgba(0,0,0,0.30);
+      --mg-footer-bg:  #1A1A2E;
+      --mg-nav-scrolled:   rgba(240,244,248,0.94);
+      --mg-mobile-menu-bg: rgba(240,244,248,0.98);
+    }
+
+    /* Force black text in light mode */
+    html.light body,
+    html.light h1,html.light h2,html.light h3,html.light h4,
+    html.light p,html.light li { color: #000000; }
+    html.light p { color: rgba(0,0,0,0.65); }
+    html.light .nav-link { color: rgba(0,0,0,0.65); }
+    html.light .nav-link:hover { color: #000; }
+    html.light .event-card { background: #fff; }
+    html.light .event-meta-item { color: rgba(0,0,0,0.5); }
+    html.light .filter-btn { color: rgba(0,0,0,0.5); border-color: rgba(0,0,0,0.12); }
+    html.light .filter-btn.active { color: #000; border-color: #30aadf; background: rgba(48,170,223,0.08); }
+    html.light .filter-btn:hover { color: #000; border-color: rgba(0,0,0,0.3); }
+    html.light .featured-event { background: #fff; }
+    html.light .calendar-day { background: #fff; color: #000; }
+    html.light .calendar-day.has-event:hover { border-color: #30aadf; }
+    html.light .calendar-day.other-month { background: rgba(0,0,0,0.02); color: rgba(0,0,0,0.25); }
+    html.light .calendar-day.today { border-color: #30aadf; }
+    html.light .cal-header { color: rgba(0,0,0,0.4); }
+    html.light .newsletter-box { background: #fff; }
+    html.light .stat-card { background: #fff; }
+    html.light .past-card { background: #fff; }
+    html.light .speaker-card { background: #fff; }
+    /* Page hero text stays white over image */
+    html.light .page-hero h1,
+    html.light .page-hero p,
+    html.light .page-hero .section-label,
+    html.light .page-hero .breadcrumb { color: #fff; }
+    html.light .page-hero .breadcrumb span { color: #30aadf; }
+    /* Footer stays dark */
+    html.light footer,
+    html.light footer p,html.light footer li,
+    html.light footer span,html.light footer h4 { color: rgba(255,255,255,0.7); }
+    html.light .footer-link { color: rgba(255,255,255,0.5); }
+    html.light .footer-link:hover { color: #30aadf; }
+    html.light .social-btn { color: rgba(255,255,255,0.45); border-color: rgba(255,255,255,0.12); }
+    html.light .social-btn:hover { color: #30aadf; border-color: #30aadf; }
+    html.light .ticker-wrap { background: #e2e8f0; }
+    html.light .ticker-inner span { color: rgba(0,0,0,0.4); }
+
+    /* Smooth theme transition */
+    *,*::before,*::after {
+      transition-property: background-color,border-color,color,box-shadow;
+      transition-duration: .3s; transition-timing-function: ease;
+    }
+    .reveal,.btn-primary,.btn-outline,.event-card,.filter-btn,
+    .nav-link,.footer-link,.social-btn,.calendar-day {
+      transition-property: background-color,border-color,color,box-shadow,opacity,transform;
+    }
+
+    *{ box-sizing:border-box; margin:0; padding:0; }
+    html{ scroll-behavior:smooth; }
+    body{ background:var(--mg-ink); color:var(--mg-text); font-family:'DM Sans',sans-serif; overflow-x:hidden; }
+    h1,h2,h3,h4,nav a,.syne{ font-family:'Syne',sans-serif; }
+
+    /* Noise */
+    body::before{
+      content:''; position:fixed; inset:0; z-index:0; pointer-events:none;
+      background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      opacity:.4;
+    }
+
+    /* ── NAV ── */
+    #navbar{ position:fixed; top:0; left:0; right:0; z-index:100; transition:background .4s,backdrop-filter .4s,box-shadow .4s; }
+    #navbar.scrolled{ background:var(--mg-nav-scrolled); backdrop-filter:blur(20px); box-shadow:0 1px 0 var(--mg-border); }
+    .nav-link{ position:relative; font-weight:500; font-size:.9rem; color:var(--mg-text-muted); transition:color .25s; padding-bottom:2px; }
+    .nav-link::after{ content:''; position:absolute; bottom:-4px; left:0; width:0; height:2px; background:var(--mg-electric); transition:width .3s; }
+    .nav-link:hover{ color:var(--mg-text); }
+    .nav-link:hover::after,.nav-link.active::after{ width:100%; }
+    .nav-link.active{ color:var(--mg-text); }
+    .btn-primary{ background:var(--mg-electric); color:var(--mg-ink); font-family:'Syne',sans-serif; font-weight:700; padding:.55rem 1.4rem; border-radius:2px; transition:transform .2s,box-shadow .2s; letter-spacing:.03em; font-size:.85rem; }
+    .btn-primary:hover{ transform:translateY(-2px); box-shadow:0 8px 28px rgba(0,229,255,.3); }
+    .btn-outline{ border:1.5px solid var(--mg-electric); color:var(--mg-electric); font-family:'Syne',sans-serif; font-weight:700; padding:.55rem 1.4rem; border-radius:2px; transition:background .2s,color .2s; font-size:.85rem; }
+    .btn-outline:hover{ background:var(--mg-electric); color:var(--mg-ink); }
+
+    #mobile-menu{ display:none; flex-direction:column; gap:1rem; padding:1.5rem 1.5rem 2rem; background:var(--mg-mobile-menu-bg); backdrop-filter:blur(20px); border-top:1px solid var(--mg-border); }
+    #mobile-menu.open{ display:flex; }
+
+    /* ── THEME TOGGLE ── */
+    .theme-toggle{ width:44px; height:24px; border-radius:12px; background:var(--mg-border); border:1px solid var(--mg-border); position:relative; cursor:pointer; flex-shrink:0; }
+    .theme-toggle::before{ content:''; position:absolute; top:2px; left:2px; width:18px; height:18px; border-radius:50%; background:var(--mg-electric); transition:transform .3s; }
+    html.light .theme-toggle::before{ transform:translateX(20px); }
+    .theme-toggle-wrap{ display:flex; align-items:center; gap:.5rem; }
+    .theme-icon{ font-size:.85rem; line-height:1; user-select:none; transition:opacity .3s; }
+
+    /* ── SECTION UTILS ── */
+    .section-label{ font-family:'Syne',sans-serif; font-size:.7rem; letter-spacing:.2em; text-transform:uppercase; color:var(--mg-electric); display:flex; align-items:center; gap:.6rem; }
+    .section-label::before{ content:''; display:block; width:2rem; height:1.5px; background:var(--mg-electric); }
+    .section-title{ font-size:clamp(2rem,4vw,3.2rem); font-weight:800; line-height:1.1; letter-spacing:-.02em; }
+    .section-title .hl{ color:var(--mg-electric); }
+    .section-title .hl-neon{ color:var(--mg-neon); }
+    .section-title .hl-orange{ color:var(--mg-orange); }
+
+    /* ── PAGE HERO ── */
+    .page-hero{ position:relative; min-height:520px; overflow:hidden; display:flex; align-items:flex-end; padding-bottom:5rem; }
+    .hero-bg{ position:absolute; inset:0; background-image:url('https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=1600&q=80'); background-size:cover; background-position:center; filter:brightness(.2); }
+    .hero-overlay{ position:absolute; inset:0; background:linear-gradient(135deg,rgba(0,10,30,.8) 0%,rgba(0,184,204,.04) 100%); }
+    .hero-grid{ position:absolute; inset:0; pointer-events:none; opacity:.05; background-image:linear-gradient(rgba(0,229,255,.5) 1px,transparent 1px),linear-gradient(90deg,rgba(0,229,255,.5) 1px,transparent 1px); background-size:60px 60px; }
+    .breadcrumb{ font-size:.75rem; color:rgba(255,255,255,.35); letter-spacing:.08em; }
+    .breadcrumb span{ color:var(--mg-electric); }
+
+    /* ── FILTER PILLS ── */
+    .filter-btn{ font-family:'Syne',sans-serif; font-size:.75rem; font-weight:600; letter-spacing:.06em; text-transform:uppercase; padding:.4rem 1rem; border:1px solid var(--mg-border); color:var(--mg-text-muted); border-radius:2px; cursor:pointer; background:none; white-space:nowrap; }
+    .filter-btn:hover{ border-color:var(--mg-text-muted); color:var(--mg-text); }
+    .filter-btn.active{ border-color:var(--mg-electric); color:var(--mg-electric); background:rgba(0,184,204,.08); }
+
+    /* ── EVENT CARD ── */
+    .event-card{ border:1px solid var(--mg-border); background:var(--mg-surface); border-radius:4px; overflow:hidden; cursor:pointer; }
+    .event-card:hover{ border-color:var(--mg-electric); transform:translateY(-5px); }
+    .event-thumb{ width:100%; height:180px; object-fit:cover; filter:brightness(.75); transition:filter .4s,transform .4s; }
+    .event-card:hover .event-thumb{ filter:brightness(.95); transform:scale(1.03); }
+    .event-thumb-wrap{ overflow:hidden; position:relative; }
+    .event-date-badge{ position:absolute; top:12px; left:12px; background:var(--mg-electric); color:var(--mg-ink); font-family:'Syne',sans-serif; font-weight:800; text-align:center; padding:.3rem .6rem; border-radius:2px; line-height:1.1; }
+    .event-date-badge .day{ font-size:1.4rem; display:block; }
+    .event-date-badge .mon{ font-size:.6rem; letter-spacing:.1em; text-transform:uppercase; }
+    .event-type-badge{ position:absolute; top:12px; right:12px; font-family:'Syne',sans-serif; font-size:.6rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; padding:.2rem .5rem; border-radius:2px; }
+    .event-meta-item{ display:flex; align-items:center; gap:.4rem; font-size:.8rem; color:var(--mg-text-muted); }
+    .event-meta-item svg{ flex-shrink:0; opacity:.6; }
+
+    /* ── FEATURED EVENT ── */
+    .featured-event{ border:1px solid var(--mg-electric); background:var(--mg-surface); border-radius:4px; overflow:hidden; }
+    .featured-thumb{ width:100%; height:100%; object-fit:cover; filter:brightness(.6); }
+    .featured-tag{ display:inline-block; background:var(--mg-electric); color:var(--mg-ink); font-family:'Syne',sans-serif; font-size:.65rem; font-weight:700; letter-spacing:.12em; text-transform:uppercase; padding:.25rem .7rem; border-radius:2px; margin-bottom:1rem; }
+
+    /* ── CALENDAR ── */
+    .calendar-grid{ display:grid; grid-template-columns:repeat(7,1fr); gap:4px; }
+    .cal-header{ font-family:'Syne',sans-serif; font-size:.7rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; text-align:center; padding:.5rem 0; color:var(--mg-text-muted); }
+    .calendar-day{ border:1px solid var(--mg-border); background:var(--mg-surface); border-radius:2px; padding:.5rem; min-height:70px; cursor:default; position:relative; }
+    .calendar-day.other-month{ opacity:.35; }
+    .calendar-day.today{ border-color:var(--mg-electric); }
+    .calendar-day.has-event{ cursor:pointer; }
+    .calendar-day.has-event:hover{ border-color:var(--mg-electric); background:rgba(0,184,204,.05); }
+    .day-num{ font-family:'Syne',sans-serif; font-size:.75rem; font-weight:700; margin-bottom:.25rem; }
+    .day-event-dot{ display:flex; align-items:center; gap:.2rem; font-size:.6rem; color:var(--mg-electric); font-family:'Syne',sans-serif; font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .dot{ width:5px; height:5px; border-radius:50%; background:var(--mg-electric); flex-shrink:0; }
+    .dot-neon{ background:var(--mg-neon); }
+    .dot-orange{ background:var(--mg-orange); }
+
+    /* ── SPEAKER CARD ── */
+    .speaker-card{ border:1px solid var(--mg-border); background:var(--mg-surface); border-radius:4px; padding:1.5rem; transition:border-color .3s,transform .3s; }
+    .speaker-card:hover{ border-color:var(--mg-electric); transform:translateY(-4px); }
+    .speaker-avatar{ width:60px; height:60px; border-radius:50%; object-fit:cover; border:2px solid var(--mg-border); }
+    .speaker-avatar-placeholder{ width:60px; height:60px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-family:'Syne',sans-serif; font-weight:800; font-size:1.2rem; flex-shrink:0; }
+
+    /* ── PAST EVENT CARD ── */
+    .past-card{ border:1px solid var(--mg-border); background:var(--mg-surface); border-radius:4px; overflow:hidden; transition:border-color .3s,transform .3s; }
+    .past-card:hover{ border-color:rgba(255,255,255,.2); transform:translateY(-3px); }
+    .past-thumb{ width:100%; height:140px; object-fit:cover; filter:grayscale(60%) brightness(.6); transition:filter .4s; }
+    .past-card:hover .past-thumb{ filter:grayscale(20%) brightness(.8); }
+
+    /* ── STAT CARD ── */
+    .stat-card{ border:1px solid var(--mg-border); background:var(--mg-glass); backdrop-filter:blur(12px); padding:1.5rem; border-radius:4px; }
+    .stat-card:hover{ border-color:var(--mg-electric); transform:translateY(-4px); }
+    .stat-value{ font-family:'Syne',sans-serif; font-size:2.8rem; font-weight:800; color:var(--mg-electric); line-height:1; }
+
+    /* ── NEWSLETTER BOX ── */
+    .newsletter-box{ border:1px solid var(--mg-border); background:var(--mg-surface); border-radius:4px; padding:2rem; }
+
+    /* ── TICKER ── */
+    .ticker-wrap{ overflow:hidden; white-space:nowrap; border-top:1px solid var(--mg-border); border-bottom:1px solid var(--mg-border); background:var(--mg-surface); padding:.7rem 0; }
+    .ticker-inner{ display:inline-block; animation:ticker 30s linear infinite; }
+    .ticker-inner span{ padding:0 2.5rem; font-family:'Syne',sans-serif; font-size:.75rem; letter-spacing:.12em; text-transform:uppercase; color:rgba(255,255,255,.4); }
+    .ticker-inner span b{ color:var(--mg-electric); }
+    @keyframes ticker{ from{transform:translateX(0)} to{transform:translateX(-50%)} }
+
+    /* ── CTA ── */
+    .cta-section{ position:relative; overflow:hidden; background:linear-gradient(135deg,#041A2E 0%,#0A1628 50%,#041A20 100%); }
+    .cta-grid{ position:absolute; inset:0; pointer-events:none; opacity:.05; background-image:linear-gradient(rgba(0,229,255,.5) 1px,transparent 1px),linear-gradient(90deg,rgba(0,229,255,.5) 1px,transparent 1px); background-size:60px 60px; }
+
+    /* ── FOOTER ── */
+    footer{ background:var(--mg-footer-bg); border-top:1px solid var(--mg-border); }
+    .footer-link{ color:var(--mg-text-muted); font-size:.875rem; transition:color .25s; }
+    .footer-link:hover{ color:var(--mg-electric); }
+    .social-btn{ width:38px; height:38px; border-radius:4px; border:1px solid var(--mg-border); display:flex; align-items:center; justify-content:center; color:rgba(255,255,255,.45); transition:border-color .25s,color .25s; }
+    .social-btn:hover{ border-color:var(--mg-electric); color:var(--mg-electric); }
+
+    /* ── SCROLL REVEAL ── */
+    .reveal{ opacity:0; transform:translateY(28px); transition:opacity .7s ease,transform .7s ease; }
+    .reveal.visible{ opacity:1; transform:none; }
+    .reveal-delay-1{ transition-delay:.1s; }
+    .reveal-delay-2{ transition-delay:.2s; }
+    .reveal-delay-3{ transition-delay:.3s; }
+    .reveal-delay-4{ transition-delay:.4s; }
+
+    /* ── MODAL ── */
+    #event-modal{ position:fixed; inset:0; z-index:200; display:none; align-items:center; justify-content:center; padding:1rem; }
+    #event-modal.open{ display:flex; }
+    .modal-backdrop{ position:absolute; inset:0; background:rgba(0,0,0,.75); backdrop-filter:blur(8px); }
+    .modal-box{ position:relative; z-index:1; background:var(--mg-surface); border:1px solid var(--mg-border); border-radius:4px; max-width:560px; width:100%; max-height:90vh; overflow-y:auto; padding:2rem; }
+    html.light .modal-box{ background:#fff; }
+    html.light .modal-box h3,html.light .modal-box p,html.light .modal-box li{ color:#000; }
+    html.light .modal-box p{ color:rgba(0,0,0,0.65); }
+    .modal-close{ position:absolute; top:1rem; right:1rem; background:var(--mg-border); border:none; color:var(--mg-text); width:30px; height:30px; border-radius:50%; cursor:pointer; font-size:1rem; display:flex; align-items:center; justify-content:center; }
+
+    .glow-blob{ position:absolute; border-radius:50%; pointer-events:none; filter:blur(80px); opacity:.07; }
+
+    ::-webkit-scrollbar{ width:5px; }
+    ::-webkit-scrollbar-track{ background:var(--mg-ink); }
+    ::-webkit-scrollbar-thumb{ background:var(--mg-electric); border-radius:10px; }
+  </style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════
+     NAV
+════════════════════════════════════════ -->
+<nav id="navbar" class="py-4">
+  <div class="max-w-7xl mx-auto px-6 flex items-center justify-between">
+    <a href="/Home/home.html" class="flex items-center gap-2">
+      <div class="w-28 h-12 rounded-lg flex items-center justify-center amber-glow">
+        <img src="/images/MG_LOGO_2-removebg-preview.png" alt="Logo">
+      </div>
+    </a>
+
+    <div class="hidden md:flex items-center gap-8">
+      <a href="/Home/home.html" class="nav-link">Home</a>
+      <a href="/About/about.html" class="nav-link">About</a>
+      <a href="/services.html" class="nav-link">Services</a>
+      <a href="/suppliers.html" class="nav-link">Suppliers</a>
+      <a href="/Events.html" class="nav-link active">Events</a>
+      <a href="/gallery.html" class="nav-link">Gallery</a>
+      <a href="/contact.html" class="nav-link">Contact</a>
+    </div>
+
+    <div class="flex items-center gap-3">
+      <div class="theme-toggle-wrap">
+        <span class="theme-icon" id="icon-moon">🌙</span>
+        <button class="theme-toggle" id="theme-toggle" aria-label="Toggle light/dark mode"></button>
+        <span class="theme-icon" id="icon-sun">☀️</span>
+      </div>
+      <a href="/Explore.html" class="btn-primary hidden md:inline-block">Explore Hub</a>
+      <button id="hamburger" class="md:hidden flex flex-col gap-1.5 p-1" aria-label="Menu">
+        <span class="w-6 h-0.5 bg-white transition-all"></span>
+        <span class="w-6 h-0.5 bg-white transition-all"></span>
+        <span class="w-4 h-0.5 bg-white transition-all"></span>
+      </button>
+    </div>
+  </div>
+
+  <div id="mobile-menu">
+    <a href="/Home/home.html" class="nav-link text-lg">Home</a>
+    <a href="/About/about.html" class="nav-link text-lg">About</a>
+    <a href="/services.html" class="nav-link text-lg">Services</a>
+    <a href="/suppliers.html" class="nav-link text-lg">Suppliers</a>
+    <a href="/Events.html" class="nav-link text-lg active">Events</a>
+    <a href="/gallery.html" class="nav-link text-lg">Gallery</a>
+    <a href="/contact.html" class="nav-link text-lg">Contact</a>
+    <a href="/Explore.html" class="btn-primary text-center mt-2">Explore Hub</a>
+  </div>
+</nav>
+
+<!-- ══════════════════════════════════════
+     PAGE HERO
+════════════════════════════════════════ -->
+<section class="page-hero pt-24">
+  <div class="hero-bg"></div>
+  <div class="hero-overlay"></div>
+  <div class="hero-grid"></div>
+  <div class="glow-blob w-[500px] h-[400px] top-0 right-0" style="background:var(--mg-electric)"></div>
+
+  <div class="relative z-10 max-w-7xl mx-auto px-6 w-full">
+    <p class="breadcrumb mb-4">
+      <a href="index.html" class="hover:text-white transition-colors">Home</a>
+      &nbsp;/&nbsp;<span>Events</span>
+    </p>
+    <p class="section-label reveal">What's On</p>
+    <h1 class="reveal reveal-delay-1 mt-4"
+        style="font-size:clamp(3rem,7vw,5.5rem);font-weight:800;line-height:1.05;letter-spacing:-.03em">
+      Where the<br><span style="color:var(--mg-electric)">Community</span> Sparks.
+    </h1>
+    <p class="reveal reveal-delay-2 mt-5 max-w-xl text-white/55 text-lg leading-relaxed">
+      Pitch nights, bootcamps, summits, demo days and cross-border tours — MG Innovation Hub runs 80+ events a year that keep East Africa's tech ecosystem in motion.
+    </p>
+    <div class="reveal reveal-delay-3 mt-8 flex gap-3 flex-wrap">
+      <a href="#upcoming" class="btn-primary px-6 py-3">Browse Events</a>
+      <a href="#calendar" class="btn-outline px-6 py-3">View Calendar</a>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     TICKER
+════════════════════════════════════════ -->
+<div class="ticker-wrap relative z-10">
+  <div class="ticker-inner">
+    <span>Pitch Night &nbsp;<b>✦</b></span>
+    <span>Demo Day &nbsp;<b>✦</b></span>
+    <span>AI Summit &nbsp;<b>✦</b></span>
+    <span>Hackathon &nbsp;<b>✦</b></span>
+    <span>Investor Meetup &nbsp;<b>✦</b></span>
+    <span>Fireside Chat &nbsp;<b>✦</b></span>
+    <span>Tech Safari Tour &nbsp;<b>✦</b></span>
+    <span>Workshop &nbsp;<b>✦</b></span>
+    <span>Community Hangout &nbsp;<b>✦</b></span>
+    <span>Pitch Night &nbsp;<b>✦</b></span>
+    <span>Demo Day &nbsp;<b>✦</b></span>
+    <span>AI Summit &nbsp;<b>✦</b></span>
+    <span>Hackathon &nbsp;<b>✦</b></span>
+    <span>Investor Meetup &nbsp;<b>✦</b></span>
+    <span>Fireside Chat &nbsp;<b>✦</b></span>
+    <span>Tech Safari Tour &nbsp;<b>✦</b></span>
+    <span>Workshop &nbsp;<b>✦</b></span>
+    <span>Community Hangout &nbsp;<b>✦</b></span>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     STATS
+════════════════════════════════════════ -->
+<section class="relative z-10 py-16">
+  <div class="max-w-7xl mx-auto px-6">
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div class="stat-card reveal text-center">
+        <div class="stat-value counter" data-target="10" data-suffix="+">0</div>
+        <div class="text-[var(--mg-text-muted)] text-sm mt-2">Events Per Year</div>
+      </div>
+      <div class="stat-card reveal reveal-delay-1 text-center">
+        <div class="stat-value counter" data-target="500" data-suffix="+">0</div>
+        <div class="text-[var(--mg-text-muted)] text-sm mt-2">Avg. Attendees / Summit</div>
+      </div>
+      <div class="stat-card reveal reveal-delay-2 text-center">
+        <div class="stat-value counter" data-target="200" data-suffix="+">0</div>
+        <div class="text-[var(--mg-text-muted)] text-sm mt-2">Investors in Network</div>
+      </div>
+      <div class="stat-card reveal reveal-delay-3 text-center">
+        <div class="stat-value counter" data-target="7" data-suffix="">0</div>
+        <div class="text-[var(--mg-text-muted)] text-sm mt-2">Counties Covered</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     FEATURED EVENT
+════════════════════════════════════════ -->
+<section class="relative z-10 py-10 pb-20" style="background:var(--mg-surface)">
+  <div class="glow-blob w-[500px] h-[400px] -right-40 top-0" style="background:var(--mg-neon)"></div>
+  <div class="max-w-7xl mx-auto px-6">
+    <p class="section-label reveal mb-6">Featured Event</p>
+
+    <div class="featured-event reveal reveal-delay-1">
+      <div class="grid lg:grid-cols-2">
+        <!-- Image -->
+        <div class="relative h-72 lg:h-auto overflow-hidden">
+          <img src="https://images.unsplash.com/photo-1475721027785-f74eccf877e2?w=900&q=80"
+               alt="MG Summit 2026" class="featured-thumb w-full h-full object-cover"/>
+          <div class="absolute inset-0 bg-gradient-to-r from-transparent to-[var(--mg-surface)] hidden lg:block"></div>
+          <div class="absolute top-4 left-4">
+            <div class="event-date-badge">
+              <span class="day">14</span>
+              <span class="mon">Jun</span>
+            </div>
+          </div>
+        </div>
+        <!-- Content -->
+        <div class="p-8 lg:p-10 flex flex-col justify-center">
+          <span class="featured-tag">🔥 Flagship Event</span>
+          <h2 class="syne font-black text-3xl lg:text-4xl mb-3 leading-tight">MG Innovation<br>Summit 2026</h2>
+          <p class="text-[var(--mg-text-muted)] leading-relaxed mb-6">
+            East Africa's largest gathering of founders, investors, and innovators. Two days, five stages, 80+ speakers, 1,500+ attendees. If you only attend one event this year — make it this one.
+          </p>
+          <div class="grid grid-cols-2 gap-3 mb-6 text-sm">
+            <div class="event-meta-item">
+              <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+              14–15 June 2026
+            </div>
+            <div class="event-meta-item">
+              <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
+              Sarova Woodlands Hotel, Nakuru
+            </div>
+            <div class="event-meta-item">
+              <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+              8:00 AM – 3:00 PM
+            </div>
+            <div class="event-meta-item">
+              <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+              1,500 Attendees
+            </div>
+          </div>
+          <!-- Countdown -->
+          <div class="flex gap-3 mb-6" id="countdown-wrap">
+            <div class="border border-[var(--mg-border)] px-3 py-2 text-center rounded-sm min-w-[56px]">
+              <div class="syne font-black text-2xl" style="color:var(--mg-electric)" id="cd-days">--</div>
+              <div class="text-xs text-[var(--mg-text-muted)]">Days</div>
+            </div>
+            <div class="border border-[var(--mg-border)] px-3 py-2 text-center rounded-sm min-w-[56px]">
+              <div class="syne font-black text-2xl" style="color:var(--mg-electric)" id="cd-hours">--</div>
+              <div class="text-xs text-[var(--mg-text-muted)]">Hours</div>
+            </div>
+            <div class="border border-[var(--mg-border)] px-3 py-2 text-center rounded-sm min-w-[56px]">
+              <div class="syne font-black text-2xl" style="color:var(--mg-electric)" id="cd-mins">--</div>
+              <div class="text-xs text-[var(--mg-text-muted)]">Mins</div>
+            </div>
+            <div class="border border-[var(--mg-border)] px-3 py-2 text-center rounded-sm min-w-[56px]">
+              <div class="syne font-black text-2xl" style="color:var(--mg-electric)" id="cd-secs">--</div>
+              <div class="text-xs text-[var(--mg-text-muted)]">Secs</div>
+            </div>
+          </div>
+          <div class="flex gap-3 flex-wrap">
+            <a href="#" class="btn-primary px-6 py-3" onclick="openModal('summit')">Register Now</a>
+            <a href="#" class="btn-outline px-6 py-3">Learn More</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     UPCOMING EVENTS GRID
+════════════════════════════════════════ -->
+<section id="upcoming" class="relative z-10 py-28">
+  <div class="glow-blob w-[400px] h-[400px] -left-32 top-1/3" style="background:var(--mg-orange)"></div>
+  <div class="max-w-7xl mx-auto px-6">
+
+    <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
+      <div>
+        <p class="section-label reveal">Upcoming</p>
+        <h2 class="section-title mt-4 reveal reveal-delay-1">All <span class="hl">Events.</span></h2>
+      </div>
+      <!-- Search -->
+      <div class="reveal reveal-delay-2">
+        <input type="text" id="event-search" placeholder="Search events…"
+          class="bg-[var(--mg-surface)] border border-[var(--mg-border)] px-4 py-2.5 text-sm text-[var(--mg-text)] placeholder-[var(--mg-text-muted)] focus:outline-none focus:border-[var(--mg-electric)] transition-colors rounded-sm w-64"/>
+      </div>
+    </div>
+
+    <!-- Filter Pills -->
+    <div class="flex gap-2 flex-wrap mb-10 reveal">
+      <button class="filter-btn active" data-filter="all">All Types</button>
+      <button class="filter-btn" data-filter="summit">Summit</button>
+      <button class="filter-btn" data-filter="pitch">Pitch Night</button>
+      <button class="filter-btn" data-filter="hackathon">Hackathon</button>
+      <button class="filter-btn" data-filter="workshop">Workshop</button>
+      <button class="filter-btn" data-filter="fireside">Fireside</button>
+      <button class="filter-btn" data-filter="tour">Tech Tour</button>
+    </div>
+
+    <!-- Events Grid -->
+    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5" id="events-grid">
+
+      <!-- Event 1 -->
+      <div class="event-card reveal" data-type="pitch" onclick="openModal('pitch1')">
+        <div class="event-thumb-wrap">
+          <img src="https://images.unsplash.com/photo-1558403194-611308249627?w=600&q=80" alt="Pitch Night" class="event-thumb"/>
+          <div class="event-date-badge"><span class="day">03</span><span class="mon">Jun</span></div>
+          <span class="event-type-badge" style="background:rgba(0,184,204,.85);color:#000">Pitch Night</span>
+        </div>
+        <div class="p-5">
+          <h3 class="syne font-bold text-lg mb-2">MG Pitch Night #32</h3>
+          <p class="text-[var(--mg-text-muted)] text-sm mb-4 leading-relaxed">Ten startups. Eighty investors. One unforgettable evening of bold ideas and live funding decisions.</p>
+          <div class="flex flex-col gap-1.5 mb-4">
+            <div class="event-meta-item"><svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>3 June 2026 · 5:00 PM</div>
+            <div class="event-meta-item"><svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>MG IHub, NaKuru</div>
+          </div>
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-semibold syne" style="color:var(--mg-neon)">FREE · 80 spots left</span>
+            <span class="text-xs text-[var(--mg-electric)]">Register →</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Event 2 -->
+      <div class="event-card reveal reveal-delay-1" data-type="hackathon" onclick="openModal('hack1')">
+        <div class="event-thumb-wrap">
+          <img src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=600&q=80" alt="Hackathon" class="event-thumb"/>
+          <div class="event-date-badge" style="background:var(--mg-neon);color:#000"><span class="day">07</span><span class="mon">Jun</span></div>
+          <span class="event-type-badge" style="background:rgba(182,255,78,.85);color:#000">Hackathon</span>
+        </div>
+        <div class="p-5">
+          <h3 class="syne font-bold text-lg mb-2">AgriTech Hackathon 2026</h3>
+          <p class="text-[var(--mg-text-muted)] text-sm mb-4 leading-relaxed">48 hours to reimagine food systems in East Africa. $10,000 prize pool. Open to all skill levels.</p>
+          <div class="flex flex-col gap-1.5 mb-4">
+            <div class="event-meta-item"><svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>7–9 June 2026 · 48hrs</div>
+            <div class="event-meta-item"><svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>MG IHub Lounge + Remote</div>
+          </div>
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-semibold syne" style="color:var(--mg-orange)">KES 500 entry · 120 spots</span>
+            <span class="text-xs text-[var(--mg-electric)]">Register →</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Event 3 -->
+      <div class="event-card reveal reveal-delay-2" data-type="summit" onclick="openModal('summit')">
+        <div class="event-thumb-wrap">
+          <img src="https://images.unsplash.com/photo-1475721027785-f74eccf877e2?w=600&q=80" alt="Summit" class="event-thumb"/>
+          <div class="event-date-badge" style="background:var(--mg-orange)"><span class="day">14</span><span class="mon">Jun</span></div>
+          <span class="event-type-badge" style="background:rgba(255,107,43,.85);color:#fff">Summit</span>
+        </div>
+        <div class="p-5">
+          <h3 class="syne font-bold text-lg mb-2">MG Innovation Summit 2026</h3>
+          <p class="text-[var(--mg-text-muted)] text-sm mb-4 leading-relaxed">East Africa's largest annual tech gathering. 80+ speakers, 5 stages, 1,500+ attendees over two days.</p>
+          <div class="flex flex-col gap-1.5 mb-4">
+            <div class="event-meta-item"><svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>14–15 June 2026</div>
+            <div class="event-meta-item"><svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>Sarova Woodlands Hotel, Nakuru</div>
+          </div>
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-semibold syne" style="color:var(--mg-electric)">KES 2,500 · 400 spots left</span>
+            <span class="text-xs text-[var(--mg-electric)]">Register →</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Event 4 -->
+      <div class="event-card reveal" data-type="fireside" onclick="openModal('fireside1')">
+        <div class="event-thumb-wrap">
+          <img src="https://images.unsplash.com/photo-1560523159-4a9692d222ef?w=600&q=80" alt="Fireside" class="event-thumb"/>
+          <div class="event-date-badge"><span class="day">20</span><span class="mon">Jun</span></div>
+          <span class="event-type-badge" style="background:rgba(182,255,78,.85);color:#000">Fireside</span>
+        </div>
+        <div class="p-5">
+          <h3 class="syne font-bold text-lg mb-2">Fireside: Building in Public</h3>
+          <p class="text-[var(--mg-text-muted)] text-sm mb-4 leading-relaxed">An unfiltered conversation with two founders who documented every step of their zero-to-one journey online.</p>
+          <div class="flex flex-col gap-1.5 mb-4">
+            <div class="event-meta-item"><svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>20 June 2026 · 6:30 PM</div>
+            <div class="event-meta-item"><svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>MG Hub Lounge + Livestream</div>
+          </div>
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-semibold syne" style="color:var(--mg-neon)">FREE · Register to attend</span>
+            <span class="text-xs text-[var(--mg-electric)]">Register →</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Event 5 -->
+      <div class="event-card reveal reveal-delay-1" data-type="workshop" onclick="openModal('ws1')">
+        <div class="event-thumb-wrap">
+          <img src="https://images.unsplash.com/photo-1531482615713-2afd69097998?w=600&q=80" alt="Workshop" class="event-thumb"/>
+          <div class="event-date-badge" style="background:var(--mg-electric)"><span class="day">28</span><span class="mon">Jun</span></div>
+          <span class="event-type-badge" style="background:rgba(0,184,204,.85);color:#000">Workshop</span>
+        </div>
+        <div class="p-5">
+          <h3 class="syne font-bold text-lg mb-2">Intro to LLMs for Founders</h3>
+          <p class="text-[var(--mg-text-muted)] text-sm mb-4 leading-relaxed">A practical half-day session: understand large language models, identify use cases for your product, and build a simple AI feature — no ML background needed.</p>
+          <div class="flex flex-col gap-1.5 mb-4">
+            <div class="event-meta-item"><svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>28 June 2026 · 9:00 AM</div>
+            <div class="event-meta-item"><svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>MG Hub Lab, Nakuru</div>
+          </div>
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-semibold syne" style="color:var(--mg-orange)">KES 1,500 · 40 spots left</span>
+            <span class="text-xs text-[var(--mg-electric)]">Register →</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Event 6 -->
+      <div class="event-card reveal reveal-delay-2" data-type="tour" onclick="openModal('tour1')">
+        <div class="event-thumb-wrap">
+          <img src="https://images.unsplash.com/photo-1551632436-cbf8dd35adfa?w=600&q=80" alt="Tech Tour" class="event-thumb"/>
+          <div class="event-date-badge" style="background:var(--mg-neon);color:#000"><span class="day">05</span><span class="mon">Jul</span></div>
+          <span class="event-type-badge" style="background:rgba(182,255,78,.85);color:#000">Tech Tour</span>
+        </div>
+        <div class="p-5">
+          <h3 class="syne font-bold text-lg mb-2">East Africa Tech Safari — Kigali</h3>
+          <p class="text-[var(--mg-text-muted)] text-sm mb-4 leading-relaxed">Three-day cross-border immersion. Visit Rwanda's tech scene, meet local founders, and build relationships that transcend borders.</p>
+          <div class="flex flex-col gap-1.5 mb-4">
+            <div class="event-meta-item"><svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>5–7 July 2026 · 3 days</div>
+            <div class="event-meta-item"><svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>Nairobi, Kenya</div>
+          </div>
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-semibold syne" style="color:var(--mg-electric)">KES 8,000 · 25 spots left</span>
+            <span class="text-xs text-[var(--mg-electric)]">Register →</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- No results message -->
+    <p id="no-results" class="text-center text-[var(--mg-text-muted)] mt-12 hidden">No events match your filter. Try a different category.</p>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     CALENDAR VIEW
+════════════════════════════════════════ -->
+<section id="calendar" class="relative z-10 py-28" style="background:var(--mg-surface)">
+  <div class="glow-blob w-[400px] h-[400px] right-0 top-1/2 -translate-y-1/2" style="background:var(--mg-electric)"></div>
+  <div class="max-w-5xl mx-auto px-6">
+    <div class="text-center mb-12">
+      <p class="section-label justify-center reveal">Plan Ahead</p>
+      <h2 class="section-title mt-4 reveal reveal-delay-1">Events <span class="hl">Calendar.</span></h2>
+    </div>
+
+    <!-- Month Nav -->
+    <div class="flex items-center justify-between mb-6 reveal">
+      <button id="cal-prev" class="btn-outline px-4 py-2 text-sm">← Prev</button>
+      <h3 class="syne font-bold text-xl" id="cal-month-label">June 2026</h3>
+      <button id="cal-next" class="btn-outline px-4 py-2 text-sm">Next →</button>
+    </div>
+
+    <!-- Day headers -->
+    <div class="calendar-grid mb-1 reveal">
+      <div class="cal-header">Sun</div>
+      <div class="cal-header">Mon</div>
+      <div class="cal-header">Tue</div>
+      <div class="cal-header">Wed</div>
+      <div class="cal-header">Thu</div>
+      <div class="cal-header">Fri</div>
+      <div class="cal-header">Sat</div>
+    </div>
+
+    <!-- Calendar days — generated by JS -->
+    <div class="calendar-grid" id="cal-grid"></div>
+
+    <!-- Legend -->
+    <div class="flex gap-5 mt-5 flex-wrap reveal">
+      <div class="flex items-center gap-2 text-xs text-[var(--mg-text-muted)]"><span class="dot"></span>Pitch / Summit</div>
+      <div class="flex items-center gap-2 text-xs text-[var(--mg-text-muted)]"><span class="dot dot-neon"></span>Hackathon / Workshop</div>
+      <div class="flex items-center gap-2 text-xs text-[var(--mg-text-muted)]"><span class="dot dot-orange"></span>Tour / Fireside</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     SPEAKERS / GUESTS
+════════════════════════════════════════ -->
+<section class="relative z-10 py-28">
+  <div class="max-w-7xl mx-auto px-6">
+    <div class="text-center mb-14">
+      <p class="section-label justify-center reveal">Featured Speakers</p>
+      <h2 class="section-title mt-4 reveal reveal-delay-1">Voices That <span class="hl">Move</span> the Needle.</h2>
+      <p class="mt-4 text-[var(--mg-text-muted)] max-w-xl mx-auto reveal reveal-delay-2">
+        Every MG event features practitioners — founders, operators, and investors who've done the work and are ready to share what they know.
+      </p>
+    </div>
+
+    <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+
+      <div class="speaker-card reveal">
+        <div class="flex items-center gap-3 mb-3">
+          <div class="speaker-avatar-placeholder" style="background:linear-gradient(135deg,#041A2E,#0A2040)">
+            <span style="color:var(--mg-electric)">AK</span>
+          </div>
+          <div>
+            <div class="syne font-bold text-sm">Amara Kimani</div>
+            <div class="text-xs text-[var(--mg-text-muted)]">CEO, PesaLink Tech</div>
+          </div>
+        </div>
+        <p class="text-xs text-[var(--mg-text-muted)] leading-relaxed">"Building FinTech for the Unbanked: Lessons from 0 to 500K Users"</p>
+        <div class="mt-3 text-xs" style="color:var(--mg-electric)">Summit · Jun 14</div>
+      </div>
+
+      <div class="speaker-card reveal reveal-delay-1">
+        <div class="flex items-center gap-3 mb-3">
+          <div class="speaker-avatar-placeholder" style="background:linear-gradient(135deg,#0A1A10,#1A3020)">
+            <span style="color:var(--mg-neon)">DO</span>
+          </div>
+          <div>
+            <div class="syne font-bold text-sm">David Osei</div>
+            <div class="text-xs text-[var(--mg-text-muted)]">CTO, LogiSmart Africa</div>
+          </div>
+        </div>
+        <p class="text-xs text-[var(--mg-text-muted)] leading-relaxed">"AI in Supply Chain: A Practical Implementation Guide for African Operators"</p>
+        <div class="mt-3 text-xs" style="color:var(--mg-neon)">Workshop · Jun 28</div>
+      </div>
+
+      <div class="speaker-card reveal reveal-delay-2">
+        <div class="flex items-center gap-3 mb-3">
+          <div class="speaker-avatar-placeholder" style="background:linear-gradient(135deg,#1A0A05,#2A1008)">
+            <span style="color:var(--mg-orange)">FM</span>
+          </div>
+          <div>
+            <div class="syne font-bold text-sm">Fatuma Mwangi</div>
+            <div class="text-xs text-[var(--mg-text-muted)]">Founder, AgroVault</div>
+          </div>
+        </div>
+        <p class="text-xs text-[var(--mg-text-muted)] leading-relaxed">"From Farm to Funding: How We Raised a Seed Round in 90 Days"</p>
+        <div class="mt-3 text-xs" style="color:var(--mg-orange)">Fireside · Jun 20</div>
+      </div>
+
+      <div class="speaker-card reveal reveal-delay-3">
+        <div class="flex items-center gap-3 mb-3">
+          <div class="speaker-avatar-placeholder" style="background:linear-gradient(135deg,#100A1A,#200A2A)">
+            <span style="color:#C084FC">NW</span>
+          </div>
+          <div>
+            <div class="syne font-bold text-sm">Nyambura Waweru</div>
+            <div class="text-xs text-[var(--mg-text-muted)]">GP, Savanna Ventures</div>
+          </div>
+        </div>
+        <p class="text-xs text-[var(--mg-text-muted)] leading-relaxed">"What African VCs Look for in 2026: Beyond the Pitch Deck"</p>
+        <div class="mt-3 text-xs" style="color:#C084FC">Summit · Jun 15</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     PAST EVENTS
+════════════════════════════════════════ -->
+<section class="relative z-10 py-28" style="background:var(--mg-surface)">
+  <div class="max-w-7xl mx-auto px-6">
+    <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
+      <div>
+        <p class="section-label reveal">Highlights</p>
+        <h2 class="section-title mt-4 reveal reveal-delay-1">Past <span class="hl-neon">Events.</span></h2>
+      </div>
+      <a href="#" class="btn-outline px-5 py-2.5 text-sm reveal reveal-delay-2">View Full Archive →</a>
+    </div>
+
+    <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+
+      <div class="past-card reveal">
+        <img src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=500&q=80" alt="Summit 2025" class="past-thumb"/>
+        <div class="p-4">
+          <div class="text-xs text-[var(--mg-text-muted)] mb-1">Summit · May 2025</div>
+          <h4 class="syne font-bold text-sm">MG Summit 2025</h4>
+          <p class="text-xs text-[var(--mg-text-muted)] mt-1">1,200 attendees · 65 speakers · 7 countries</p>
+        </div>
+      </div>
+
+      <div class="past-card reveal reveal-delay-1">
+        <img src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=500&q=80" alt="Hackathon 2025" class="past-thumb"/>
+        <div class="p-4">
+          <div class="text-xs text-[var(--mg-text-muted)] mb-1">Hackathon · Mar 2025</div>
+          <h4 class="syne font-bold text-sm">CleanTech Hackathon</h4>
+          <p class="text-xs text-[var(--mg-text-muted)] mt-1">220 participants · $8K prize pool · 3 winners</p>
+        </div>
+      </div>
+
+      <div class="past-card reveal reveal-delay-2">
+        <img src="https://images.unsplash.com/photo-1558403194-611308249627?w=500&q=80" alt="Pitch Night" class="past-thumb"/>
+        <div class="p-4">
+          <div class="text-xs text-[var(--mg-text-muted)] mb-1">Pitch Night · Feb 2025</div>
+          <h4 class="syne font-bold text-sm">Pitch Night #28</h4>
+          <p class="text-xs text-[var(--mg-text-muted)] mt-1">12 startups pitched · $2.4M in deals closed</p>
+        </div>
+      </div>
+
+      <div class="past-card reveal reveal-delay-3">
+        <img src="https://images.unsplash.com/photo-1551632436-cbf8dd35adfa?w=500&q=80" alt="Tech Tour" class="past-thumb"/>
+        <div class="p-4">
+          <div class="text-xs text-[var(--mg-text-muted)] mb-1">Tech Tour · Jan 2025</div>
+          <h4 class="syne font-bold text-sm">Safari — Lagos Edition</h4>
+          <p class="text-xs text-[var(--mg-text-muted)] mt-1">30 participants · 14 startup visits · 5 partnerships</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     NEWSLETTER
+════════════════════════════════════════ -->
+<section class="cta-section relative z-10 py-28">
+  <div class="cta-grid"></div>
+  <div class="absolute inset-0 pointer-events-none"
+       style="background:radial-gradient(ellipse 70% 60% at 50% 50%,rgba(0,229,255,.1) 0%,transparent 70%)"></div>
+  <div class="relative z-10 max-w-2xl mx-auto px-6 text-center">
+    <p class="section-label justify-center reveal" style="color:var(--mg-electric)">Never Miss Out</p>
+    <h2 class="reveal reveal-delay-1 mt-4"
+        style="font-size:clamp(2rem,4vw,3rem);font-weight:800;line-height:1.1;color:#fff">
+      Get Events Straight<br><span style="color:var(--mg-electric)">to Your Inbox.</span>
+    </h2>
+    <p class="mt-4 reveal reveal-delay-2" style="color:rgba(255,255,255,.55)">
+      Weekly digest every Monday — upcoming events, early-bird spots, speaker announcements, and community highlights. No noise, no spam.
+    </p>
+    <div class="mt-8 max-w-md mx-auto reveal reveal-delay-3">
+      <div class="flex flex-col sm:flex-row gap-3">
+        <input type="email" id="cta-email" placeholder="your@email.com"
+          class="flex-1 bg-white/5 border border-white/10 px-4 py-3 text-white placeholder-white/30 focus:outline-none focus:border-[var(--mg-electric)] transition-colors text-sm rounded-sm"/>
+        <button onclick="handleCTA()" class="btn-primary px-6 py-3 whitespace-nowrap">Subscribe ↗</button>
+      </div>
+      <p id="cta-msg" class="mt-3 text-sm hidden" style="color:var(--mg-neon)">✓ You're in! Check your inbox for a welcome note.</p>
+      <p class="text-xs mt-3" style="color:rgba(255,255,255,.25)">Join 3,400+ subscribers. Unsubscribe anytime.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     FOOTER
+════════════════════════════════════════ -->
+<footer class="relative z-10">
+  <div class="max-w-7xl mx-auto px-6 py-16">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
+      <div class="lg:col-span-1">
+        <a href="index.html" class="flex items-center gap-2 mb-4">
+          <div class="w-28 h-12 rounded-lg flex items-center justify-center amber-glow">
+        <img src="/images/MG_LOGO_2-removebg-preview.png" alt="Logo">
+      </div>
+        </a>
+        <p class="text-white/40 text-sm leading-relaxed">Africa's premier innovation ecosystem. Building the future, one breakthrough at a time.</p>
+        <div class="flex gap-2 mt-5">
+          <a href="#" class="social-btn">𝕏</a>
+          <a href="#" class="social-btn">in</a>
+          <a href="#" class="social-btn">◎</a>
+          <a href="#" class="social-btn">▶</a>
+        </div>
+      </div>
+      <div>
+        <h4 class="syne font-bold text-sm mb-4 tracking-wide">Company</h4>
+        <ul class="space-y-2.5">
+          <li><a href="/About/about.html" class="footer-link">About Us</a></li>
+          <li><a href="#" class="footer-link">Services</a></li>
+          <li><a href="#" class="footer-link">Suppliers</a></li>
+          <li><a href="#" class="footer-link">Gallery</a></li>
+          <li><a href="#" class="footer-link">Explore Hub</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="syne font-bold text-sm mb-4 tracking-wide">Events</h4>
+        <ul class="space-y-2.5">
+          <li><a href="/Events.html" class="footer-link" style="color:var(--mg-electric)">All Events</a></li>
+          <li><a href="#upcoming" class="footer-link">Upcoming</a></li>
+          <li><a href="#calendar" class="footer-link">Calendar</a></li>
+          <li><a href="/services.html" class="footer-link">Services</a></li>
+          <li><a href="/contact.html" class="footer-link">Contact</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="syne font-bold text-sm mb-4 tracking-wide">Contact</h4>
+        <ul class="space-y-3">
+          <li class="text-white/40 text-sm flex gap-2 items-start"><span style="color:var(--mg-electric)" class="mt-0.5">📍</span>Riva Plaza, Nakuru, Kenya</li>
+          <li><a href="mailto:events@mginnovationhub.co" class="footer-link text-sm">events@mginnovationhub.co</a></li>
+          <li><a href="tel:+254700000000" class="footer-link text-sm">+254 700 000 000</a></li>
+        </ul>
+        <div class="mt-5">
+          <p class="text-white/25 text-xs mb-2">Events Newsletter</p>
+          <div class="flex gap-2">
+            <input type="email" id="footer-email" placeholder="your@email.com"
+              class="flex-1 bg-white/5 border border-white/10 px-3 py-2 text-xs text-white placeholder-white/20 focus:outline-none focus:border-[var(--mg-electric)] transition-colors rounded-sm min-w-0"/>
+            <button onclick="handleFooterSub()" class="px-3 py-2 text-xs font-bold syne rounded-sm"
+                    style="background:var(--mg-electric);color:var(--mg-ink)">→</button>
+          </div>
+          <p id="footer-msg" class="text-xs mt-1 hidden" style="color:var(--mg-neon)">✓ Subscribed!</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="border-t" style="border-color:rgba(255,255,255,.05)">
+    <div class="max-w-7xl mx-auto px-6 py-5 flex flex-col sm:flex-row justify-between items-center gap-3">
+      <p class="text-white/25 text-xs">© 2025 MG Innovation Hub Ltd. All rights reserved.</p>
+      <div class="flex gap-5">
+        <a href="#" class="footer-link text-xs">Privacy Policy</a>
+        <a href="#" class="footer-link text-xs">Terms of Use</a>
+        <a href="#" class="footer-link text-xs">Cookie Settings</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- ══════════════════════════════════════
+     EVENT MODAL
+════════════════════════════════════════ -->
+<div id="event-modal">
+  <div class="modal-backdrop" onclick="closeModal()"></div>
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div id="modal-content"></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     JAVASCRIPT
+════════════════════════════════════════ -->
+<script>
+// ── THEME TOGGLE ──────────────────────────
+(function(){
+  if(localStorage.getItem('mg-theme')==='light')
+    document.documentElement.classList.add('light');
+})();
+
+function applyTheme(isLight){
+  document.documentElement.classList.toggle('light',isLight);
+  localStorage.setItem('mg-theme',isLight?'light':'dark');
+  document.getElementById('icon-moon').style.opacity=isLight?'.35':'1';
+  document.getElementById('icon-sun').style.opacity=isLight?'1':'.35';
+}
+
+document.addEventListener('DOMContentLoaded',()=>{
+  const isLight=document.documentElement.classList.contains('light');
+  document.getElementById('icon-moon').style.opacity=isLight?'.35':'1';
+  document.getElementById('icon-sun').style.opacity=isLight?'1':'.35';
+  document.getElementById('theme-toggle').addEventListener('click',()=>{
+    applyTheme(!document.documentElement.classList.contains('light'));
+  });
+});
+
+// ── NAV ───────────────────────────────────
+window.addEventListener('scroll',()=>{
+  document.getElementById('navbar').classList.toggle('scrolled',window.scrollY>60);
+});
+document.getElementById('hamburger').addEventListener('click',()=>{
+  document.getElementById('mobile-menu').classList.toggle('open');
+});
+document.querySelectorAll('#mobile-menu a').forEach(a=>
+  a.addEventListener('click',()=>document.getElementById('mobile-menu').classList.remove('open'))
+);
+
+// ── FILTER ───────────────────────────────
+document.querySelectorAll('.filter-btn').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    const filter=btn.dataset.filter;
+    const cards=document.querySelectorAll('#events-grid .event-card');
+    let visible=0;
+    cards.forEach(card=>{
+      const show=filter==='all'||card.dataset.type===filter;
+      card.style.display=show?'':'none';
+      if(show) visible++;
+    });
+    document.getElementById('no-results').classList.toggle('hidden',visible>0);
+    // Also filter by search
+    applySearch();
+  });
+});
+
+// ── SEARCH ───────────────────────────────
+document.getElementById('event-search').addEventListener('input',applySearch);
+function applySearch(){
+  const q=document.getElementById('event-search').value.toLowerCase();
+  const activeFilter=document.querySelector('.filter-btn.active').dataset.filter;
+  const cards=document.querySelectorAll('#events-grid .event-card');
+  let visible=0;
+  cards.forEach(card=>{
+    const typeOk=activeFilter==='all'||card.dataset.type===activeFilter;
+    const textOk=card.innerText.toLowerCase().includes(q);
+    const show=typeOk&&textOk;
+    card.style.display=show?'':'none';
+    if(show) visible++;
+  });
+  document.getElementById('no-results').classList.toggle('hidden',visible>0);
+}
+
+// ── COUNTDOWN ─────────────────────────────
+function updateCountdown(){
+  const target=new Date('2026-06-14T08:00:00');
+  const now=new Date();
+  const diff=target-now;
+  if(diff<=0){ return; }
+  const d=Math.floor(diff/864e5);
+  const h=Math.floor((diff%864e5)/36e5);
+  const m=Math.floor((diff%36e5)/6e4);
+  const s=Math.floor((diff%6e4)/1e3);
+  document.getElementById('cd-days').textContent=String(d).padStart(2,'0');
+  document.getElementById('cd-hours').textContent=String(h).padStart(2,'0');
+  document.getElementById('cd-mins').textContent=String(m).padStart(2,'0');
+  document.getElementById('cd-secs').textContent=String(s).padStart(2,'0');
+}
+setInterval(updateCountdown,1000);
+updateCountdown();
+
+// ── CALENDAR ──────────────────────────────
+const events={
+  '2026-06-03':[{label:'Pitch Night #32',dot:''}],
+  '2026-06-07':[{label:'AgriTech Hack',dot:'dot-neon'}],
+  '2026-06-14':[{label:'MG Summit Day 1',dot:''}],
+  '2026-06-15':[{label:'MG Summit Day 2',dot:''}],
+  '2026-06-20':[{label:'Fireside Chat',dot:'dot-orange'}],
+  '2026-06-28':[{label:'LLMs Workshop',dot:'dot-neon'}],
+  '2026-07-05':[{label:'Tech Safari',dot:'dot-orange'}],
+  '2026-07-12':[{label:'Pitch Night #33',dot:''}],
+  '2026-07-18':[{label:'FinTech Hackathon',dot:'dot-neon'}],
+};
+
+let calYear=2026, calMonth=5; // 0-indexed, 5=June
+const monthNames=['January','February','March','April','May','June','July','August','September','October','November','December'];
+
+function renderCalendar(){
+  document.getElementById('cal-month-label').textContent=monthNames[calMonth]+' '+calYear;
+  const grid=document.getElementById('cal-grid');
+  grid.innerHTML='';
+  const first=new Date(calYear,calMonth,1).getDay();
+  const days=new Date(calYear,calMonth+1,0).getDate();
+  const prevDays=new Date(calYear,calMonth,0).getDate();
+  const today=new Date();
+
+  for(let i=0;i<first;i++){
+    const d=prevDays-first+1+i;
+    const cell=document.createElement('div');
+    cell.className='calendar-day other-month';
+    cell.innerHTML=`<div class="day-num">${d}</div>`;
+    grid.appendChild(cell);
+  }
+  for(let d=1;d<=days;d++){
+    const dateStr=`${calYear}-${String(calMonth+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    const evList=events[dateStr];
+    const isToday=today.getFullYear()===calYear&&today.getMonth()===calMonth&&today.getDate()===d;
+    const cell=document.createElement('div');
+    cell.className='calendar-day'+(isToday?' today':'')+(evList?' has-event':'');
+    let html=`<div class="day-num">${d}</div>`;
+    if(evList){
+      evList.forEach(ev=>{
+        html+=`<div class="day-event-dot"><span class="dot ${ev.dot}"></span>${ev.label}</div>`;
+      });
+    }
+    cell.innerHTML=html;
+    if(evList) cell.title=evList.map(e=>e.label).join(', ');
+    grid.appendChild(cell);
+  }
+  const remaining=(7-((first+days)%7))%7;
+  for(let d=1;d<=remaining;d++){
+    const cell=document.createElement('div');
+    cell.className='calendar-day other-month';
+    cell.innerHTML=`<div class="day-num">${d}</div>`;
+    grid.appendChild(cell);
+  }
+}
+
+document.getElementById('cal-prev').addEventListener('click',()=>{
+  calMonth--; if(calMonth<0){calMonth=11;calYear--;} renderCalendar();
+});
+document.getElementById('cal-next').addEventListener('click',()=>{
+  calMonth++; if(calMonth>11){calMonth=0;calYear++;} renderCalendar();
+});
+renderCalendar();
+
+// ── MODAL ─────────────────────────────────
+const modalData={
+  summit:{
+    title:'MG Innovation Summit 2026',
+    tag:'Summit · 14–15 June 2026',
+    color:'var(--mg-orange)',
+    body:`<p style="color:var(--mg-text-muted);font-size:.9rem;line-height:1.7;margin-bottom:1rem">East Africa's largest annual gathering of founders, investors, and innovators. Two full days across five curated stages — keynotes, panels, workshops, and networking that spans the continent.</p>
+    <ul style="font-size:.875rem;color:var(--mg-text-muted);line-height:2;list-style:none;margin-bottom:1.2rem">
+      <li>📍 KICC, Nairobi &nbsp;|&nbsp; ⏰ 8:00 AM – 8:00 PM</li>
+      <li>🎤 80+ speakers &nbsp;|&nbsp; 👥 1,500+ attendees</li>
+      <li>💰 KES 2,500 early bird · KES 3,500 door</li>
+    </ul>`,
+    btn:'Secure My Ticket'
+  },
+  pitch1:{
+    title:'MG Pitch Night #32',
+    tag:'Pitch Night · 3 June 2026',
+    color:'var(--mg-electric)',
+    body:`<p style="color:var(--mg-text-muted);font-size:.9rem;line-height:1.7;margin-bottom:1rem">Ten carefully selected startups present their vision to a room of 80+ active investors. Past pitch nights have directly catalysed $18M+ in total funding across our alumni.</p>
+    <ul style="font-size:.875rem;color:var(--mg-text-muted);line-height:2;list-style:none;margin-bottom:1.2rem">
+      <li>📍 MG Hub Auditorium &nbsp;|&nbsp; ⏰ 5:00 PM – 9:00 PM</li>
+      <li>👥 80 investor spots &nbsp;|&nbsp; 🎤 10 startups pitching</li>
+      <li>💰 FREE · RSVP required</li>
+    </ul>`,
+    btn:'Reserve My Spot'
+  },
+  hack1:{
+    title:'AgriTech Hackathon 2026',
+    tag:'Hackathon · 7–9 June 2026',
+    color:'var(--mg-neon)',
+    body:`<p style="color:var(--mg-text-muted);font-size:.9rem;line-height:1.7;margin-bottom:1rem">48 hours to reimagine food systems across East Africa. Teams of 2–5 compete for a $10,000 prize pool across three tracks: Supply Chain, Smallholder Finance, and Climate-Smart Farming.</p>
+    <ul style="font-size:.875rem;color:var(--mg-text-muted);line-height:2;list-style:none;margin-bottom:1.2rem">
+      <li>📍 MG Hub + Remote &nbsp;|&nbsp; ⏰ Fri 6PM – Sun 6PM</li>
+      <li>🏆 $10,000 prize pool &nbsp;|&nbsp; 👥 120 participant cap</li>
+      <li>💰 KES 500 entry fee · Teams of 2–5</li>
+    </ul>`,
+    btn:'Register Your Team'
+  },
+  fireside1:{
+    title:'Fireside: Building in Public',
+    tag:'Fireside Chat · 20 June 2026',
+    color:'var(--mg-neon)',
+    body:`<p style="color:var(--mg-text-muted);font-size:.9rem;line-height:1.7;margin-bottom:1rem">An unfiltered conversation with two founders who documented every step of their zero-to-one journey publicly — the wins, the pivots, and the near-death moments.</p>
+    <ul style="font-size:.875rem;color:var(--mg-text-muted);line-height:2;list-style:none;margin-bottom:1.2rem">
+      <li>📍 MG Hub Lounge + Livestream &nbsp;|&nbsp; ⏰ 6:30 PM – 8:30 PM</li>
+      <li>👥 In-person cap: 60 &nbsp;|&nbsp; 🎙 Livestreamed globally</li>
+      <li>💰 FREE · RSVP for in-person seat</li>
+    </ul>`,
+    btn:'RSVP Now'
+  },
+  ws1:{
+    title:'Intro to LLMs for Founders',
+    tag:'Workshop · 28 June 2026',
+    color:'var(--mg-electric)',
+    body:`<p style="color:var(--mg-text-muted);font-size:.9rem;line-height:1.7;margin-bottom:1rem">A practical half-day session designed for non-technical founders: understand how large language models work, identify high-value use cases for your product, and leave with a working proof-of-concept.</p>
+    <ul style="font-size:.875rem;color:var(--mg-text-muted);line-height:2;list-style:none;margin-bottom:1.2rem">
+      <li>📍 MG Hub Lab 2 &nbsp;|&nbsp; ⏰ 9:00 AM – 1:00 PM</li>
+      <li>👥 40 seats only &nbsp;|&nbsp; 💻 Bring your laptop</li>
+      <li>💰 KES 1,500 · Members get 20% off</li>
+    </ul>`,
+    btn:'Book My Seat'
+  },
+  tour1:{
+    title:'East Africa Tech Safari — Kigali',
+    tag:'Tech Tour · 5–7 July 2026',
+    color:'var(--mg-neon)',
+    body:`<p style="color:var(--mg-text-muted);font-size:.9rem;line-height:1.7;margin-bottom:1rem">A three-day cross-border immersion into Rwanda's thriving tech ecosystem. Visit 10+ startups, meet VCs, attend curated dinners, and build relationships that transcend borders.</p>
+    <ul style="font-size:.875rem;color:var(--mg-text-muted);line-height:2;list-style:none;margin-bottom:1.2rem">
+      <li>📍 Kigali, Rwanda &nbsp;|&nbsp; ⏰ 3-day programme</li>
+      <li>👥 25 participants max &nbsp;|&nbsp; ✈ Transport + hotel included</li>
+      <li>💰 KES 18,000 all-inclusive</li>
+    </ul>`,
+    btn:'Join the Safari'
+  }
+};
+
+function openModal(key){
+  const data=modalData[key];
+  if(!data) return;
+  document.getElementById('modal-content').innerHTML=`
+    <div style="display:inline-block;background:${data.color};color:var(--mg-ink);font-family:'Syne',sans-serif;font-size:.65rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:.25rem .7rem;border-radius:2px;margin-bottom:1rem">${data.tag}</div>
+    <h3 style="font-family:'Syne',sans-serif;font-weight:800;font-size:1.5rem;margin-bottom:.75rem;line-height:1.2">${data.title}</h3>
+    ${data.body}
+    <a href="index.html#contact" class="btn-primary" style="display:inline-block;padding:.65rem 1.5rem;margin-top:.5rem">${data.btn}</a>`;
+  document.getElementById('event-modal').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeModal(){
+  document.getElementById('event-modal').classList.remove('open');
+  document.body.style.overflow='';
+}
+document.addEventListener('keydown',e=>{ if(e.key==='Escape') closeModal(); });
+
+// ── SCROLL REVEAL ─────────────────────────
+function triggerReveal(){
+  document.querySelectorAll('.reveal:not(.visible)').forEach(el=>{
+    if(el.getBoundingClientRect().top<window.innerHeight-60) el.classList.add('visible');
+  });
+}
+window.addEventListener('scroll',triggerReveal,{passive:true});
+window.addEventListener('load',triggerReveal);
+setTimeout(triggerReveal,200);
+
+// ── COUNTERS ──────────────────────────────
+function animateCounters(){
+  document.querySelectorAll('.counter').forEach(el=>{
+    if(el.dataset.animated) return;
+    if(el.getBoundingClientRect().top<window.innerHeight-40){
+      el.dataset.animated='1';
+      const target=+el.dataset.target;
+      const suffix=el.dataset.suffix||'+';
+      let count=0;
+      const step=Math.ceil(target/40);
+      const iv=setInterval(()=>{
+        count=Math.min(count+step,target);
+        el.textContent=count+suffix;
+        if(count>=target) clearInterval(iv);
+      },40);
+    }
+  });
+}
+window.addEventListener('scroll',animateCounters,{passive:true});
+window.addEventListener('load',animateCounters);
+
+// ── CTA FORM ──────────────────────────────
+function handleCTA(){
+  const email=document.getElementById('cta-email');
+  const msg=document.getElementById('cta-msg');
+  if(!email.value||!email.value.includes('@')){ email.style.borderColor='#FF6B2B'; return; }
+  email.style.borderColor='';
+  email.value='';
+  msg.classList.remove('hidden');
+  setTimeout(()=>msg.classList.add('hidden'),5000);
+}
+document.getElementById('cta-email').addEventListener('keydown',e=>{ if(e.key==='Enter') handleCTA(); });
+
+function handleFooterSub(){
+  const el=document.getElementById('footer-email');
+  const msg=document.getElementById('footer-msg');
+  if(!el.value||!el.value.includes('@')) return;
+  el.value='';
+  msg.classList.remove('hidden');
+  setTimeout(()=>msg.classList.add('hidden'),4000);
+}
+document.getElementById('footer-email').addEventListener('keydown',e=>{ if(e.key==='Enter') handleFooterSub(); });
+</script>
+</body>
+</html>
